@@ -21,4 +21,4 @@ jobs:
       - run: npm ci
       - run: npm run build
       # Deploy
-      - run: cd dist && rsync -e "ssh -p 22 -i $HOME/.ssh/id_rsa -o StrictHostKeyChecking=no -v" --archive --compress --delete . lllkojlhuk_ssh@lllkojlhuk.beget.tech:/home/l/lllkojlhuk/sushikub/public_html
+      - run: cd dist && rsync -e "ssh -p 22 -i $HOME/.ssh/id_rsa -o StrictHostKeyChecking=no -v" --archive --compress --delete --exclude='server' . lllkojlhuk_beget_ssh@lllkojlhuk.beget.tech:/home/l/lllkojlhuk/sushikub/public_html
