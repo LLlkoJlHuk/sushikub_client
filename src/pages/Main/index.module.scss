@@ -1,0 +1,36 @@
+@use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
+
+.main-page {
+	>section {
+		&:first-child {
+			padding-bottom: 0;
+		}
+	}
+
+	.section-notice {
+		margin-top: 48px;
+	}
+
+	.section__3 {
+		margin-top: 160px;
+
+		.menu-cards {
+			margin: 48px 0 0;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			flex-wrap: wrap;
+			gap: 24px;
+
+			@include smallTablet {
+				gap: 18px;
+			}
+		}
+
+		@include tablet {
+			margin-top: 48px;
+		}
+	}
+}

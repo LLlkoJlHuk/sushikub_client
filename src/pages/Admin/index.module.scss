@@ -1,0 +1,182 @@
+@use '../../assets/css/variables.scss' as *;
+
+.admin-page {
+	width: 100%;
+	height: 100%;
+
+	display: flex;
+	justify-content: center;
+	align-items: start;
+	align-content: start;
+	flex-wrap: wrap;
+
+	.banners, .categories, .settings, .add-product {
+		background: rgba($color: $red, $alpha: .6);
+	}
+
+	&__header {
+		padding: 12px 36px;
+
+		width: 100%;
+
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+	}
+
+	&__content {
+		overflow: hidden;
+		padding: 24px 36px;
+		
+		width: 100%;
+		height: calc(100vh - 70px);
+
+		color: $dark;
+
+		background: $white;
+		border-radius: 16px;
+
+		h2 {
+			font-size: $fz-xlarge;
+			font-weight: 600;
+		}
+
+		&-add-product-container {
+			display: flex;
+			justify-content: space-between;
+			align-items: center;
+			gap: 24px;
+		}
+
+		&-add-product-buttons {
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+			gap: 12px;
+		}
+
+		&-products {
+			overflow-y: auto;
+			margin-top: 48px;
+
+			height: auto;
+			max-height: calc(100vh - 200px);
+
+			display: flex;
+			flex-wrap: wrap;
+			justify-content: start;
+			align-items: center;
+			gap: 12px;
+		}
+
+		&-products-table {
+			width: 100%;
+			height: 100%;
+
+			thead {
+				tr {
+					background: rgba(196,196,196, 0.3);
+					td {
+						font-size: $fz-small;
+						font-weight: 400;
+					}
+				}
+			}
+			
+			tr {
+				&:nth-child(even) {
+					background: rgba(196,196,196, 0.3);
+				}
+
+				td {
+					padding: 12px 12px;
+
+					text-align: center;
+					align-content: center;
+					color: $dark;
+					font-size: $fz-xsmall;
+					font-weight: 400;
+
+					span {
+						display: -webkit-box;
+						-webkit-line-clamp: 1;
+						-webkit-box-orient: vertical;
+						line-clamp: 1;
+						box-orient: vertical;
+						text-overflow: ellipsis;
+						overflow: hidden;
+					}
+				}
+
+				.image {
+					width: 80px;
+					height: auto;
+
+					img {
+						width: 100%;
+						height: auto;
+					}
+				}
+
+				.name {
+					text-align: left;
+				}
+
+				.description {
+					text-align: left;
+
+					span {
+						-webkit-line-clamp: 2;
+						line-clamp: 2;
+					}
+				}
+
+				.actions {
+					height: 100%;
+
+					display: flex;
+					justify-content: center;
+					align-items: center;
+					gap: 12px;
+
+					.edit-button {
+						color: rgb(228, 149, 3);
+						font-size: $fz-xsmall;
+					}
+
+					.delete-button {
+						color: rgb(255, 92, 92);
+						font-size: $fz-xsmall;
+					}
+				}
+			}	
+		}
+	}
+}
+
+// Стили для страницы ошибок
+.admin-page__error {
+	width: 100%;
+	height: 100vh;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	text-align: center;
+	padding: 24px;
+	
+	h2 {
+		font-size: $fz-xlarge;
+		font-weight: 600;
+		color: $red;
+		margin-bottom: 16px;
+	}
+	
+	p {
+		font-size: $fz-default;
+		color: $dark;
+		margin-bottom: 24px;
+		max-width: 500px;
+		line-height: 1.5;
+	}
+}

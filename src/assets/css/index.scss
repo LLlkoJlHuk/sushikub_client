@@ -1,0 +1,369 @@
+@use "./mixins" as *;
+@use "./reset" as *;
+@use "./variables" as *;
+
+:root {
+  --scroll-threshold: 128px;
+}  
+
+#root {
+  width: 100%;
+  height: 100%;
+}
+
+body{
+  width: 100%;
+  height: 100%;
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+
+  font-family: 'Open Sans', Helvetica, Arial, sans-serif;
+  color: $white;
+  font-size: $fz-default;
+  font-weight: 400;
+  line-height: normal;
+
+  background: $dark;
+}
+
+.page {
+  position: relative;
+  padding-bottom: 260px;
+
+  width: 100%;
+  height: auto;
+  min-height: 100vh;
+
+  @include desktop-xsmall {
+    padding-bottom: 200px;
+  }
+
+  @include bigTablet {
+    padding-bottom: 160px;
+  }
+
+  @include bigPhone {
+    padding-bottom: 230px;
+  }
+}
+
+.section {
+  margin-top: 80px;
+
+  width: 100%;
+  height: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  flex-wrap: wrap;
+
+  @include tablet {
+    margin-top: 48px;
+  }
+
+  &__title {
+    padding-left: 48px;
+    width: 100%;
+
+    text-align: left;
+    color: $white;
+    font-size: $fz-xlarge;
+    font-weight: 700;
+
+    @include tablet {
+      padding-left: 24px;
+    }
+
+    @include bigPhone {
+      padding-left: 12px;
+      font-size: $fz-xlarge - 2px;
+    }
+  }
+
+  &:first-child {
+    margin: 0;
+  }
+
+  &:last-child {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+  }
+
+  &.section-with-header {
+    padding-bottom: 32px;
+
+    @include desktop-small {
+      padding-bottom: 12px;
+    }
+
+    &.header-visible {
+      padding-top: 190px;
+
+      @include bigTablet {
+        padding-top: 0;
+      }
+    }
+  }
+}
+
+.modal-open {
+  overflow: hidden;
+  padding-right: 12px;
+}
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+
+  @include desktop-small {
+    padding: 0 3%;
+    max-width: 100%;
+  }
+
+  @include tablet {
+    padding: 0 5%;
+  }
+}
+
+.custom-bg {
+  position: relative;
+
+  background: url('../../assets/images/bg.webp') center center repeat;
+	background-position: 0px 0px;
+	background-size: 100% auto;
+
+  &.border-top {
+    &::before {
+      content: '';
+      position: absolute;
+      top: -2px;
+      left: 0;
+      width: 100%;
+      height: 25px;
+      background: url('../../assets/images/bg_pattern.webp') center center repeat;
+      background-size: contain;
+
+      transform: scaleY(-1);
+
+      @include desktop-small {
+        height: 17px;
+        background-size: cover;
+      }
+    }
+  }
+
+  &.border-bottom {
+    &::before {
+      content: '';
+      position: absolute;
+      bottom: -2px;
+      left: 0;
+      width: 100%;
+      height: 25px;
+      background: url('../../assets/images/bg_pattern.webp') center center repeat;
+      background-size: contain;
+
+      @include desktop-small {
+        height: 17px;
+        background-size: cover;
+      }
+    }
+  }
+}
+
+.modal {
+  &.add-product, &.edit-product {
+    width: 100%;
+    max-width: 824px;
+  }
+
+  &.categories {
+    width: 100%;
+    max-width: 700px;
+  }
+
+  &.settings {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  &.add-category {
+    width: 100%;
+    max-width: 400px;
+  }
+
+  &.add-banner, &.edit-banner {
+    width: 100%;
+    max-width: 624px;
+  }
+
+  &.banners {
+    width: 100%;
+    max-width: 900px;
+  }
+
+  &.product-info {
+    width: 100%;
+    max-width: 540px;
+    height: auto;
+
+    >div {
+      padding: 0 !important;
+    }
+  }
+}
+
+.alert {
+  position: relative;
+
+  &-enter {
+    opacity: 0;
+    transform: scale(0.01);
+    max-width: 0;
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    max-width: 50px;
+    transition: all .3s ease;
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: scale(1);
+    max-width: 50px;
+  }
+
+  &-exit-active {
+    opacity: 0;
+    transform: scale(0.01);
+    max-width: 0;
+    transition: all .3s ease;
+  }
+}
+
+.logo {
+  position: relative;
+
+  &-enter {
+    opacity: 0;
+    transform: scale(0.01);
+    max-width: 0;
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    max-width: 60px;
+    transition: all .3s ease;
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: scale(1);
+    max-width: 60px;
+  }
+
+  &-exit-active {
+    opacity: 0;
+    transform: scale(0.01);
+    max-width: 0;
+    transition: all .3s ease;
+  }
+}
+
+// Анимация для полей доставки
+.delivery-fields {
+  &-enter {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 300px;
+    transition: all 0.3s ease;
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 300px;
+  }
+
+  &-exit-active {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+}
+
+// Анимация для полей самовывоза
+.pickup-fields {
+  &-enter {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 100px;
+    transition: all 0.3s ease;
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 100px;
+  }
+
+  &-exit-active {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+}
+
+// Анимация для DeliveryTimePicker
+.picker {
+  &-enter {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.3s ease;
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &-exit-active {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+  }
+}
+
+.display-none {
+  display: none !important;
+}

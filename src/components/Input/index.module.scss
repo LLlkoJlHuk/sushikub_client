@@ -1,0 +1,41 @@
+@use '../../assets/css/variables.scss' as *;
+
+.input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.textarea-wrapper {
+  position: relative;
+  width: 100%;
+  margin-top: 20px; /* Добавляем отступ сверху для счетчика символов */
+}
+
+.char-counter {
+  position: absolute;
+  top: -10px;
+  right: 5px;
+  font-size: $fz-xsmall;
+  color: $white;
+  font-weight: 400;
+  z-index: 1;
+}
+
+/* Стили для textarea */
+.textarea-wrapper textarea {
+  resize: vertical;
+  max-height: 300px;
+  min-height: 100px;
+}
+
+.error-message {
+  display: block;
+  margin-top: 4px;
+  font-size: $fz-xsmall;
+  color: #ff6b6b;
+  font-weight: 400;
+}
+
+.error {
+  border-color: #ff6b6b !important;
+} 

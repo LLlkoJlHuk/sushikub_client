@@ -1,0 +1,99 @@
+@use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
+
+.counter {
+	overflow: hidden;
+	width: 150px;
+	height: 40px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background: #BE3C3C;
+	border-radius: 8px;
+
+	@include desktop-xsmall {
+		width: 100px;
+		height: 30px;
+	}
+
+	&.dark {
+		background: #252528;
+
+		.counter__button {
+			background: #252528;
+
+			&:hover {
+				background: linear-gradient(90deg,rgba(172,172,172, 0.05) 0%, rgba(170, 6, 6, 0) 100%);
+			}
+
+			&:last-child {
+				&:hover {
+					background: linear-gradient(270deg,rgba(172,172,172, 0.05) 50%, rgba(170, 6, 6, 0) 100%);
+				}
+			}
+		}
+	}
+
+	&__button {
+		user-select: none;
+		cursor: pointer;
+		
+		width: 40%;
+		height: 100%;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		color: $red;
+		font-size: $fz-default;
+		font-weight: 700;
+		background: #BE3C3C;
+
+		transition: all 0.3s ease;
+
+		img {
+			width: 100%;
+			max-width: 15px;
+
+			transition: all 0.3s ease;
+		}
+
+		&:hover {
+			background: linear-gradient(90deg,rgba(190,44,44, 1) 0%, rgba(170, 6, 6, 0) 100%);
+		}
+
+		&:active {
+			img {
+				transform: scale(0.95);
+			}
+		}
+
+		&:last-child {
+			&:hover {
+				background: linear-gradient(270deg,rgba(190,44,44, 1) 50%, rgba(170, 6, 6, 0) 100%);
+			}
+		}
+	}
+
+	&__count {
+		user-select: none;
+		
+		width: 20%;
+		height: 100%;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		color: $white;
+		font-size: $fz-default;
+		font-weight: 400;
+
+		@include desktop-xsmall {
+			font-size: $fz-small;
+		}
+	}
+}

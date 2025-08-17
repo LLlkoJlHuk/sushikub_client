@@ -1,0 +1,253 @@
+@use '../../assets/css/variables.scss' as *;
+
+.deliveryTimePicker {
+  width: 100%;
+  max-width: 250px;
+  background: #252528;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+
+  // Календарь
+  .calendarHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background: rgba($color: $gray, $alpha: .1);
+    border-bottom: 1px solid rgba($color: $gray, $alpha: .2);
+
+
+    .monthButton {
+      width: 20px;
+      height: 20px;
+      border: none;
+      border-radius: 50%;
+      background: rgba($color: $white, $alpha: .1);
+      color: $white;
+      font-size: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      img {
+        width: 4px;
+        height: auto;
+      }
+
+      &:hover {
+        background: rgba($color: $white, $alpha: .2);
+      }
+
+      &:first-child {
+        transform: rotate(180deg);
+      }
+    }
+
+    .monthTitle {
+      font-size: $fz-xsmall;
+      font-weight: 600;
+      color: $white;
+      text-transform: lowercase;
+      
+      &::first-letter {
+        text-transform: uppercase;
+      }
+    }
+  }
+
+  .calendarGrid {
+    padding: 10px;
+
+    .weekDays {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+      margin-bottom: 6px;
+
+      div {
+        text-align: center;
+        font-size: $fz-xsmall;
+        font-weight: 500;
+        color: rgba($color: $white, $alpha: .6);
+        padding: 1px 0;
+      }
+    }
+
+    .daysGrid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 1px;
+
+      .dayCell {
+        aspect-ratio: 1;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 3px;
+        font-size: $fz-xsmall;
+        font-weight: 400;
+        color: rgba($color: $white, $alpha: .3);
+        cursor: default;
+        transition: all 0.2s ease;
+        min-height: 18px;
+
+        &.available {
+          color: $white;
+          cursor: pointer;
+          background: rgba($color: $white, $alpha: .05);
+
+          &:hover {
+            background: rgba($color: $white, $alpha: .1);
+          }
+        }
+
+        &.selected {
+          background: $red;
+          color: $white;
+          font-weight: 600;
+
+          &:hover {
+            background: $red !important;
+          }
+        }
+      }
+    }
+  }
+
+  // Поле ввода времени
+  .timeInputSection {
+    padding: 14px;
+    border-top: 1px solid rgba($color: $gray, $alpha: .2);
+    background: rgba($color: $white, $alpha: .02);
+
+    .timeInputLabel {
+      text-align: center;
+      font-size: $fz-xsmall;
+      font-weight: 500;
+      color: $white;
+      margin-bottom: 6px;
+    }
+
+    .timeInput {
+      margin: 6px 0;
+      width: 100%;
+      padding: 4px;
+      border: 1px solid rgba($color: $white, $alpha: .2);
+      border-radius: 6px;
+      background: rgba($color: $white, $alpha: .05);
+      color: $white;
+      font-size: $fz-xsmall;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      transition: all 0.2s ease;
+
+      &::placeholder {
+        color: rgba($color: $white, $alpha: .4);
+      }
+
+      &:focus {
+        outline: none;
+        background: rgba($color: $white, $alpha: .08);
+      }
+
+      &.error {
+        border-color: #ff6b6b;
+        background: rgba($color: #ff6b6b, $alpha: .1);
+      }
+    }
+
+    .errorMessage {
+      margin-top: 4px;
+      text-align: center;
+      font-size: 10px;
+      color: #ff6b6b;
+      font-weight: 500;
+    }
+
+    .infoMessage {
+      margin-top: 4px;
+      text-align: center;
+      font-size: 10px;
+      color: rgba($color: $white, $alpha: .8);
+      font-weight: 400;
+    }
+
+    .timeInfo {
+      margin-top: 6px;
+      text-align: center;
+      font-size: 10px;
+      color: rgba($color: $white, $alpha: .6);
+      font-style: italic;
+
+      &.error {
+        color: #ff6b6b;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .confirmSection {
+    padding: 14px;
+    border-top: 1px solid rgba($color: $gray, $alpha: .2);
+
+    .confirmButton {
+      width: 100%;
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      background: $red;
+      color: $white;
+      font-size: $fz-xsmall;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+
+      &:hover:not(:disabled) {
+        background: $red-hover;
+        box-shadow: 0 3px 10px rgba($color: $red, $alpha: .3);
+      }
+
+      &:active:not(:disabled) {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        background: rgba($color: $gray, $alpha: .3);
+        color: rgba($color: $white, $alpha: .5);
+        cursor: not-allowed;
+        transform: none;
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+// Анимация для DeliveryTimePicker
+.picker {
+  &-enter {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transform: scale(1);
+    transition: all 0.3s ease;
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: scale(1);
+  }
+
+  &-exit-active {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.3s ease;
+  }
+}
+
+ 

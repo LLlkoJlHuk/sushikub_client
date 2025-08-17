@@ -1,0 +1,121 @@
+@use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
+
+.footer {
+	padding: 32px 0 16px 0;
+	
+	width: 100%;
+	height: auto;
+
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+
+	@include bigTablet {
+		flex-wrap: wrap;
+		gap: 32px;
+	}
+
+	@include bigPhone {
+		justify-content: center;
+	}
+
+	.left-side {
+		@include bigPhone {
+			width: 100%;
+		}
+
+		.logo {
+			cursor: pointer;
+			user-select: none;
+
+			display: flex;
+			justify-content: start;
+			align-items: center;
+			gap: 16px;
+
+			@include bigPhone {
+				justify-content: center;
+			}
+
+			.logo-img {
+				width: 100%;
+				max-width: 80px;
+				height: auto;
+
+				@include bigTablet {
+					max-width: 45px;
+				}
+			}
+
+			.logo-text {
+				font-family: $ff-logo;
+				font-size: $fz-logo;
+				text-transform: uppercase;
+				font-weight: 400;
+
+				@include bigTablet {
+					font-size: 28px;
+				}
+			}
+		}
+	}
+
+	.middle-side {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		gap: 32px;
+
+		.sales, .delivery, .policy {
+			font-size: $fz-default;
+		}
+	}
+
+	.right-side {
+		display: flex;
+		justify-content: end;
+		align-items: center;
+		gap: 24px;
+
+		@include bigPhone {
+			width: 100%;
+			justify-content: center;
+		}
+
+		.info {
+			width: 100%;
+			max-width: 200px;
+			display: flex;
+			justify-content: end;
+			flex-wrap: wrap;
+			gap: 8px;
+
+			@include bigTablet {
+				justify-content: center;
+			}
+
+			.phone {
+				width: 100%;
+				
+				text-align: right;
+				font-size: $fz-xlarge;
+
+				@include bigTablet {
+					text-align: center;
+				}
+			}
+
+			.time {
+				width: 100%;
+
+				text-align: right;
+				font-size: $fz-default;
+
+				@include bigTablet {
+					text-align: center;
+				}
+			}
+		}
+	}
+}

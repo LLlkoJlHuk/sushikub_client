@@ -1,0 +1,63 @@
+@use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
+
+.button {
+	user-select: none;
+	cursor: pointer;
+	
+	color: $white;
+	font-size: $fz-small;
+	line-height: 1;
+
+	transition: all .3s ease;
+
+	&.not-link, &.btn-link {
+		text-decoration: none;
+
+		padding: 8px 24px;
+
+		border-radius: 8px;
+		border: none;
+		background: $red;
+
+		&:hover {
+			background: $red-hover;
+		}
+
+		&:active {
+			transform: scale(0.98) translateY(1px);
+		}
+	}
+
+	&.link, &.custom {
+		text-decoration: none;
+
+		&:hover {
+			color: $white-hover;
+		}
+
+		&:active {
+			transform: scale(0.98) translateY(1px);
+		}
+	}
+
+	&.custom {
+		background: none;
+		border: none;
+		padding: 0;
+	}
+
+	&.disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		pointer-events: none;
+
+		&:hover {
+			background: $red;
+		}
+
+		&:active {
+			transform: none;
+		}
+	}
+}

@@ -1,0 +1,102 @@
+@use "sass:map";
+@use "./variables" as *;
+
+$weights_map: (
+  thin: 100,
+  extra: 200,
+  extralight: 200,
+  extra-light: 200,
+  light: 300,
+  book: 450,
+  normal: 400,
+  regular: 400,
+  medium: 500, 
+  semi: 600,
+  semibold: 600,
+  semi-bold: 600,
+  bold: 700,
+  ultra: 800,
+  heavy: 800,
+  extrabold: 800,
+  ultrabold: 800,
+  black: 900
+);
+
+@mixin desktop-small {
+  @media (max-width: 1500px) {
+    @content;
+  }
+}
+
+@mixin desktop-xsmall {
+  @media (max-width: 1400px) {
+    @content;
+  }
+}
+
+@mixin laptop {
+  @media (max-width: 1250px) {
+    @content;
+  }
+}
+
+@mixin bigTablet {
+  @media (max-width: 1024px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin smallTablet {
+  @media (max-width: 576px) {
+    @content;
+  }
+}
+
+@mixin bigPhone {
+  @media (max-width: 480px) {
+    @content;
+  }
+}
+
+@mixin phone {
+  @media (max-width: 370px) {
+    @content;
+  }
+}
+
+@function get_weight($map, $value) {
+  @if map.get($map, $value) {
+    @return map.get($map, $value);
+  } @else {
+    @return $value;
+  }
+}
+
+@mixin font($font, $weights, $italic: true, $format: woff, $basePath: '@/assets/css/fonts') {
+  @each $weight in $weights {
+    @font-face {
+      font-family: $font;
+      font-style: normal;
+      font-weight: get_weight($weights_map, $weight);
+      src: url('#{$basePath}/#{$font}/#{$weight}.#{$format}');
+    }
+    @if $italic {
+      @font-face {
+        font-family: $font;
+        font-style: italic;
+        font-weight: get_weight($weights_map, $weight);
+        src: url('#{$basePath}/#{$font}/#{$weight}-italic.#{$format}');
+      }
+    }
+  }
+}
+
+@include font(Chinacyr, (regular), false, woff);
+@include font(Roboto, (regular), false, woff);
+

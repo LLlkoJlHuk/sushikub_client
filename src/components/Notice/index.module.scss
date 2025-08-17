@@ -1,0 +1,44 @@
+@use '../../assets/css/variables.scss' as *;
+
+.notice {
+	margin: 0 0 12px;
+	padding: 16px;
+	width: 100%;
+
+	display: flex;
+	justify-content: start;
+	align-items: center;
+	gap: 12px;
+
+	background-color: $white;
+	border-radius: 8px;
+	box-shadow: 10px 10px 15px 10px rgba(0, 0, 0, 0.3);
+
+	img {
+		width: 20px;
+		height: 20px;
+	}
+
+	p {
+		text-align: left;
+		color: $dark;
+		font-size: $fz-default;
+		font-weight: 400;
+	}
+
+	span {
+		font-weight: 700;
+	}
+	
+	&__info {
+		border-top: 4px solid #3871bb;
+	}
+
+	&__error {
+		border-top: 4px solid $red;
+	}
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}

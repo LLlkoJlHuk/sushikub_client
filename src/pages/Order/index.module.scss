@@ -1,0 +1,102 @@
+@use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
+
+.order-page {
+  user-select: none;
+
+  .section-order {
+		@include bigTablet {
+			margin-top: 100px;
+		}
+
+		@include tablet {
+			margin-top: 90px;
+		}
+	}
+  
+  .container {
+    width: 100%;
+    max-width: 1200px;
+  }
+
+  .section-notice {
+    margin-top: 48px;
+
+    >div {
+      margin: 0 20%;
+    }
+  }
+
+  .order-container {
+    margin-top: 48px;
+
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    gap: 48px;
+
+    .order-form {
+      width: 100%;
+      max-width: 500px;
+    }
+
+    .order-cart {
+      width: 100%;
+      max-width: 400px;
+    } 
+  }
+
+  .empty-state {
+    margin: 48px 0 0;
+    text-align: center;
+    color: $white;
+    font-size: $fz-default;
+    font-weight: 400;
+
+    @include bigPhone {
+      font-size: $fz-default - 2px;
+    }
+  }
+
+  .order-buttons {
+    margin: 48px 0 0;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    .order-return {
+      padding: 12px 36px;
+      color: rgba($color: $white, $alpha: .6);
+      font-size: $fz-default;
+      font-weight: 600;
+
+      background: rgba($color: $gray, $alpha: .2);
+
+      &:hover {
+        background: rgba($color: $gray, $alpha: .15);
+      }
+
+      @include bigPhone {
+        font-size: $fz-default - 2px;
+      }
+    }
+
+    .order-button {
+      padding: 12px 36px;
+      font-size: $fz-default;
+      font-weight: 600;
+
+      @include bigPhone {
+        font-size: $fz-default - 2px;
+      }
+    }
+  }
+
+  .order-empty {
+    justify-content: center;
+  }
+
+
+}

@@ -1,0 +1,171 @@
+@use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
+
+.menu-card {
+	cursor: pointer;
+
+	width: 100%;
+	max-width: 300px;
+	height: auto;
+	min-height: 200px;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	align-content: center;
+	flex-wrap: wrap;
+
+	border-radius: 16px;
+	background: url('/src/assets/images/bg.webp') center center no-repeat;
+	background-size: cover;
+
+	box-shadow: 10px 10px 20px 3px rgba(0, 0, 0, 0.3);
+
+	@include smallTablet {
+		width: calc(50% - 12px);
+	}
+
+	@include tablet {
+		width: calc(50% - 18px);
+		max-width: none;
+
+		min-height: 160px;
+	}
+
+	@include bigPhone {
+		min-height: 140px;
+	}
+
+	&__img {
+		width: 100%;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		img {
+			width: 140px;
+
+			@include tablet {
+				width: 120px;
+			}
+
+			@include smallTablet {
+				width: 100px;
+			}
+
+			@include bigPhone {
+				width: 80px;
+			}
+		}
+	}
+
+	&__name {
+		margin-top: 16px;
+
+		width: 100%;
+
+		text-align: center;
+		color: $white;
+		font-size: $fz-default;
+		font-weight: 700;
+
+		@include smallTablet {
+			font-size: $fz-default - 1px;
+		}
+	}
+
+	&--6, &--11 {
+		.menu-card__img {
+			img {
+				width: 210px;
+			}
+
+			@include tablet {
+				img {
+					width: 180px;
+				}
+			}
+
+			@include smallTablet {
+				img {
+					width: 150px;
+				}
+			}
+
+			@include bigPhone {
+				img {
+					width: 120px;
+				}
+			}
+		}
+
+		.menu-card__name {
+			margin-top: 12px;
+		}
+	}
+
+	&--7, &--10 {
+		.menu-card__img {
+			img {
+				width: 150px;
+			}
+
+			@include tablet {
+				img {
+					width: 130px;
+				}
+			}
+
+			@include smallTablet {
+				img {
+					width: 120px;
+				}
+			}
+
+			@include bigPhone {
+				img {
+					width: 100px;
+				}
+			}
+		}
+
+		.menu-card__name {
+			margin-top: 12px;
+		}
+	}
+
+	&--8, &--9 {
+		.menu-card__img {
+			img {
+				width: 180px;
+			}
+
+			@include tablet {
+				img {
+					width: 150px;
+				}
+			}
+
+			@include smallTablet {
+				img {
+					width: 130px;
+				}
+			}
+
+			@include bigPhone {
+				img {
+					width: 110px;
+				}
+			}
+		}
+
+		.menu-card__name {
+			margin-top: 12px;
+		}
+	}
+
+	&:hover {
+		transform: scale(0.98) translateY(2px);
+	}
+}

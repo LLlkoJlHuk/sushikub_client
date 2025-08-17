@@ -1,0 +1,254 @@
+@use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
+
+.order-form {
+  width: 100%;
+  max-width: 500px;
+
+  &__title {
+    margin-bottom: 12px;
+    font-size: $fz-large - 2px;
+    font-weight: 600;
+  }
+
+  &__content {
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    flex-wrap: wrap;
+
+    input, textarea {
+      margin-top: 12px;
+      padding: 0 16px;
+      width: 100%;
+      height: 40px;
+
+      border-radius: 8px;
+      border: 1px solid rgba(21,21,24, .3);
+      background: #FFFFFF;
+      color: $dark;
+
+      &::placeholder {
+        color: $dark;
+        opacity: .7;
+      }
+
+      &:focus {
+        outline: none;
+      }
+
+      &.active {
+        border: 1px solid $white;
+      }
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+
+    textarea {
+      padding: 8px;
+      height: 100px;
+    }
+
+    // Стили для Dropdown
+    .dropdown {
+      margin-top: 12px;
+      width: 100%;
+    }
+
+    .delivery-fields, .pickup-fields {
+      width: 100%;
+    }
+
+    // Стили для сообщения об ошибке
+    .error-message {
+      margin-top: 4px;
+      color: #dc3545;
+      font-size: 12px;
+      line-height: 1.2;
+    }
+  }
+
+  &__switch {
+    margin: 24px 0 12px;
+  }
+
+  &__buttons {
+    margin-top: 24px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 24px;
+
+    @include smallTablet {
+      justify-content: center;
+      flex-wrap: wrap-reverse;
+      gap: 18px;
+    }
+
+    .order-button {
+      padding: 12px 24px;
+      font-size: $fz-small;
+      font-weight: 600;
+
+      @include smallTablet {
+        padding: 18px 24px;
+        width: 100%;
+
+        font-size: $fz-default;
+      }
+    }
+
+    .return-button {
+      padding: 12px 24px;
+      color: rgba($color: $white, $alpha: .6);
+      font-size: $fz-small;
+      font-weight: 600;
+
+      background: rgba($color: $gray, $alpha: .2);
+
+      &:hover {
+        background: rgba($color: $gray, $alpha: .15);
+      }
+
+      @include smallTablet {
+        padding: 16px 24px;
+        width: 100%;
+
+        text-align: center;
+      }
+    }
+  }
+}
+
+.couples {
+  margin-top: 12px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  input {
+    margin: 0;
+    width: 48%;
+  }
+}
+
+.delivery-time-container {
+  position: relative;
+  width: 100%;
+}
+
+.delivery-time-picker {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 1000;
+  margin-top: 8px;
+
+  &.position-top {
+    top: auto;
+    bottom: 100%;
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+
+  &.position-right {
+    top: 0 !important;
+    left: 100% !important;
+    right: auto !important;
+    margin-top: 24px !important;
+    margin-left: 16px !important;
+  }
+}
+
+// На мобильных устройствах пикер всегда отображается снизу или сверху
+@include tablet {
+  .delivery-time-picker {
+    &.position-right {
+      top: 100% !important;
+      left: 0 !important;
+      right: 0 !important;
+      margin-top: 8px !important;
+      margin-left: 0 !important;
+    }
+  }
+}
+
+.selected-time {
+  display: block;
+  margin-top: 4px;
+  font-size: $fz-small;
+  color: $white;
+  opacity: 0.8;
+  font-weight: 400;
+  transition: opacity 0.2s ease;
+  
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// Анимация для полей доставки
+.delivery-fields {
+  &-enter {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 300px;
+    transition: all 0.3s ease;
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 300px;
+  }
+
+  &-exit-active {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+}
+
+// Анимация для полей самовывоза
+.pickup-fields {
+  &-enter {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+  }
+
+  &-enter-active {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 100px;
+    transition: all 0.3s ease;
+  }
+
+  &-exit {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 100px;
+  }
+
+  &-exit-active {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+} 

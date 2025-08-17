@@ -1,0 +1,77 @@
+@use '../../assets/css/variables.scss' as *;
+
+.auth {
+	width: 100%;
+	height: 100%;
+	min-height: 100vh;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	background-color: $dark;
+
+	&__content {
+		padding: 24px;
+
+		width: 100%;
+		max-width: 400px;
+		height: auto;
+
+		background-color: $white;
+		border-radius: 16px;
+		box-shadow: 10px 10px 20px 3px rgba(0, 0, 0, 0.3);
+
+		>div {
+			width: 100%;
+			margin-bottom: 12px;
+	
+			&:last-child {
+				margin-bottom: 0;
+			}
+		}
+	}
+
+	&__input {
+		padding: 16px;
+		margin-bottom: 16px;
+
+		width: 100%;
+		height: auto;
+
+		border-radius: 8px;
+		border: 1px solid $gray;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	&__buttons {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+	}
+
+	&__remember {
+		display: flex;
+		justify-content: start;
+		align-items: center;
+
+		>div {
+			width: auto;
+		}
+
+		label {
+			cursor: pointer;
+			user-select: none;
+			margin-left: 4px;
+			font-size: $fz-small;
+			color: $dark;
+		}
+
+		input {
+			cursor: pointer;
+		}
+	}
+}

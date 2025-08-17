@@ -1,0 +1,74 @@
+@use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
+
+.category-page {
+	.section-notice {
+		margin-top: 48px;
+	}
+
+	.section-products {
+		@include bigTablet {
+			margin-top: 100px;
+		}
+
+		@include tablet {
+			margin-top: 90px;
+		}
+	}
+
+	.products {
+		margin-top: 64px;
+
+		width: 100%;
+		height: auto;
+
+		display: flex;
+		justify-content: center;
+		align-content: flex-start;
+		flex-wrap: wrap;
+		gap: 60px 40px;
+
+		@include laptop {
+			gap: 40px 30px;
+		}
+
+		@include bigTablet {
+			margin-top: 48px;
+		}
+
+		@include tablet {
+			margin-top: 24px;
+			gap: 0;
+		}
+
+		@include bigPhone {
+			margin-top: 0;
+		}
+	}
+
+	.empty-state {
+		margin-top: 64px;
+
+		width: 100%;
+		height: auto;
+
+		p {
+			text-align: center;
+			color: $gray;
+			font-size: $fz-default;
+			font-weight: 400;
+		}
+	}
+
+	.error-message {
+		margin-top: 64px;
+
+		width: 100%;
+		height: auto;
+
+		text-align: center;
+		color: $white;
+		font-size: $fz-default;
+		font-weight: 400;
+	}
+}

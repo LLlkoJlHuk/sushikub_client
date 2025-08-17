@@ -1,0 +1,298 @@
+@use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
+
+.basket-page {
+  .container {
+    width: 100%;
+    max-width: 1200px;
+  }
+
+	.section-basket {
+		@include bigTablet {
+			margin-top: 100px;
+		}
+
+		@include tablet {
+			margin-top: 90px;
+		}
+	}
+
+	.basket-list, .persons {
+		margin-top: 48px;
+
+		@include bigTablet {
+			margin-top: 24px;
+		}
+
+		@include tablet {
+			margin-top: 24px;
+		}
+
+    .basket-item {
+      position: relative;
+      padding: 24px; 
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      border-bottom: 1px solid rgba($color: $gray, $alpha: .2);
+      transition: all 0.3s ease;
+
+      &:hover {
+        background-color: rgba($color: $gray, $alpha: .02);
+      }
+
+      @include bigTablet {
+        flex-wrap: wrap;
+        gap: 24px;
+      }
+
+      @include tablet {
+        padding: 18px 12px;
+        gap: 18px;
+      }
+
+      &__wrapper {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+
+        &:first-child {
+          user-select: none;
+          cursor: pointer;
+          gap: 48px;
+
+          @include bigTablet {
+            gap: 24px;
+            justify-content: start;
+          }
+        }
+
+        @include bigTablet {
+          width: 100%;
+        }
+      }
+
+      &__image {
+        width: 120px;
+        height: auto;
+
+        img {
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      &__name {
+        display: -webkit-box;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient: vertical;
+        line-clamp: 1;
+        box-orient: vertical;
+        text-overflow: ellipsis;
+        overflow: hidden;
+
+        width: 300px;
+
+        color: $white;
+        font-size: $fz-default + 2px;
+        font-weight: 600;
+
+        @include bigTablet {
+          display: block;
+          width: auto;
+          font-size: $fz-default;
+        }
+      }
+
+      &__counter {
+        width: 150px;
+
+        @include bigTablet {
+          width: 120px;
+          display: flex;
+          justify-content: center;
+        }
+      }
+
+      &__price {
+        user-select: none;
+        width: 150px;
+
+        text-align: center;
+        color: $white;
+        font-size: $fz-large - 4px;
+        font-weight: 600;
+
+        @include bigTablet {
+          text-align: right;
+          font-size: $fz-default + 2px;
+        }
+      }
+
+      &__remove {
+        user-select: none;
+        position: relative;
+        width: 50px;
+        height: 12px;
+
+        @include bigTablet {
+          position: absolute;
+          top: 24px;
+          right: 16px;
+        }
+
+        img {
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+
+          cursor: pointer;
+          width: 12px;
+          height: auto;
+
+          opacity: 0.5;
+          transition: all 0.3s ease;
+
+          &:hover {
+            opacity: 1;
+          }
+        }
+      }
+    }
+	}
+
+  .persons {
+    margin-top: 0;
+
+    .basket-item {
+
+      @include bigTablet {
+        padding: 24px 12px;
+      }
+
+      &__name {
+        user-select: none;
+        display: block;
+
+        @include bigTablet {
+          width: 100%;
+        }
+
+        span {
+          color: $gray;
+          font-size: $fz-small;
+          font-weight: 400;
+        }
+      }
+
+      &:first-child {
+        border-top: none;
+      }
+    }
+  }
+
+  .restore-container {
+    margin: 24px 0 0 ;
+    padding: 16px;
+
+    text-align: right;
+    color: $white;
+    font-size: $fz-small;
+    font-weight: 400;
+
+    border-radius: 8px;
+
+    span {
+      cursor: pointer;
+      color: #3871bb;
+      font-size: $fz-small;
+      font-weight: 400;
+    }
+
+    @include smallTablet {
+      margin-top: 12px;
+
+      text-align: center;
+    }
+  }
+
+  .basket-buttons {
+    margin: 48px 0 0;
+    
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+
+    @include smallTablet {
+      justify-content: center;
+    }
+
+    .basket-return {
+      padding: 12px 36px;
+      color: rgba($color: $white, $alpha: .6);
+      font-size: $fz-default;
+      font-weight: 600;
+
+      background: rgba($color: $gray, $alpha: .2);
+
+      &:hover {
+        background: rgba($color: $gray, $alpha: .15);
+      }
+
+      @include smallTablet {
+        display: none;
+      }
+    }
+
+    .basket-order {
+      padding: 12px 36px;
+      font-size: $fz-default;
+      font-weight: 600;
+    }
+  }
+
+  .basket-total {
+    margin: 48px 0 0;
+
+    text-align: right;
+    color: $white;
+    font-size: $fz-large;
+    font-weight: 600;
+
+    @include smallTablet {
+      margin-top: 32px;
+      text-align: center;
+    }
+
+    @include bigPhone {
+      font-size: $fz-large - 2px;
+    }
+
+    span {
+      color: rgba($color: $white, $alpha: .6);
+      font-size: $fz-small;
+      font-weight: 300;
+
+      @include bigPhone {
+        font-size: $fz-small - 2px;
+      }
+    }
+  }
+
+  .empty-state {
+    margin: 48px 0 0;
+    text-align: center;
+    color: $white;
+    font-size: $fz-default;
+    font-weight: 400;
+  }
+
+  .basket-empty {
+    justify-content: center;
+  }
+}

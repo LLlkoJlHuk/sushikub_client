@@ -1,0 +1,136 @@
+@use '../../assets/css/variables.scss' as *;
+
+.dropdown {
+  position: relative;
+  width: 100%;
+
+  &.order-form {
+    &.open {
+      .dropdownHeader {
+        border-radius: 8px 8px 0 0;
+      }
+    }
+
+    .dropdownHeader {
+      margin-top: 12px;
+      padding: 4px 16px; 
+      
+      width: 100%;
+      height: 40px;
+      
+      color: $dark;
+
+      background: #FFFFFF;
+      border: 1px solid rgba(21, 21, 24, 0.3);
+      border-radius: 8px;
+    }
+
+    .dropdownItem {
+      width: 100%;
+      height: 40px;
+
+      display: flex;
+      justify-content: start;
+      align-items: center;
+
+      background: #FFFFFF;
+
+      &:hover {
+        color: $dark;
+        background: rgba(21, 21, 24, 0.01);
+      }
+    }
+  }
+}
+
+.dropdownHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 4px 16px;
+  border: 1px solid rgba(21,21,24, .3);
+  border-radius: 8px;
+  background-color: #FFFFFF;
+  cursor: pointer;
+  transition: all 0.2s ease;
+
+  &:hover {
+    border: 1px solid rgba(21,21,24, .3);
+  }
+
+  &:focus {
+    outline: none;
+    border: 1px solid rgba(21,21,24, .3);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+  }
+}
+
+.dropdownValue {
+  color: $dark;
+  font-size: 14px;
+  flex: 1;
+}
+
+.dropdownArrow {
+	margin-left: 8px;
+
+	width: 5px;
+	height: auto;
+	
+	transition: transform 0.2s ease;
+	transform: rotate(90deg);
+
+  &.open {
+    transform: rotate(270deg);
+  }
+
+  img {
+	width: 100%;
+	filter: invert(1);
+  }
+}
+
+.dropdownList {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: $white;
+  border: 1px solid rgba(21,21,24, .3);
+  border-top: none;
+  border-radius: 0 0 8px 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  z-index: 1000;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.dropdownItem {
+  padding: 4px 16px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  font-size: 14px;
+  color: $dark;
+
+  &:hover {
+    background-color: #f8f9fa;
+  }
+
+  &.selected {
+    background-color: #f8f9fa;
+    color: $dark;
+    font-weight: 500;
+  }
+
+  &:last-child {
+    border-radius: 0 0 7px 7px;
+  }
+}
+
+.disabled {
+  .dropdownHeader {
+    background-color: #f5f5f5;
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+}

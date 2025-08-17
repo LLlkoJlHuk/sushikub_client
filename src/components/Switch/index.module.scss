@@ -1,0 +1,109 @@
+@use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
+
+.switch__container {
+	width: 100%;
+
+	display: flex;
+	justify-content: center;
+	align-items: center;
+
+	.switch {
+		cursor: pointer;
+		
+		position: relative;
+		width: 100%;
+		height: 100px;
+		
+		background: rgba($color: $gray, $alpha: .1);
+		border-radius: 18px;
+
+		transition: background-color 0.3s ease;
+
+		&__button {
+			z-index: 1;
+			position: absolute;
+			top: 50%;
+			left: 3px;
+
+			width: calc(50% - 3px);
+			height: calc(100% - 6px);
+
+			background-color: $dark;
+			border-radius: 16px;
+
+			transition: left 0.3s ease;
+			transform: translateY(-50%);
+		}
+		
+		&__text {
+			z-index: 2;
+			position: relative;
+
+			width: 100%;
+			height: 100%;
+
+			display: flex;
+			justify-content: space-around;
+			align-items: center;
+		
+			&__option {
+				padding: 0 10px;
+
+				width: 50%;
+				height: 100%;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		
+			&__wrapper {
+				display: flex;
+				justify-content: center;
+				flex-wrap: wrap;
+				gap: 3px;
+
+				text-align: center;
+				color: rgba($color: $white, $alpha: .4);
+				font-weight: 500;
+
+				transition: color 0.3s ease;
+
+				@include bigPhone {
+					font-size: $fz-default - 2px;
+				  }
+			
+				span {
+					font-family: $ff-currency;
+					font-size: $fz-small - 2px;
+					font-weight: 400;
+					color: rgba($color: $gray, $alpha: .4);
+
+					@include bigPhone {
+						font-size: $fz-small - 3px;
+					}
+				}
+			}
+		
+			&__active {
+
+				.switch__text__wrapper {
+					color: $white;
+				}
+
+				span {
+					color: $gray;
+				}
+			}
+		}
+	
+		&.switch__on {
+			.switch__button {
+				left: 50%;
+			}
+		}
+	}
+}
+
+
