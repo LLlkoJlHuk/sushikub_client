@@ -7,21 +7,22 @@ const App = observer(() => {
   const { products, banners } = useContext(Context)
 
   useEffect(() => {
-    // Инициализируем данные при загрузке приложения
-    const initData = async () => {
-      try {
-        await Promise.all([
-          products.initializeData(),
-          banners.fetchBanners()
-          // Настройки уже загружены в main.jsx при создании store
-        ])
-      } catch (error) {
-        console.error('Error initializing data:', error)
+    // Загружаем только если еще не инициализировано
+    if (!products.initialized) {
+      const initData = async () => {
+        try {
+          await Promise.all([
+            products.initializeData(),
+            banners.fetchBanners()
+            // Настройки уже загружены в main.jsx при создании store
+          ])
+        } catch (error) {
+          console.error('Error initializing data:', error)
+        }
       }
+      initData()
     }
-    
-    initData()
-  }, [products, banners])
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   return <AppRouter />
 })

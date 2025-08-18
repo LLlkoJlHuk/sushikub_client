@@ -22,17 +22,34 @@ const CategoryPage = () => {
 
 	// Эффект для ожидания загрузки категорий
 	useEffect(() => {
+		console.log('CategoryPage render:', {
+			initialized: products.initialized,
+			categoriesLength: products.categories.length,
+			categoriesLoading: products.categoriesLoading,
+			waitingForCategories
+		})
+
 		if (products.initialized || products.categories.length > 0) {
+			// Данные уже есть - сразу показываем
 			setWaitingForCategories(false)
-		} else {
-			// Таймаут для случаев, когда загрузка может занимать время
+		} else if (!products.categoriesLoading) {
+			// Данных нет и загрузка не идет - запускаем загрузку принудительно
+			products.fetchCategories()
+			
 			const timeout = setTimeout(() => {
 				setWaitingForCategories(false)
-			}, 3000) // Ждем максимум 3 секунды
+			}, 500) // Уменьшаем таймаут до .5 секунд
+			
+			return () => clearTimeout(timeout)
+		} else {
+			// Загрузка идет - даем больше времени, но не слишком много
+			const timeout = setTimeout(() => {
+				setWaitingForCategories(false)
+			}, 3000) // 3 секунд для медленного интернета
 			
 			return () => clearTimeout(timeout)
 		}
-	}, [products.initialized, products.categories.length])
+	}, [products.initialized, products.categories.length, products.categoriesLoading, products, waitingForCategories])
 
 	useEffect(() => {
 		// Настройки уже загружены в App.jsx при старте приложения
@@ -42,7 +59,7 @@ const CategoryPage = () => {
 		setSettingsData({ 
 			globalMessage: globalMessage
 		})
-	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings.settingsObject, settings]) // Реагируем на изменения в настройках
 
 	const { globalMessage } = settingsData
 
