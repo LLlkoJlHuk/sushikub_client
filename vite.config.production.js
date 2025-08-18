@@ -6,7 +6,7 @@ import { defineConfig } from 'vite'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
-  base: './',
+  base: '/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
@@ -36,9 +36,7 @@ export default defineConfig({
   css: {
     devSourcemap: false,
     preprocessorOptions: {
-      scss: {
-        additionalData: `@import "@/assets/css/mixins.scss";`
-      }
+      scss: {}
     }
   },
   define: {
