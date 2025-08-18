@@ -17,7 +17,7 @@ jobs:
         env:
           ID_RSA: ${{ secrets.ID_RSA }} 
       - run: chmod 600 "$HOME/.ssh/id_rsa"
-      # Build
+      # Build 
       - run: npm ci
       - run: npm run build
       # Deploy
