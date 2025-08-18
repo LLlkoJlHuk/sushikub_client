@@ -15,7 +15,7 @@ jobs:
       - run: mkdir "$HOME/.ssh"
       - run: echo "$ID_RSA" > "$HOME/.ssh/id_rsa"
         env:
-          ID_RSA: ${{ secrets.ID_RSA }}
+          ID_RSA: ${{ secrets.ID_RSA }} 
       - run: chmod 600 "$HOME/.ssh/id_rsa"
       # Build
       - run: npm ci
