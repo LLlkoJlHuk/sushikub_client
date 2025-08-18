@@ -20,51 +20,53 @@ const CategoryPage = () => {
 		globalMessage: ''
 	})
 
-	// Эффект для мониторинга состояния данных - моментально реагирует на появление категорий
+	// Единый эффект для управления состоянием загрузки категорий
 	useEffect(() => {
 		const timestamp = new Date().toISOString()
-		console.log(`📄 CategoryPage data check at ${timestamp}:`, {
+		console.log(`📄 CategoryPage state check at ${timestamp}:`, {
 			initialized: products.initialized,
 			categoriesLength: products.categories.length,
 			categoriesLoading: products.categoriesLoading,
 			waitingForCategories
 		})
 
+		// ПРИОРИТЕТ 1: Если данные есть - моментально показываем
 		if (products.initialized || products.categories.length > 0) {
-			// Данные есть - моментально показываем
 			console.log('✅ CategoryPage: Data available, showing immediately')
 			setWaitingForCategories(false)
+			return // Выходим, не устанавливаем таймауты
 		}
-	}, [products.initialized, products.categories.length, products.categoriesLoading, waitingForCategories])
 
-	// Эффект для запуска загрузки если данных нет
-	useEffect(() => {
-		if (!products.initialized && products.categories.length === 0 && !products.categoriesLoading && waitingForCategories) {
-			// Данных нет и загрузка не идет - запускаем загрузку принудительно
-			console.log('🔄 CategoryPage: No data and not loading, forcing fetch')
-			const fetchStart = performance.now()
-			
-			products.fetchCategories().then(() => {
-				const fetchEnd = performance.now()
-				console.log(`⚡ CategoryPage fetch completed in ${(fetchEnd - fetchStart).toFixed(2)}ms`)
-			}).catch(error => {
-				console.error('❌ CategoryPage fetch failed:', error)
-			})
-		}
-	}, [products.initialized, products.categories.length, products.categoriesLoading, waitingForCategories, products])
+		// ПРИОРИТЕТ 2: Если ждем загрузки, но данных нет
+		if (waitingForCategories) {
+			// Если загрузка не идет - запускаем принудительно
+			if (!products.categoriesLoading) {
+				console.log('🔄 CategoryPage: No data and not loading, forcing fetch')
+				const fetchStart = performance.now()
+				
+				products.fetchCategories().then(() => {
+					const fetchEnd = performance.now()
+					console.log(`⚡ CategoryPage fetch completed in ${(fetchEnd - fetchStart).toFixed(2)}ms`)
+					// setWaitingForCategories(false) будет вызван когда данные появятся
+				}).catch(error => {
+					console.error('❌ CategoryPage fetch failed:', error)
+					setWaitingForCategories(false) // Прекращаем ожидание при ошибке
+				})
+			}
 
-	// Эффект для таймаута как fallback
-	useEffect(() => {
-		if (waitingForCategories && !products.initialized && products.categories.length === 0) {
-			console.log('⏰ CategoryPage: Setting fallback timeout')
+			// Устанавливаем fallback timeout только если еще ждем
+			console.log('⏰ CategoryPage: Setting fallback timeout (2s)')
 			const timeout = setTimeout(() => {
 				console.log('⏰ CategoryPage: Fallback timeout reached, stopping wait')
 				setWaitingForCategories(false)
-			}, 2000) // 2 секунды fallback
+			}, 2000)
 			
-			return () => clearTimeout(timeout)
+			return () => {
+				console.log('🔄 CategoryPage: Cleaning up timeout')
+				clearTimeout(timeout)
+			}
 		}
-	}, [waitingForCategories, products.initialized, products.categories.length])
+	}, [products.initialized, products.categories.length, products.categoriesLoading, waitingForCategories, products])
 
 	useEffect(() => {
 		// Настройки уже загружены в App.jsx при старте приложения
