@@ -42,7 +42,7 @@ const CategoryPage = () => {
 
 
 
-	if (loading || products.categoriesLoading) {
+	if (products.categoriesLoading || products.categories.length === 0) {
 		return <Loading />
 	}
 
@@ -77,8 +77,8 @@ const CategoryPage = () => {
 						<div className={styles['error-message']}>{error}</div>
 					)}
 
-					{/* Категория не найдена */}
-					{!products.categoriesLoading && !category && (
+					{/* Категория не найдена - показываем только если категории загружены */}
+					{!products.categoriesLoading && products.categories.length > 0 && !category && (
 						<div className={styles['category-page']}>
 
 							{/* Секция с ошибкой (категория не найдена) */}
@@ -99,7 +99,9 @@ const CategoryPage = () => {
 							</div>
 
 							{/* Список продуктов */}
-							{categoryProducts.length > 0 ? (
+							{loading ? (
+								<Loading />
+							) : categoryProducts.length > 0 ? (
 								<div className={styles['products']}>
 									{categoryProducts.map(product => (
 										<ProductCard 
