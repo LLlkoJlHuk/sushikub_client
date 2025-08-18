@@ -66,15 +66,30 @@ export default class ProductStore {
 
 	// Actions для работы с API
 	async fetchCategories() {
-		if (this._categoriesLoading) return // Предотвращаем множественные запросы
+		// Если запрос уже идет, ждем его завершения
+		if (this._categoriesLoading) {
+			console.log('⏳ Categories already loading, waiting...')
+			// Ждем завершения текущего запроса
+			while (this._categoriesLoading) {
+				await new Promise(resolve => setTimeout(resolve, 50))
+			}
+			return
+		}
+		
+		const startTime = performance.now()
+		console.log('🚀 Starting categories fetch at', new Date().toISOString())
 		
 		try {
 			this._categoriesLoading = true
 			this.setError(null)
 			const categories = await productApi.getCategories()
 			this.setCategories(categories)
+			
+			const endTime = performance.now()
+			console.log(`✅ Categories loaded in ${(endTime - startTime).toFixed(2)}ms, count: ${categories.length}`)
 		} catch (error) {
-			console.error('Error fetching categories:', error)
+			const endTime = performance.now()
+			console.error(`❌ Categories fetch failed in ${(endTime - startTime).toFixed(2)}ms:`, error)
 			
 			// Специальная обработка ошибок авторизации
 			if (error.response?.status === 401) {
@@ -322,18 +337,31 @@ export default class ProductStore {
 	async initializeData() {
 		// Проверяем, не инициализированы ли уже данные
 		if (this._initialized) {
+			console.log('🔄 ProductStore: Already initialized, skipping')
 			return
 		}
 		
+		console.log('🏁 ProductStore: Starting data initialization')
+		const initStart = performance.now()
+		
 		try {
+			// Загружаем категории первыми - они критически важны для навигации
+			console.log('📋 ProductStore: Loading categories first...')
+			await this.fetchCategories()
+			
+			// Остальные данные загружаем параллельно
+			console.log('📦 ProductStore: Loading types and products in parallel...')
 			await Promise.all([
-				this.fetchCategories(),
 				this.fetchTypes(),
 				this.fetchProducts()
 			])
+			
 			this._initialized = true
+			const initEnd = performance.now()
+			console.log(`🎯 ProductStore: Initialization completed in ${(initEnd - initStart).toFixed(2)}ms`)
 		} catch (error) {
-			console.error('Error initializing data:', error)
+			const initEnd = performance.now()
+			console.error(`💥 ProductStore: Initialization failed in ${(initEnd - initStart).toFixed(2)}ms:`, error)
 			// Не устанавливаем initialized = true при ошибке
 		}
 	}

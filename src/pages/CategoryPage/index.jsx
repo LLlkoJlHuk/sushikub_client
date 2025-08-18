@@ -22,7 +22,8 @@ const CategoryPage = () => {
 
 	// Эффект для ожидания загрузки категорий
 	useEffect(() => {
-		console.log('CategoryPage render:', {
+		const timestamp = new Date().toISOString()
+		console.log(`📄 CategoryPage render at ${timestamp}:`, {
 			initialized: products.initialized,
 			categoriesLength: products.categories.length,
 			categoriesLoading: products.categoriesLoading,
@@ -31,19 +32,31 @@ const CategoryPage = () => {
 
 		if (products.initialized || products.categories.length > 0) {
 			// Данные уже есть - сразу показываем
+			console.log('✅ CategoryPage: Data already available, showing immediately')
 			setWaitingForCategories(false)
 		} else if (!products.categoriesLoading) {
 			// Данных нет и загрузка не идет - запускаем загрузку принудительно
-			products.fetchCategories()
+			console.log('🔄 CategoryPage: No data and not loading, forcing fetch')
+			const fetchStart = performance.now()
+			
+			products.fetchCategories().then(() => {
+				const fetchEnd = performance.now()
+				console.log(`⚡ CategoryPage fetch completed in ${(fetchEnd - fetchStart).toFixed(2)}ms`)
+			}).catch(error => {
+				console.error('❌ CategoryPage fetch failed:', error)
+			})
 			
 			const timeout = setTimeout(() => {
+				console.log('⏰ CategoryPage: Short timeout reached (500ms), stopping wait')
 				setWaitingForCategories(false)
 			}, 500) // Уменьшаем таймаут до .5 секунд
 			
 			return () => clearTimeout(timeout)
 		} else {
 			// Загрузка идет - даем больше времени, но не слишком много
+			console.log('⏳ CategoryPage: Loading in progress, waiting...')
 			const timeout = setTimeout(() => {
+				console.log('⏰ CategoryPage: Long timeout reached (3s), stopping wait')
 				setWaitingForCategories(false)
 			}, 3000) // 3 секунд для медленного интернета
 			
