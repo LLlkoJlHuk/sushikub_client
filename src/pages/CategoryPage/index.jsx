@@ -20,10 +20,10 @@ const CategoryPage = () => {
 		globalMessage: ''
 	})
 
-	// Эффект для ожидания загрузки категорий
+	// Эффект для мониторинга состояния данных - моментально реагирует на появление категорий
 	useEffect(() => {
 		const timestamp = new Date().toISOString()
-		console.log(`📄 CategoryPage render at ${timestamp}:`, {
+		console.log(`📄 CategoryPage data check at ${timestamp}:`, {
 			initialized: products.initialized,
 			categoriesLength: products.categories.length,
 			categoriesLoading: products.categoriesLoading,
@@ -31,10 +31,15 @@ const CategoryPage = () => {
 		})
 
 		if (products.initialized || products.categories.length > 0) {
-			// Данные уже есть - сразу показываем
-			console.log('✅ CategoryPage: Data already available, showing immediately')
+			// Данные есть - моментально показываем
+			console.log('✅ CategoryPage: Data available, showing immediately')
 			setWaitingForCategories(false)
-		} else if (!products.categoriesLoading) {
+		}
+	}, [products.initialized, products.categories.length, products.categoriesLoading, waitingForCategories])
+
+	// Эффект для запуска загрузки если данных нет
+	useEffect(() => {
+		if (!products.initialized && products.categories.length === 0 && !products.categoriesLoading && waitingForCategories) {
 			// Данных нет и загрузка не идет - запускаем загрузку принудительно
 			console.log('🔄 CategoryPage: No data and not loading, forcing fetch')
 			const fetchStart = performance.now()
@@ -45,24 +50,21 @@ const CategoryPage = () => {
 			}).catch(error => {
 				console.error('❌ CategoryPage fetch failed:', error)
 			})
-			
+		}
+	}, [products.initialized, products.categories.length, products.categoriesLoading, waitingForCategories, products])
+
+	// Эффект для таймаута как fallback
+	useEffect(() => {
+		if (waitingForCategories && !products.initialized && products.categories.length === 0) {
+			console.log('⏰ CategoryPage: Setting fallback timeout')
 			const timeout = setTimeout(() => {
-				console.log('⏰ CategoryPage: Short timeout reached (500ms), stopping wait')
+				console.log('⏰ CategoryPage: Fallback timeout reached, stopping wait')
 				setWaitingForCategories(false)
-			}, 500) // Уменьшаем таймаут до .5 секунд
-			
-			return () => clearTimeout(timeout)
-		} else {
-			// Загрузка идет - даем больше времени, но не слишком много
-			console.log('⏳ CategoryPage: Loading in progress, waiting...')
-			const timeout = setTimeout(() => {
-				console.log('⏰ CategoryPage: Long timeout reached (3s), stopping wait')
-				setWaitingForCategories(false)
-			}, 3000) // 3 секунд для медленного интернета
+			}, 2000) // 2 секунды fallback
 			
 			return () => clearTimeout(timeout)
 		}
-	}, [products.initialized, products.categories.length, products.categoriesLoading, products, waitingForCategories])
+	}, [waitingForCategories, products.initialized, products.categories.length])
 
 	useEffect(() => {
 		// Настройки уже загружены в App.jsx при старте приложения
