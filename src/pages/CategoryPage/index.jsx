@@ -42,8 +42,25 @@ const CategoryPage = () => {
 
 
 
-	if (products.categoriesLoading || products.categories.length === 0) {
+	// Показываем загрузку только если категории действительно загружаются
+	if (products.categoriesLoading) {
 		return <Loading />
+	}
+
+	// Если категории загружены, но их нет - показываем ошибку
+	if (!products.categoriesLoading && products.categories.length === 0) {
+		return (
+			<div className={`page ${styles['category-page']}`}>
+				<section className={`section section-with-header custom-bg border-bottom`}>
+					<Header />
+				</section>
+				<section className={`section ${styles['section-products']}`}>
+					<div className='container'>
+						<div className={styles['error-message']}>Не удалось загрузить категории</div>
+					</div>
+				</section>
+			</div>
+		)
 	}
 
 	return (

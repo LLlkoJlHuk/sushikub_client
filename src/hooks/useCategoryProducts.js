@@ -9,13 +9,17 @@ export const useCategoryProducts = (categoryId) => {
 	useEffect(() => {
 		const fetchCategoryProducts = async () => {
 			if (!categoryId) {
+				setProducts([])
 				setLoading(false)
+				setError(null)
 				return
 			}
 
 			try {
 				setLoading(true)
 				setError(null)
+				setProducts([]) // Очищаем предыдущие продукты
+				
 				const response = await productApi.getProducts({ categoryId: parseInt(categoryId) })
 				
 				// Фильтруем продукты по inStock === true и сортируем по алфавиту
@@ -26,6 +30,7 @@ export const useCategoryProducts = (categoryId) => {
 				setProducts(filteredAndSortedProducts)
 			} catch (err) {
 				setError('Ошибка при загрузке товаров категории')
+				setProducts([]) // Очищаем продукты при ошибке
 				console.error('Error fetching category products:', err)
 			} finally {
 				setLoading(false)
