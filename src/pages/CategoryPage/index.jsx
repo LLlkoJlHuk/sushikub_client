@@ -14,10 +14,25 @@ const CategoryPage = () => {
 	const { products, settings } = useContext(Context)
 	const { categoryId } = useParams()
 	const { products: categoryProducts, loading, error } = useCategoryProducts(categoryId)
+	const [waitingForCategories, setWaitingForCategories] = useState(true)
 
 	const [settingsData, setSettingsData] = useState({
 		globalMessage: ''
 	})
+
+	// Эффект для ожидания загрузки категорий
+	useEffect(() => {
+		if (products.initialized || products.categories.length > 0) {
+			setWaitingForCategories(false)
+		} else {
+			// Таймаут для случаев, когда загрузка может занимать время
+			const timeout = setTimeout(() => {
+				setWaitingForCategories(false)
+			}, 3000) // Ждем максимум 3 секунды
+			
+			return () => clearTimeout(timeout)
+		}
+	}, [products.initialized, products.categories.length])
 
 	useEffect(() => {
 		// Настройки уже загружены в App.jsx при старте приложения
@@ -42,13 +57,13 @@ const CategoryPage = () => {
 
 
 
-	// Показываем загрузку только если категории действительно загружаются
-	if (products.categoriesLoading) {
+	// Показываем загрузку если категории загружаются или ждем их инициализации
+	if (products.categoriesLoading || waitingForCategories) {
 		return <Loading />
 	}
 
-	// Если категории загружены, но их нет - показываем ошибку
-	if (!products.categoriesLoading && products.categories.length === 0) {
+	// Если завершили ожидание, но категории не загрузились - показываем ошибку
+	if (!waitingForCategories && !products.categoriesLoading && products.categories.length === 0) {
 		return (
 			<div className={`page ${styles['category-page']}`}>
 				<section className={`section section-with-header custom-bg border-bottom`}>
@@ -57,6 +72,15 @@ const CategoryPage = () => {
 				<section className={`section ${styles['section-products']}`}>
 					<div className='container'>
 						<div className={styles['error-message']}>Не удалось загрузить категории</div>
+						<button 
+							onClick={() => {
+								setWaitingForCategories(true)
+								products.fetchCategories()
+							}}
+							style={{marginTop: '10px', padding: '10px 20px', cursor: 'pointer'}}
+						>
+							Попробовать снова
+						</button>
 					</div>
 				</section>
 			</div>

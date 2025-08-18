@@ -7,6 +7,10 @@ export default class ProductStore {
 		this._categories = []
 		this._products = []
 		this._error = null
+		this._categoriesLoading = false
+		this._productsLoading = false
+		this._typesLoading = false
+		this._initialized = false
 		makeAutoObservable(this)
 	}
 
@@ -25,6 +29,22 @@ export default class ProductStore {
 
 	get error() {
 		return this._error
+	}
+
+	get categoriesLoading() {
+		return this._categoriesLoading
+	}
+
+	get productsLoading() {
+		return this._productsLoading
+	}
+
+	get typesLoading() {
+		return this._typesLoading
+	}
+
+	get initialized() {
+		return this._initialized
 	}
 
 	// Сеттеры
@@ -46,7 +66,10 @@ export default class ProductStore {
 
 	// Actions для работы с API
 	async fetchCategories() {
+		if (this._categoriesLoading) return // Предотвращаем множественные запросы
+		
 		try {
+			this._categoriesLoading = true
 			this.setError(null)
 			const categories = await productApi.getCategories()
 			this.setCategories(categories)
@@ -64,6 +87,8 @@ export default class ProductStore {
 			
 			// Устанавливаем пустой массив в случае ошибки
 			this.setCategories([])
+		} finally {
+			this._categoriesLoading = false
 		}
 	}
 
@@ -295,15 +320,21 @@ export default class ProductStore {
 
 	// Инициализация данных при загрузке приложения
 	async initializeData() {
-		// Проверяем, не загружены ли уже данные
-		if (this._categories.length > 0 && this._types.length > 0 && this._products.length > 0) {
+		// Проверяем, не инициализированы ли уже данные
+		if (this._initialized) {
 			return
 		}
 		
-		await Promise.all([
-			this.fetchCategories(),
-			this.fetchTypes(),
-			this.fetchProducts()
-		])
+		try {
+			await Promise.all([
+				this.fetchCategories(),
+				this.fetchTypes(),
+				this.fetchProducts()
+			])
+			this._initialized = true
+		} catch (error) {
+			console.error('Error initializing data:', error)
+			// Не устанавливаем initialized = true при ошибке
+		}
 	}
 }
