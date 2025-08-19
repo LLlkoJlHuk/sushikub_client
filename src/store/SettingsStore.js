@@ -152,9 +152,6 @@ export default class SettingsStore {
 			])
 		} catch (error) {
 			console.error('Error initializing settings:', error)
-			// Устанавливаем значения по умолчанию при ошибке
-			this.setSettings([])
-			this.setSettingsObject({})
 		}
 	}
 }

@@ -25,11 +25,6 @@ const App = observer(() => {
         } catch (error) {
           const initEnd = performance.now()
           console.error(`💥 App.jsx: Initialization failed in ${(initEnd - initStart).toFixed(2)}ms:`, error)
-          
-          // Показываем пользователю сообщение об ошибке, но не ломаем приложение
-          if (error.name !== 'AbortError' && !error.message.includes('chrome.runtime')) {
-            console.warn('Application will continue with limited functionality')
-          }
         }
       }
       initData()

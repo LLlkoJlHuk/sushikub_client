@@ -14,6 +14,7 @@ import { useWindowSize } from '../../hooks/useWindowSize'
 import { Context } from '../../main'
 import Button from '../Button'
 import Input from '../Input'
+import MobileMenu from '../MobileMenu'
 import styles from './index.module.scss'
 
 const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBack }) => {
@@ -26,6 +27,7 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 	const nodeRefBasket = useRef(null);
 	const nodeRefBasketSecondary = useRef(null);
 	const nodeRefPlug = useRef(null);
+	const nodeRefMobileMenu = useRef(null);
 	const { width } = useWindowSize();
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 
@@ -55,6 +57,14 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 			workingTimeEnd: workingTimeEnd
 		})
 	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+
+	useEffect(() => {
+		if (isMenuOpen) {
+			document.body.classList.add('modal-open')
+		} else {
+			document.body.classList.remove('modal-open')
+		}
+	}, [isMenuOpen])
 
 	const { phoneNumberCode, phoneNumber, phoneNumberFormatted, workingTimeStart, workingTimeEnd } = settingsData
 	
@@ -288,6 +298,24 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 						<div className={`${styles['line']} ${styles['line-third']}`}></div>
 					</div>
 				</div>
+
+				<CSSTransition
+					in={isMenuOpen}
+					timeout={500}
+					classNames='mobile-menu'
+					unmountOnExit
+					appear
+					nodeRef={nodeRefMobileMenu}
+				>
+					<MobileMenu 
+						sortedCategories={sortedCategories} 
+						loading={loading} 
+						phoneHref={phoneHref} 
+						workingTimeText={workingTimeText} 
+						phoneNumberFormatted={phoneNumberFormatted} 
+						ref={nodeRefMobileMenu}
+					/>	
+				</CSSTransition>
 			</div>
 		)}
 	</>

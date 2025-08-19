@@ -13,7 +13,7 @@
 	background-size: 100% auto;
 
 	&.scrolled {
-		z-index: 100;
+		z-index: 101;
 		position: fixed;
 		top: 0;
 		left: 0;
@@ -426,7 +426,7 @@
 .mobile-header {
 	padding: 0 3%;
 
-	z-index: 100;
+	z-index: 101;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -533,6 +533,7 @@
 		
 
 		.menu-icon {
+			z-index: 901;
 			position: relative;
 
             .line {

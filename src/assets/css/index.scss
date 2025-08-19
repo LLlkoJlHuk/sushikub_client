@@ -294,6 +294,28 @@ body{
   }
 }
 
+.mobile-menu {
+  position: relative;
+
+  &-enter {
+    transform: translateX(100%)
+  }
+
+  &-enter-active {
+    transform: translateX(0);
+    transition: all .5s ease;
+  }
+
+  &-exit {
+    transform: translateX(0);
+  }
+
+  &-exit-active {
+    transform: translateX(100%);
+    transition: all .5s ease;
+  }
+}
+
 // Анимация для полей доставки
 .delivery-fields {
   &-enter {
