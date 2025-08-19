@@ -23,17 +23,8 @@ const CategoryPage = () => {
 
 	// Единый эффект для управления состоянием загрузки категорий
 	useEffect(() => {
-		const timestamp = new Date().toISOString()
-		console.log(`📄 CategoryPage state check at ${timestamp}:`, {
-			initialized: products.initialized,
-			categoriesLength: products.categories.length,
-			categoriesLoading: products.categoriesLoading,
-			waitingForCategories
-		})
-
 		// ПРИОРИТЕТ 1: Если данные есть - моментально показываем
 		if (products.initialized || products.categories.length > 0) {
-			console.log('✅ CategoryPage: Data available, showing immediately')
 			setWaitingForCategories(false)
 			return // Выходим, не устанавливаем таймауты
 		}
@@ -42,29 +33,20 @@ const CategoryPage = () => {
 		if (waitingForCategories) {
 			// Очищаем предыдущий timeout если есть
 			if (timeoutRef.current) {
-				console.log('🔄 CategoryPage: Clearing previous timeout')
 				clearTimeout(timeoutRef.current)
 				timeoutRef.current = null
 			}
 
 			// Если загрузка не идет - запускаем принудительно
 			if (!products.categoriesLoading) {
-				console.log('🔄 CategoryPage: No data and not loading, forcing fetch')
-				const fetchStart = performance.now()
-				
 				products.fetchCategories().then(() => {
-					const fetchEnd = performance.now()
-					console.log(`⚡ CategoryPage fetch completed in ${(fetchEnd - fetchStart).toFixed(2)}ms`)
-					
 					// Моментально останавливаем ожидание и очищаем timeout
 					if (timeoutRef.current) {
-						console.log('🎯 CategoryPage: Data loaded, clearing timeout and stopping wait immediately')
 						clearTimeout(timeoutRef.current)
 						timeoutRef.current = null
 					}
 					setWaitingForCategories(false)
-				}).catch(error => {
-					console.error('❌ CategoryPage fetch failed:', error)
+				}).catch(() => {
 					if (timeoutRef.current) {
 						clearTimeout(timeoutRef.current)
 						timeoutRef.current = null
@@ -74,16 +56,13 @@ const CategoryPage = () => {
 			}
 
 			// Устанавливаем fallback timeout только если еще ждем
-			console.log('⏰ CategoryPage: Setting fallback timeout (2s)')
 			timeoutRef.current = setTimeout(() => {
-				console.log('⏰ CategoryPage: Fallback timeout reached, stopping wait')
 				timeoutRef.current = null
 				setWaitingForCategories(false)
 			}, 2000)
 			
 			return () => {
 				if (timeoutRef.current) {
-					console.log('🔄 CategoryPage: Cleaning up timeout in useEffect cleanup')
 					clearTimeout(timeoutRef.current)
 					timeoutRef.current = null
 				}
