@@ -1,5 +1,5 @@
 import { useCallback, useState } from 'react'
-import logoGif from '../../assets/images/logo.mp4'
+import logo from '../../assets/images/logo.webp'
 import { CATEGORY_ROUTE, DELIVERY_ROUTE, MAIN_ROUTE, POLICY_ROUTE, SALES_ROUTE } from '../../constants'
 import Button from '../Button'
 import Input from '../Input'
@@ -25,7 +25,7 @@ function MobileMenu({ sortedCategories, loading, phoneHref, workingTimeText, pho
 				<div className={styles['mobile-menu__logo']}>
 					<Button type='link' href={MAIN_ROUTE} className={styles['logo']}>
 						<div className={styles['logo-gif']}>
-							<video src={logoGif} autoPlay loop muted playsInline className={styles['logo-img']} />
+							<img src={logo} alt="logo" className={styles['logo-img']} />
 						</div>
 						<h1 className={styles['logo-text']}>Куб</h1>
 					</Button>
