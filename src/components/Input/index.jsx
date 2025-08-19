@@ -9,6 +9,7 @@ const Input = React.memo(function Input({
 	type = 'text',
 	isRequired = false,
 	className,
+  inputmode = 'text',
 	value,
 	onChange,
 	onFocus,
@@ -74,6 +75,7 @@ const Input = React.memo(function Input({
                 accept={accept}
                 checked={checked}
                 onChange={field.onChange}
+                inputmode={inputmode}
               />
               {hasError && (
                 <span className={styles['error-message']}>{errorMsg}</span>
@@ -101,6 +103,7 @@ const Input = React.memo(function Input({
         onBlur={onBlur} 
         accept={accept}
         checked={checked}
+        inputmode={inputmode}
       />
       {error && errorMessage && (
         <span className={styles['error-message']}>{errorMessage}</span>

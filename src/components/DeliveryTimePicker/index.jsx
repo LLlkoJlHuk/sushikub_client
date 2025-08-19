@@ -532,6 +532,7 @@ const DeliveryTimePicker = observer(({
                 onChange={(e) => handleHoursChange(e.target.value)}
                 onKeyDown={handleHoursKeyDown}
                 maxLength={2}
+                inputmode="numeric"
                 style={{ width: '35px', height: '30px', textAlign: 'center' }}
               />
           <span style={{ color: 'white', fontSize: '16px' }}>:</span>
@@ -544,6 +545,7 @@ const DeliveryTimePicker = observer(({
                 onChange={(e) => handleMinutesChange(e.target.value)}
                 onKeyDown={handleMinutesKeyDown}
                 maxLength={2}
+                inputmode="numeric"
                 style={{ width: '35px', height: '30px', textAlign: 'center' }}
               />
            </div>

@@ -237,6 +237,7 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
           control={control}
           rules={validationRules.phone}
           mask="+7 (000) 000-00-00"
+          inputmode="numeric"
           onChange={(e) => updateParentState('phone', e.target.value)}
         />
 
@@ -296,6 +297,7 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
                 type='text' 
                 control={control}
                 rules={validationRules.entrance}
+                inputmode="numeric"
                 onChange={(e) => updateParentState('entrance', e.target.value)}
               />
             </div>
@@ -308,6 +310,7 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
                 type='text' 
                 control={control}
                 rules={validationRules.floor}
+                inputmode="numeric"
                 onChange={(e) => updateParentState('floor', e.target.value)}
               />
 
@@ -318,6 +321,7 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
                 type='text' 
                 control={control}
                 rules={validationRules.apartmentNumber}
+                inputmode="numeric"
                 onChange={(e) => updateParentState('apartmentNumber', e.target.value)}
               />
             </div>
