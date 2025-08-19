@@ -46,7 +46,7 @@ const Main = observer(() => {
 	// Мемоизируем отсортированные категории
 	const sortedCategories = useMemo(() => {
 		if (!categories || categories.length === 0) return [];
-		return categories.slice().sort((a, b) => (a.order || 0) - (a.order || 0));
+		return categories.slice().sort((a, b) => (a.order || 0) - (b.order || 0));
 	}, [categories]);
 
   return (
