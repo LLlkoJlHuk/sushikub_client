@@ -50,7 +50,7 @@ body{
 }
 
 .section {
-  margin-top: 80px;
+  margin-top: 60px;
 
   width: 100%;
   height: auto;
@@ -98,6 +98,10 @@ body{
 
     @include desktop-small {
       padding-bottom: 12px;
+    }
+
+    @include bigTablet {
+      padding-bottom: 0;
     }
 
     &.header-visible {
@@ -171,11 +175,24 @@ body{
         height: 17px;
         background-size: cover;
       }
+
+      @include bigTablet {
+        content: none;
+      }
     }
   }
 }
 
 .modal {
+  &.add-product, &.edit-product, &.categories, &.settings, &.add-category, &.add-banner, &.edit-banner, &.banners, &.product-info  {
+    @include smallTablet {
+      margin: 5%;
+      max-width: 100%;
+      height: auto;
+      max-height: calc(100vh - 40px);
+    }
+  }
+
   &.add-product, &.edit-product {
     width: 100%;
     max-width: 824px;

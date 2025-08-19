@@ -2,19 +2,22 @@
 @use '../../assets/css/mixins.scss' as *;
 
 .category-page {
+	@include bigTablet {
+		padding-top: 60px;
+	}
+
 	.section-notice {
 		margin-top: 48px;
-	}
-
-	.section-products {
+	
 		@include bigTablet {
-			margin-top: 100px;
+		  margin-top: 24px;
 		}
-
-		@include tablet {
-			margin-top: 90px;
+	
+		>div {
+		  width: 100%;
+		  max-width: 1200px;
 		}
-	}
+	  }
 
 	.products {
 		margin-top: 64px;

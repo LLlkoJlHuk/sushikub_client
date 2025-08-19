@@ -2,20 +2,28 @@
 @use '../../assets/css/mixins.scss' as *;
 
 .basket-page {
+
+  @include bigTablet {
+    padding-top: 60px;
+  }
+
+  .section-notice {
+    margin-top: 48px;
+
+    @include bigTablet {
+      margin-top: 24px;
+    }
+
+    >div {
+      width: 100%;
+      max-width: 1200px;
+    }
+  }
+
   .container {
     width: 100%;
     max-width: 1200px;
   }
-
-	.section-basket {
-		@include bigTablet {
-			margin-top: 100px;
-		}
-
-		@include tablet {
-			margin-top: 90px;
-		}
-	}
 
 	.basket-list, .persons {
 		margin-top: 48px;
@@ -294,5 +302,11 @@
 
   .basket-empty {
     justify-content: center;
+    
+    .basket-return {
+      @include smallTablet {
+        display: block;
+      }
+    }
   }
 }

@@ -1,4 +1,5 @@
 @use '../../assets/css/variables.scss' as *;
+@use '../../assets/css/mixins.scss' as *;
 
 .notice {
 	margin: 0 0 12px;
@@ -24,6 +25,10 @@
 		color: $dark;
 		font-size: $fz-default;
 		font-weight: 400;
+
+		@include smallTablet {
+			font-size: $fz-small;
+		}
 	}
 
 	span {

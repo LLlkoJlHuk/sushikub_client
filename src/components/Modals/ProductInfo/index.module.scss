@@ -1,4 +1,5 @@
 @use '../../../assets/css/variables' as *;
+@use '../../../assets/css/mixins.scss' as *;
 
 .product-info {
 	&__content {
@@ -20,6 +21,14 @@
 
 	        background: $dark;
 
+			@include smallTablet {
+				padding: 24px 36px;
+			}
+
+			@include bigPhone {
+				padding: 24px 48px;
+			}
+
 			img {
 				width: 100%;
 				max-width: 400px;
@@ -31,6 +40,10 @@
 		&__wrapper {
 			width: 100%;
 			padding: 24px 48px;
+
+			@include smallTablet {
+				padding: 24px;
+			}
 		}
 
 		&__title {
@@ -40,6 +53,10 @@
 			color: $white;
 			font-size: $fz-xlarge;
 			font-weight: 700;
+
+			@include smallTablet {
+				font-size: $fz-large;
+			}
 		}
 
 		&__description {
@@ -50,6 +67,11 @@
 			font-size: $fz-default;
 			font-weight: 400;	
 			line-height: 140%;
+
+			@include smallTablet {
+				margin-top: 18px;
+				font-size: $fz-default - 1px;
+			}
 
 			span {
 				color: $white;
@@ -63,6 +85,10 @@
 			display: flex;
 			justify-content: space-between;
 			align-items: center;
+
+			@include smallTablet {
+				margin-top: 48px;
+			}
 		}
 
 		&__info {
@@ -70,12 +96,20 @@
 			font-family: $ff-currency;
 			color: $white;
 			font-size: $fz-large;
-			font-weight: 700;
+			font-weight: 400;
+
+			@include smallTablet {
+				font-size: $fz-large - 2px;
+			}
 
 			span {
 				font-size: $fz-default + 2px;
 				color: $gray;
 				font-weight: 400;
+
+				@include smallTablet {
+					font-size: $fz-default - 1px;
+				}
 			}
 		}
 
@@ -85,6 +119,28 @@
 			width: 150px;
 			height: 40px;
 			text-align: center;
+
+			@include smallTablet {
+				padding: auto !important;
+				width: 130px;
+				height: 35px;
+
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+		}
+
+		&__counter {
+			@include desktop-small {
+				width: 150px;
+				height: 40px;
+			}
+
+			@include smallTablet {
+				width: 130px;
+				height: 35px;
+			}
 		}
 	}
 }

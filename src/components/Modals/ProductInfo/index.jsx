@@ -51,6 +51,7 @@ const ProductInfo = observer(({
 								quantity={getItemQuantity()}
 								onIncrease={handleIncreaseQuantity}
 								onDecrease={handleDecreaseQuantity}
+								className={styles['product-info__content__counter']}
 							/>
 						) : (
 							<Button 

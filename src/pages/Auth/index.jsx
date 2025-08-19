@@ -119,6 +119,16 @@ const Auth = observer(() => {
 
       {/* Уведомления */}
       <Notification
+        message={'Ошибка сервера. Попробуйте позже'}
+        type={'error'}
+        isVisible={true}
+        onClose={hideNotification}
+        autoClose={notification.type === 'error'}
+        duration={3000}
+      />
+
+      {/* Уведомления */}
+      <Notification
         message={notification.message}
         type={notification.type}
         isVisible={notification.isVisible}
