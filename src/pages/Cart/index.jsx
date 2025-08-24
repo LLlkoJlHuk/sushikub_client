@@ -1,18 +1,15 @@
 import { observer } from 'mobx-react-lite'
 import React, { useContext, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
-import DeleteIcon from '../../assets/images/icon-close.webp'
-import rollPlugImage from '../../assets/images/roll-plug.webp'
+import BasketItem from '../../components/BasketItem'
 import Button from '../../components/Button'
 import Counter from '../../components/Counter'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import ProductInfo from '../../components/Modals/ProductInfo'
 import Notice from '../../components/Notice'
-import { getImageUrl, MAIN_ROUTE, ORDER_ROUTE } from '../../constants'
+import { MAIN_ROUTE, ORDER_ROUTE } from '../../constants'
 import { formatPrice } from '../../hooks/formatPrice'
-import { useBasketItem } from '../../hooks/useBasketItem'
-import { useLazyImage } from '../../hooks/useLazyImage'
 import useScrollTimeout from '../../hooks/useScrollTimeout'
 import { Context } from '../../main'
 import styles from './index.module.scss'
@@ -88,59 +85,15 @@ const Cart = observer(() => {
 						<div className={styles['basket-list']}>
 
 							{/* Список товаров в корзине */}
-							{basket.items.slice().sort((a, b) => a.name.localeCompare(b.name)).map(item => {
-								const {
-									handleIncreaseQuantity,
-									handleDecreaseQuantity,
-									getItemQuantity
-								} = useBasketItem(item)
-
-								// Lazy loading для изображений
-								const { imageSrc } = useLazyImage(
-									getImageUrl(item.img),
-									rollPlugImage
-								)
-
-							return (
-								<div key={item.id} className={styles['basket-item']}>
-
-									{/* Информация о товаре */}
-									<div 
-										className={styles['basket-item__wrapper']} 
-										onClick={() => setSelectedProduct(products.products.find(p => p.id === item.id))}
-									>
-
-										{/* Картинка */}
-										<div className={styles['basket-item__image']}>
-											<img src={imageSrc} alt={item.name} />
-										</div>
-
-										{/* Название */}
-										<div className={styles['basket-item__name']}>
-											{item.name}
-										</div>
-									</div>
-
-									{/* Информация о товаре */}
-									<div className={styles['basket-item__wrapper']}>
-
-										{/* Счетчик количества */}
-										<div className={styles['basket-item__counter']}>
-											<Counter quantity={getItemQuantity(item.id)} onIncrease={handleIncreaseQuantity} onDecrease={handleDecreaseQuantity} max={maxQuantityForOneProduct} />
-										</div>
-
-										{/* Стоимость товара */}
-										<div className={styles['basket-item__price']}>
-											{formatPrice(item.price * getItemQuantity(item.id))}&nbsp;₽
-										</div>
-
-										{/* Удалить товар */}
-										<div className={styles['basket-item__remove']} onClick={() => basket.removeItem(item.id)}>
-											<img src={DeleteIcon} alt="delete"/>
-										</div>
-									</div>
-								</div>
-							)})}
+							{basket.items.slice().sort((a, b) => a.name.localeCompare(b.name)).map(item => (
+								<BasketItem
+									key={item.id}
+									item={item}
+									maxQuantityForOneProduct={maxQuantityForOneProduct}
+									onRemove={() => basket.removeItem(item.id)}
+									onClick={() => setSelectedProduct(products.products.find(p => p.id === item.id))}
+								/>
+							))}
 						</div>
 
 						{/* Количество персон */}
