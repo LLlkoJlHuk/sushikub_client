@@ -72,11 +72,7 @@ class BasketStore {
       existingItem.quantity += quantity
     } else {
       this.items.push({
-        id: product.id,
-        name: product.name,
-        price: product.price,
-        img: product.img,
-        weight: product.weight,
+        ...product,
         quantity: quantity
       })
     }

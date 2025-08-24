@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React, { useContext, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
 import DeleteIcon from '../../assets/images/icon-close.webp'
+import rollPlugImage from '../../assets/images/roll-plug.webp'
 import Button from '../../components/Button'
 import Counter from '../../components/Counter'
 import Footer from '../../components/Footer'
@@ -11,6 +12,7 @@ import Notice from '../../components/Notice'
 import { getImageUrl, MAIN_ROUTE, ORDER_ROUTE } from '../../constants'
 import { formatPrice } from '../../hooks/formatPrice'
 import { useBasketItem } from '../../hooks/useBasketItem'
+import { useLazyImage } from '../../hooks/useLazyImage'
 import useScrollTimeout from '../../hooks/useScrollTimeout'
 import { Context } from '../../main'
 import styles from './index.module.scss'
@@ -93,6 +95,12 @@ const Cart = observer(() => {
 									getItemQuantity
 								} = useBasketItem(item)
 
+								// Lazy loading для изображений
+								const { imageSrc } = useLazyImage(
+									getImageUrl(item.img),
+									rollPlugImage
+								)
+
 							return (
 								<div key={item.id} className={styles['basket-item']}>
 
@@ -104,7 +112,7 @@ const Cart = observer(() => {
 
 										{/* Картинка */}
 										<div className={styles['basket-item__image']}>
-											<img src={getImageUrl(item.img)} alt={item.name} />
+											<img src={imageSrc} alt={item.name} />
 										</div>
 
 										{/* Название */}
@@ -127,8 +135,8 @@ const Cart = observer(() => {
 										</div>
 
 										{/* Удалить товар */}
-										<div className={styles['basket-item__remove']}>
-											<img src={DeleteIcon} alt="delete" onClick={() => basket.removeItem(item.id)}/>
+										<div className={styles['basket-item__remove']} onClick={() => basket.removeItem(item.id)}>
+											<img src={DeleteIcon} alt="delete"/>
 										</div>
 									</div>
 								</div>

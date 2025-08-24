@@ -5,6 +5,15 @@ export const getProducts = async (params = {}) => {
 	return data
 }
 
+export const searchProducts = async (searchQuery, otherParams = {}) => {
+	const params = {
+		search: searchQuery,
+		...otherParams
+	}
+	const { data } = await $host.get('/product', { params })
+	return data
+}
+
 export const createProduct = async (product) => {
 	const { data } = await $authHost.post('/product', product)
 	return data
@@ -64,6 +73,7 @@ export const deleteType = async (id) => {
 
 export const productApi = {
 	getProducts,
+	searchProducts,
 	createProduct,
 	updateProduct,
 	deleteProduct,

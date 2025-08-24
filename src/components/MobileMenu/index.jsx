@@ -1,21 +1,14 @@
-import { useCallback, useState } from 'react'
+import logoGif from '../../assets/images/logo.mp4'
 import logo from '../../assets/images/logo.webp'
 import { CATEGORY_ROUTE, DELIVERY_ROUTE, MAIN_ROUTE, POLICY_ROUTE, SALES_ROUTE } from '../../constants'
+import { useLazyVideo } from '../../hooks/useLazyVideo'
 import Button from '../Button'
-import Input from '../Input'
+import Search from '../Search'
 import styles from './index.module.scss'
 
-function MobileMenu({ sortedCategories, loading, phoneHref, workingTimeText, phoneNumberFormatted, ref }) {
-	const [isActiveSearch, setIsActiveSearch] = useState(false);
-	const [searchValue, setSearchValue] = useState('');
-
-	const handleSearch = useCallback(() => {
-		setIsActiveSearch(!isActiveSearch);
-	}, [isActiveSearch]);
-
-	const handleSearchChange = useCallback((e) => {
-		setSearchValue(e.target.value);
-	}, []);	
+function MobileMenu({ sortedCategories, loading, phoneHref, workingTimeText, phoneNumberFormatted, onClose, ref }) {
+	// Lazy loading для видео логотипа
+	const { videoSrc, placeholderSrc, showPlaceholder } = useLazyVideo(logoGif, logo)
 
     return (
         <div className={styles['mobile-menu']} ref={ref}>
@@ -25,27 +18,30 @@ function MobileMenu({ sortedCategories, loading, phoneHref, workingTimeText, pho
 				<div className={styles['mobile-menu__logo']}>
 					<Button type='link' href={MAIN_ROUTE} className={styles['logo']}>
 						<div className={styles['logo-gif']}>
-							<img src={logo} alt="logo" className={styles['logo-img']} />
+							{showPlaceholder && (
+								<img 
+									src={placeholderSrc} 
+									alt="logo" 
+									className={`${styles['logo-img']} ${styles['logo-img--placeholder']}`} 
+								/>
+							)}
+							{videoSrc && (
+								<video 
+									src={videoSrc} 
+									autoPlay 
+									loop 
+									muted 
+									playsInline 
+									className={`${styles['logo-img']} ${showPlaceholder ? styles['logo-img--hidden'] : ''}`} 
+								/>
+							)}
 						</div>
 						<h1 className={styles['logo-text']}>Куб</h1>
 					</Button>
 				</div>
 
 				{/* Поиск */}
-				<div className={`${styles['mobile-menu__search']} ${isActiveSearch ? styles['active'] : ''}`}>
-					<Input 
-						type="text" 
-						placeholder='Поиск' 
-						className={styles['search-input']} 
-						id='search-input' 
-						name='search-input' 
-						onFocus={handleSearch}
-						onBlur={handleSearch}
-						value={searchValue}
-						onChange={handleSearchChange}
-					/>
-					<div className={styles['search-button']}></div>
-				</div>
+				<Search isMobile={true} onMobileMenuClose={onClose} />
 
 				<div className={styles['mobile-menu__categories']}>
 					{loading ? (

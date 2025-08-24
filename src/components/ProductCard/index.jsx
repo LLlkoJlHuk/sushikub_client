@@ -1,9 +1,11 @@
 import { observer } from 'mobx-react-lite'
 import React, { useCallback, useState } from 'react'
 import { createPortal } from 'react-dom'
+import rollPlugImage from '../../assets/images/roll-plug.webp'
 import { getImageUrl } from '../../constants'
 import { formatPrice } from '../../hooks/formatPrice'
 import { useBasketItem } from '../../hooks/useBasketItem'
+import { useLazyImage } from '../../hooks/useLazyImage'
 import Button from '../Button'
 import Counter from '../Counter'
 import ProductInfo from '../Modals/ProductInfo'
@@ -20,6 +22,12 @@ const ProductCard = observer(({
 		handleDecreaseQuantity,
 		getItemQuantity
 	} = useBasketItem(product)
+
+	// Lazy loading для изображений
+	const { imageSrc } = useLazyImage(
+		getImageUrl(product.img),
+		rollPlugImage
+	)
 
 	const handleCardClick = useCallback(() => {
 		setIsModalOpen(true)
@@ -42,7 +50,10 @@ const ProductCard = observer(({
 		<div className={styles['product-card']} onClick={handleCardClick}>
 			{/* Картинка продукта */}
 			<div className={styles['product-card__img']}>
-				<img src={getImageUrl(product.img)} alt={product.name} />
+				<img 
+					src={imageSrc} 
+					alt={product.name}
+				/>
 			</div>
 
 			<div className={styles['product-card__content']}>

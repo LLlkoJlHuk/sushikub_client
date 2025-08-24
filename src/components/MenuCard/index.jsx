@@ -1,5 +1,7 @@
 import React from 'react'
-import { CATEGORY_ROUTE } from '../../constants'
+import rollPlugImage from '../../assets/images/roll-plug.webp'
+import { CATEGORY_ROUTE, getImageUrl } from '../../constants'
+import { useLazyImage } from '../../hooks/useLazyImage'
 import Button from '../Button'
 import styles from './index.module.scss'
 
@@ -8,15 +10,23 @@ const MenuCard = React.memo(function MenuCard({
 	img,
 	name,
 }) {
+	// Lazy loading для изображения категории
+	const { imageSrc, isLoading } = useLazyImage(
+		getImageUrl(img),
+		rollPlugImage
+	)
 
 	return (
 		<Button 
 			type='link' 
 			href={`${CATEGORY_ROUTE}/${id}`} 
-			className={`${styles['menu-card']} ${styles[`menu-card--${id}`]}`}
+			className={`${styles['menu-card']} ${styles[`menu-card--${id}`]} ${isLoading ? styles['menu-card--loading'] : ''}`}
 		>
 			<div className={styles['menu-card__img']}>
-				<img src={img} alt={name} />
+				<img 
+					src={imageSrc} 
+					alt={name}
+				/>
 			</div>
 
 			<div className={styles['menu-card__name']}>

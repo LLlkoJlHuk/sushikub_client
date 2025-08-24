@@ -91,13 +91,6 @@ const CategoryPage = () => {
 		return products.categories.find(cat => cat.id === parseInt(categoryId))
 	}, [products.categories, categoryId]);
 
-
-
-	// Показываем загрузку если категории загружаются или ждем их инициализации
-	if (products.categoriesLoading || waitingForCategories) {
-		return <Loading />
-	}
-
 	// Если завершили ожидание, но категории не загрузились - показываем ошибку
 	if (!waitingForCategories && !products.categoriesLoading && products.categories.length === 0) {
 		return (
@@ -147,6 +140,11 @@ const CategoryPage = () => {
 			{/* Секция с продуктами */}
 			<section className={`section ${styles['section-products']}`}>
 				<div className='container'>
+
+					{/* Показываем загрузку если категории загружаются или ждем их инициализации */}
+					{(products.categoriesLoading || waitingForCategories) && (
+						<Loading />
+					)}
 
 
 					{/* Ошибка запроса */}

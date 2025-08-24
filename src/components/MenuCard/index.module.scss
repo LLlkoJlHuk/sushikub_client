@@ -165,6 +165,14 @@
 		}
 	}
 
+	&--loading {
+		.menu-card__img {
+			img {
+				width: 140px;
+			}
+		}
+	}
+
 	&:hover {
 		transform: scale(0.98) translateY(2px);
 	}

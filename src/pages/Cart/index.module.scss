@@ -38,7 +38,7 @@
 
     .basket-item {
       position: relative;
-      padding: 24px; 
+      padding: 24px 0 24px 24px; 
 
       display: flex;
       align-items: center;
@@ -52,6 +52,7 @@
       }
 
       @include bigTablet {
+        padding: 24px;
         flex-wrap: wrap;
         gap: 24px;
       }
@@ -73,6 +74,7 @@
           gap: 48px;
 
           @include bigTablet {
+            width: auto;
             gap: 24px;
             justify-content: start;
           }
@@ -141,33 +143,36 @@
       }
 
       &__remove {
+        cursor: pointer;
         user-select: none;
         position: relative;
         width: 50px;
-        height: 12px;
+        height: 50px;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &:hover {
+          img {
+            opacity: 1;
+          }
+        }
 
         @include bigTablet {
           position: absolute;
-          top: 24px;
-          right: 16px;
+          top: 0;
+          right: 0;
         }
 
         img {
           position: absolute;
-          right: 0;
-          top: 50%;
-          transform: translateY(-50%);
 
-          cursor: pointer;
           width: 12px;
           height: auto;
 
           opacity: 0.5;
           transition: all 0.3s ease;
-
-          &:hover {
-            opacity: 1;
-          }
         }
       }
     }

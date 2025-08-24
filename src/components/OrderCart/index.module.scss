@@ -2,7 +2,7 @@
 
 .order-cart {
   width: 100%;
-  max-width: 400px;
+  max-width: 440px;
 
   &__title {
     padding-left: 12px;
@@ -25,6 +25,8 @@
   &__item {
     padding: 24px 6px;
     width: 100%;
+    height: auto;
+    min-height: 70px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -49,7 +51,7 @@
     box-orient: vertical;
     text-overflow: ellipsis;
     overflow: hidden;
-    width: 150px;
+    width: 190px;
     font-size: $fz-default;
     font-weight: 400;
   }
@@ -130,5 +132,6 @@
     color: rgba($color: $gray, $alpha: .6);
     font-size: $fz-small;
     font-weight: 400;
+    line-height: 1.2;
   }
 } 

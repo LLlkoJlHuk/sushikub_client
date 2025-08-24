@@ -12,6 +12,32 @@ const OrderCart = ({ basket, order }) => {
 		deliveryDiscount: null
 	})
 
+  const isDeliveryDiscountAvailable = (item) => {
+    return !order.typeIsDelivery && item.category.id !== 8 && item.category.id !== 9 && item.category.id !== 10 && item.category.id !== 11
+  }
+
+  // Функция для расчета итоговой стоимости с учетом скидки только на подходящие товары
+  const calculateTotalPriceWithDiscount = () => {
+    if (order.typeIsDelivery) {
+      return basket.totalPrice
+    }
+
+    let totalWithDiscount = 0
+    
+    basket.items.forEach(item => {
+      const itemTotal = item.price * item.quantity
+      if (isDeliveryDiscountAvailable(item)) {
+        // Применяем скидку к товару
+        totalWithDiscount += itemTotal * (1 - deliveryDiscount / 100)
+      } else {
+        // Оставляем цену без скидки
+        totalWithDiscount += itemTotal
+      }
+    })
+    
+    return totalWithDiscount
+  }
+
 	useEffect(() => {
 		// Настройки уже загружены в App.jsx при старте приложения
 		// Получаем значения напрямую из store
@@ -20,7 +46,7 @@ const OrderCart = ({ basket, order }) => {
 		setSettingsData({ 
 			deliveryDiscount: deliveryDiscount
 		})
-	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings, settings.settingsObject]) // Реагируем на изменения в настройках
 
 	const { deliveryDiscount } = settingsData
 
@@ -50,12 +76,18 @@ const OrderCart = ({ basket, order }) => {
                 <>{formatPrice(item.price * item.quantity)}&nbsp;₽</>
               ) : (
                 <>
-                  <span className={styles['order-cart__item-price__old']}>
-                    {formatPrice(item.price * item.quantity)}&nbsp;₽
-                  </span>
-                  <span className={styles['order-cart__item-price__new']}>
-                    {formatPrice(item.price * item.quantity * (1 - deliveryDiscount / 100), true)}&nbsp;₽
-                  </span>
+                  {isDeliveryDiscountAvailable(item) ? (
+                    <>
+                      <span className={styles['order-cart__item-price__old']}>
+                        {formatPrice(item.price * item.quantity)}&nbsp;₽
+                      </span>
+                      <span className={styles['order-cart__item-price__new']}>
+                        {formatPrice(item.price * item.quantity * (1 - deliveryDiscount / 100), true)}&nbsp;₽
+                      </span>
+                    </>
+                  ) : (
+                    <>{formatPrice(item.price * item.quantity)}&nbsp;₽</>
+                  )}
                 </>
               )}
             </div>
@@ -78,7 +110,7 @@ const OrderCart = ({ basket, order }) => {
                   {formatPrice(basket.totalPrice)}&nbsp;₽
                 </span>
                 <span className={styles['order-cart__item-price__new']}>
-                  {formatPrice(basket.totalPrice * (1 - deliveryDiscount / 100), true)}&nbsp;₽
+                  {formatPrice(calculateTotalPriceWithDiscount(), true)}&nbsp;₽
                 </span>
               </>
             )}
@@ -87,7 +119,7 @@ const OrderCart = ({ basket, order }) => {
           {/* Дополнительная скидка за самовывоз */}
           {!order.typeIsDelivery && (
             <div className={styles['order-cart__total-discount']}>
-              Дополнительная скидка за самовывоз {deliveryDiscount}%
+              Дополнительная скидка за&nbsp;самовывоз {deliveryDiscount}% не&nbsp;распространяется на&nbsp;горячее, салаты, десерты и&nbsp;напитки!
             </div>
           )}
         </div>

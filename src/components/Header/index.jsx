@@ -10,19 +10,18 @@ import {
 	MAIN_ROUTE,
 } from '../../constants'
 import { formatPrice } from '../../hooks/formatPrice'
+import { useLazyVideo } from '../../hooks/useLazyVideo'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import { Context } from '../../main'
 import Button from '../Button'
-import Input from '../Input'
 import MobileMenu from '../MobileMenu'
+import Search from '../Search'
 import styles from './index.module.scss'
 
 const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBack }) => {
 	const { products, basket } = useContext(Context);
 	const categories = products.categories;
 	const loading = products.loading;
-	const [isActiveSearch, setIsActiveSearch] = useState(false);
-	const [searchValue, setSearchValue] = useState('');
 	const nodeRefLogo = useRef(null);
 	const nodeRefBasket = useRef(null);
 	const nodeRefBasketSecondary = useRef(null);
@@ -41,8 +40,6 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 	})
 
 	useEffect(() => {
-		// Настройки уже загружены в App.jsx при старте приложения
-		// Получаем значения напрямую из store
 		const code = settings.getSettingValue('PHONE_NUMBER_CODE', '')
 		const number = settings.getSettingValue('PHONE_NUMBER', '')
 		const formatted = settings.getSettingValue('PHONE_NUMBER_FORMATTED', '')
@@ -56,7 +53,10 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 			workingTimeStart: workingTimeStart,
 			workingTimeEnd: workingTimeEnd
 		})
-	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings, settings.settingsObject])
+
+	// Lazy loading для видео логотипа
+	const { videoSrc, placeholderSrc, showPlaceholder } = useLazyVideo(logoGif, logo)
 
 	useEffect(() => {
 		if (isMenuOpen) {
@@ -67,32 +67,20 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 	}, [isMenuOpen])
 
 	const { phoneNumberCode, phoneNumber, phoneNumberFormatted, workingTimeStart, workingTimeEnd } = settingsData
-	
-	// Мемоизируем обработчики событий
-	const handleSearch = useCallback(() => {
-		setIsActiveSearch(!isActiveSearch);
-	}, [isActiveSearch]);
 
 	const handleMenuToggle = useCallback(() => {
 		setIsMenuOpen(!isMenuOpen);
 	}, [isMenuOpen]);
 
-	const handleSearchChange = useCallback((e) => {
-		setSearchValue(e.target.value);
-	}, []);
-
-	// Мемоизируем отсортированные категории
 	const sortedCategories = useMemo(() => {
 		if (!categories || categories.length === 0) return [];
 		return categories.slice().sort((a, b) => (a.order || 0) - (b.order || 0));
 	}, [categories]);
 
-	// Мемоизируем телефонный номер
 	const phoneHref = useMemo(() => {
 		return `tel:${phoneNumberCode}${phoneNumber}`;
 	}, [phoneNumberCode, phoneNumber]);
 
-	// Мемоизируем время работы
 	const workingTimeText = useMemo(() => {
 		return `Работаем с ${workingTimeStart} до ${workingTimeEnd}`;
 	}, [workingTimeStart, workingTimeEnd]);
@@ -113,7 +101,23 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 								{/* Логотип */}
 								<Button type='link' href={MAIN_ROUTE} className={styles['logo']}>
 									<div className={styles['logo-gif']}>
-										<video src={logoGif} autoPlay loop muted playsInline className={styles['logo-img']} />
+										{showPlaceholder && (
+											<img 
+												src={placeholderSrc} 
+												alt="logo" 
+												className={`${styles['logo-img']} ${styles['logo-img--placeholder']}`} 
+											/>
+										)}
+										{videoSrc && (
+											<video 
+												src={videoSrc} 
+												autoPlay 
+												loop 
+												muted 
+												playsInline 
+												className={`${styles['logo-img']} ${showPlaceholder ? styles['logo-img--hidden'] : ''}`} 
+											/>
+										)}
 									</div>
 									<h1 className={styles['logo-text']}>Куб</h1>
 								</Button>
@@ -209,20 +213,7 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 							</div>
 		
 							{/* Поиск */}
-							<div className={`${styles['search']} ${isActiveSearch ? styles['active'] : ''}`}>
-								<Input 
-									type="text" 
-									placeholder='Поиск' 
-									className={styles['search-input']} 
-									id='search-input' 
-									name='search-input' 
-									onFocus={handleSearch}
-									onBlur={handleSearch}
-									value={searchValue}
-									onChange={handleSearchChange}
-								/>
-								<div className={styles['search-button']}></div>
-							</div>
+							<Search />
 						</div>
 
 						{ basket.totalItems > 0 ? (
@@ -280,16 +271,25 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 				{/* Правая сторона хэдера */}
 				<div className={styles['right-side']}>
 					{/* Корзина */}
-					<div className={`${styles['basket']}`}>
-						<Button type='link' href={CART_ROUTE} className={styles['basket-button']}>
-							<div className={styles['basket-img-container']}>
-								<img src={Basket} alt="basket" className={styles['basket-img']} />
-								<div className={styles['basket-counter']}>
-									<p>{basket.totalItems}</p>
+					<CSSTransition
+						in={basket.totalItems > 0}
+						timeout={300}
+						classNames='logo'
+						unmountOnExit
+						appear
+						nodeRef={nodeRefBasketSecondary}
+					>
+						<div className={`${styles['basket']}`} ref={nodeRefBasketSecondary}>
+							<Button type='link' href={CART_ROUTE} className={styles['basket-button']}>
+								<div className={styles['basket-img-container']}>
+									<img src={Basket} alt="basket" className={styles['basket-img']} />
+									<div className={styles['basket-counter']}>
+										<p>{basket.totalItems}</p>
+									</div>
 								</div>
-							</div>
-						</Button>
-					</div>
+							</Button>
+						</div>
+					</CSSTransition>
 
 					{/* Меню */}
 					<div className={`${styles['menu-icon']} ${isMenuOpen ? styles['open'] : ''}`} onClick={handleMenuToggle}>
@@ -313,6 +313,7 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 						phoneHref={phoneHref} 
 						workingTimeText={workingTimeText} 
 						phoneNumberFormatted={phoneNumberFormatted} 
+						onClose={() => setIsMenuOpen(false)}
 						ref={nodeRefMobileMenu}
 					/>	
 				</CSSTransition>

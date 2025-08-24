@@ -105,8 +105,6 @@ const Admin = observer(() => {
     loadData()
   }, []) // Пустой массив зависимостей
 
-  // Простая логика загрузки - показываем Loading только если нет данных
-  // Это предотвращает множественные Loading состояния
   if (!products?.products || !products?.categories || !products?.types || !banners?.banners) {
     return <Loading />
   }

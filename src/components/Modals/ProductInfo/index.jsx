@@ -1,8 +1,10 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
+import rollPlugImage from '../../../assets/images/roll-plug.webp'
 import { getImageUrl } from '../../../constants'
 import { formatPrice } from '../../../hooks/formatPrice'
 import { useBasketItem } from '../../../hooks/useBasketItem'
+import { useLazyImage } from '../../../hooks/useLazyImage'
 import Button from '../../Button'
 import Counter from '../../Counter'
 import Modal from '../../Modals'
@@ -22,13 +24,19 @@ const ProductInfo = observer(({
 		getItemQuantity
 	} = useBasketItem(product)
 
+	// Lazy loading для изображений
+	const { imageSrc } = useLazyImage(
+		getImageUrl(product.img),
+		rollPlugImage
+	)
+
 	return (
 		<Modal className={`${styles['product-info']} ${className}`} isOpen={isOpen} onClose={onClose} type="dark">
 			<div className={styles['product-info__content']}>
 
 				{/* Изображение продукта */}
 				<div className={styles['product-info__content__img']}>
-					<img src={getImageUrl(product.img)} alt={product.name} />
+					<img src={imageSrc} alt={product.name} />
 				</div>
 
 				<div className={styles['product-info__content__wrapper']}>

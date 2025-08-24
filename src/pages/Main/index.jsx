@@ -6,7 +6,6 @@ import Header from '../../components/Header'
 import MenuCard from '../../components/MenuCard'
 import Notice from '../../components/Notice'
 import ProductCarousel from '../../components/ProductCarousel'
-import { getImageUrl } from '../../constants'
 import useScrollTimeout from '../../hooks/useScrollTimeout'
 import { Context } from '../../main'
 import styles from './index.module.scss'
@@ -28,7 +27,7 @@ const Main = observer(() => {
 		setSettingsData({ 
 			globalMessage: globalMessage
 		})
-	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings, settings.settingsObject]) // Реагируем на изменения в настройках
 
 	const { globalMessage } = settingsData
 
@@ -106,8 +105,8 @@ const Main = observer(() => {
                   <MenuCard 
                     key={category.id} 
                     id={category.id} 
-                    img={getImageUrl(category.preview)} 
-                    name={category.name} 
+                    img={category.preview} 
+                    name={category.name}
                   />
               )))}
             </div>

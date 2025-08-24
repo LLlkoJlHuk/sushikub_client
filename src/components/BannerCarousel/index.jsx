@@ -2,9 +2,8 @@ import { observer } from 'mobx-react-lite'
 import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { Autoplay, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { getImageUrl } from '../../constants'
-import { useWindowSize } from '../../hooks/useWindowSize'
 import { Context } from '../../main'
+import BannerSlide from './BannerSlide'
 import './index.scss'
 
 // Import Swiper styles
@@ -14,7 +13,6 @@ import 'swiper/css/pagination'
 
 const BannerCarousel = observer(() => {
 	const { banners, settings } = useContext(Context);
-	const { width } = useWindowSize();
 
 	const [settingsData, setSettingsData] = useState({
 		bannerCarouselInterval: null
@@ -28,7 +26,7 @@ const BannerCarousel = observer(() => {
 		setSettingsData({ 
 			bannerCarouselInterval: bannerCarouselInterval
 		})
-	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings, settings.settingsObject]) // Реагируем на изменения в настройках
 
 	const { bannerCarouselInterval } = settingsData
 
@@ -68,21 +66,7 @@ const BannerCarousel = observer(() => {
 		  >
 			{sortedBanners.map((banner) => (
 				<SwiperSlide key={banner.id}>
-					<a href={banner.link}>
-						{width > 768 ? (
-							<img 
-								src={getImageUrl(banner.imgDesktop)} 
-								alt={`Баннер ${banner.order || 'без порядка'}`}
-								className="banner-desktop"
-							/>
-						) : (
-							<img 
-								src={getImageUrl(banner.imgMobile)} 
-								alt={`Баннер ${banner.order || 'без порядка'}`}
-								className="banner-mobile"
-							/>
-						)}
-					</a>
+					<BannerSlide banner={banner} />
 				</SwiperSlide>
 			))}
 		  </Swiper>

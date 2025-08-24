@@ -56,11 +56,39 @@
 				width: 80px;
 				height: 80px;
 
+				display: flex;
+				justify-content: center;
+				align-items: center;
+
 				background: #FFFFFF;
 				border-radius: 100%;
 
 				video {
 					margin-top: -3px;
+					width: 76px;
+					height: 76px;
+					transition: opacity 0.3s ease;
+				}
+
+				img {
+					width: 76px;
+					height: 76px;
+					transition: opacity 0.3s ease;
+				}
+			}
+
+			.logo-img {
+				&--placeholder {
+					position: absolute;
+					top: 50%;
+					left: 50%;
+					transform: translate(-50%, -50%);
+					z-index: 1;
+				}
+
+				&--hidden {
+					opacity: 0;
+					pointer-events: none;
 				}
 			}
 
@@ -69,74 +97,6 @@
 				font-size: $fz-logo;
 				text-transform: uppercase;
 				font-weight: 400;
-			}
-		}
-	}
-
-	&__search {
-		margin-top: 48px;
-		position: relative;
-		width: 90%;
-
-		transition: all .3s ease;
-
-		.search-input {
-			padding: 0 32px 0 16px;
-			width: 100%;
-			height: 30px;
-
-			border-radius: 8px;
-			border: 1px solid $white;
-			background: none;
-			color: $white;
-
-			&::placeholder {
-				color: $white;
-			}
-
-			&:focus {
-				outline: none;
-			}
-
-			&.active {
-				border: 1px solid $dark;
-			}
-		}
-
-		.search-button {
-			cursor: pointer;
-			user-select: none;
-
-			margin: 0;
-			padding: 0;
-			
-			position: absolute;
-			right: 7px;
-			top: 7px;
-
-			width: 25px;
-			height: 16px;
-
-			background: url('../../assets/images/icon-search-white.webp') no-repeat center center;
-			background-size: contain;
-
-			&:active {
-				transform: scale(.9);
-			}
-		}
-
-		&.active {
-			width: 100%;
-
-			.search-input {
-				background: $white;
-				color: $dark;
-				border: 1px solid $dark;
-			}
-
-			.search-button {
-				background: url('../../assets/images/icon-search-dark.webp') no-repeat center center;
-				background-size: contain;
 			}
 		}
 	}

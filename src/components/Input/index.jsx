@@ -9,11 +9,12 @@ const Input = React.memo(function Input({
 	type = 'text',
 	isRequired = false,
 	className,
-  inputmode = 'text',
+  inputMode = 'text',
 	value,
 	onChange,
 	onFocus,
 	onBlur,
+	onKeyPress,
 	name,
 	accept,
 	checked,
@@ -38,11 +39,27 @@ const Input = React.memo(function Input({
           const errorMsg = fieldError?.message || errorMessage
           
           if (mask) {
+            // Кастомная маска для телефона, исключающая 7 и 8 в первой позиции
+            const getMaskConfig = () => {
+              if (mask === "+7 (000) 000-00-00") {
+                return {
+                  mask: "+7 (X00) 000-00-00",
+                  definitions: {
+                    'X': /[0-69]/, // Первая позиция: любая цифра кроме 7 и 8
+                    '0': /[0-9]/    // Остальные позиции: любые цифры
+                  }
+                }
+              }
+              return { mask }
+            }
+            
+            const maskConfig = getMaskConfig()
+            
             return (
               <>
                 <IMaskInput
                   {...field}
-                  mask={mask}
+                  {...maskConfig}
                   placeholder={placeholder}
                   unmask={false}
                   lazy={false}
@@ -72,10 +89,11 @@ const Input = React.memo(function Input({
                 className={`${className || ''} ${hasError ? styles.error : ''}`}
                 onFocus={onFocus}
                 onBlur={onBlur}
+                onKeyPress={onKeyPress}
                 accept={accept}
                 checked={checked}
                 onChange={field.onChange}
-                inputmode={inputmode}
+                inputMode={inputMode}
               />
               {hasError && (
                 <span className={styles['error-message']}>{errorMsg}</span>
@@ -101,9 +119,10 @@ const Input = React.memo(function Input({
         className={`${className || ''} ${error ? styles.error : ''}`}
         onFocus={onFocus} 
         onBlur={onBlur} 
+        onKeyPress={onKeyPress}
         accept={accept}
         checked={checked}
-        inputmode={inputmode}
+        inputMode={inputMode}
       />
       {error && errorMessage && (
         <span className={styles['error-message']}>{errorMessage}</span>
