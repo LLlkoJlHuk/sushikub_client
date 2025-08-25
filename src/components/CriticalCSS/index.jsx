@@ -52,6 +52,13 @@ const CriticalCSS = () => {
           padding: 1rem 0;
         }
         
+        .loading-placeholder {
+          text-align: center;
+          padding: 2rem;
+          color: #666;
+          font-size: 1.1rem;
+        }
+        
         /* Анимации для плавного появления */
         @keyframes fadeIn {
           from { opacity: 0; transform: translateY(20px); }
