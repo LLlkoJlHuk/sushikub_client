@@ -9,25 +9,51 @@ const BannerSlide = ({ banner }) => {
   const { width } = useWindowSize()
 
   return (
-    <a href={banner.link}>
+    <a href={banner.link} style={{ display: 'block', width: '100%' }}>
       {width > 768 ? (
-        <OptimizedImage 
-          src={getImageUrl(banner.imgDesktop)}
-          placeholder={desktopBannerPlug}
-          alt={`Баннер ${banner.order || 'без порядка'}`}
-          className="banner-desktop"
-          priority={true}
-          sizes="(max-width: 768px) 100vw, 80vw"
-        />
+        <div style={{ 
+          width: '100%', 
+          height: '400px', 
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <OptimizedImage 
+            src={getImageUrl(banner.imgDesktop)}
+            placeholder={desktopBannerPlug}
+            alt={`Баннер ${banner.order || 'без порядка'}`}
+            className="banner-desktop"
+            priority={true}
+            sizes="(max-width: 768px) 100vw, 80vw"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center'
+            }}
+          />
+        </div>
       ) : (
-        <OptimizedImage 
-          src={getImageUrl(banner.imgMobile)}
-          placeholder={mobileBannerPlug}
-          alt={`Баннер ${banner.order || 'без порядка'}`}
-          className="banner-mobile"
-          priority={true}
-          sizes="100vw"
-        />
+        <div style={{ 
+          width: '100%', 
+          height: '200px', 
+          position: 'relative',
+          overflow: 'hidden'
+        }}>
+          <OptimizedImage 
+            src={getImageUrl(banner.imgMobile)}
+            placeholder={mobileBannerPlug}
+            alt={`Баннер ${banner.order || 'без порядка'}`}
+            className="banner-mobile"
+            priority={true}
+            sizes="100vw"
+            style={{
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center'
+            }}
+          />
+        </div>
       )}
     </a>
   )

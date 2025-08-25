@@ -43,12 +43,23 @@ const ProductCard = observer(({
 	return (
 		<div className={styles['product-card']} onClick={handleCardClick}>
 			{/* Картинка продукта */}
-			<div className={styles['product-card__img']}>
+			<div className={styles['product-card__img']} style={{ 
+				width: '100%', 
+				height: '200px', 
+				position: 'relative',
+				overflow: 'hidden'
+			}}>
 				<LazyImage 
 					src={getImageUrl(product.img)}
 					placeholder={rollPlugImage}
 					alt={product.name}
 					threshold={0.1}
+					style={{
+						width: '100%',
+						height: '100%',
+						objectFit: 'cover',
+						objectPosition: 'center'
+					}}
 				/>
 			</div>
 
