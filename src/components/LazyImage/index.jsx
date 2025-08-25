@@ -1,20 +1,39 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-const OptimizedImage = ({ 
+const LazyImage = ({ 
   src, 
   alt, 
   placeholder, 
   className = '', 
-  priority = false,
-  sizes = '100vw',
+  threshold = 0.1,
   ...props 
 }) => {
   const [imageSrc, setImageSrc] = useState(placeholder || '')
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
+  const [isInView, setIsInView] = useState(false)
+  const imgRef = useRef(null)
 
   useEffect(() => {
-    if (!src) return
+    if (!imgRef.current) return
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsInView(true)
+          observer.disconnect()
+        }
+      },
+      { threshold }
+    )
+
+    observer.observe(imgRef.current)
+
+    return () => observer.disconnect()
+  }, [threshold])
+
+  useEffect(() => {
+    if (!src || !isInView) return
 
     setIsLoading(true)
     setHasError(false)
@@ -42,35 +61,18 @@ const OptimizedImage = ({
       img.removeEventListener('load', handleLoad)
       img.removeEventListener('error', handleError)
     }
-  }, [src, placeholder])
-
-  // Предзагрузка для приоритетных изображений
-  useEffect(() => {
-    if (priority && src) {
-      const link = document.createElement('link')
-      link.rel = 'preload'
-      link.as = 'image'
-      link.href = src
-      document.head.appendChild(link)
-      
-      return () => {
-        if (document.head.contains(link)) {
-          document.head.removeChild(link)
-        }
-      }
-    }
-  }, [priority, src])
+  }, [src, placeholder, isInView])
 
   return (
     <img
+      ref={imgRef}
       src={imageSrc}
       alt={alt}
       className={`${className} ${isLoading ? 'loading' : ''} ${hasError ? 'error' : ''}`}
-      loading={priority ? 'eager' : 'lazy'}
-      sizes={sizes}
+      loading="lazy"
       {...props}
     />
   )
 }
 
-export default OptimizedImage
+export default LazyImage
