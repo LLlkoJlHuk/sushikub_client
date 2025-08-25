@@ -33,7 +33,7 @@ export default class BannerStore {
 			const banners = await bannerApi.getBanners()
 			this.setBanners(banners)
 		} catch (error) {
-			console.error('Error fetching banners:', error)
+			console.error('BannerStore: Error fetching banners:', error)
 			this.setError(`Ошибка при загрузке баннеров: ${error.message}`)
 			// Устанавливаем пустой массив в случае ошибки
 			this.setBanners([])

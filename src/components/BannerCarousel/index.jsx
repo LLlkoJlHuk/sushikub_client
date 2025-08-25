@@ -51,6 +51,24 @@ const BannerCarousel = observer(() => {
 			.sort((a, b) => (a.order || 0) - (b.order || 0))
 	}, [banners.banners]);
 
+	// Если баннеры не загрузились, показываем fallback
+	if (sortedBanners.length === 0) {
+		return (
+			<div className="banner-carousel-fallback">
+				<div className="banner-carousel-fallback__content">
+					<h2>Добро пожаловать в SushiKub</h2>
+					<p>Лучшие суши и роллы в вашем городе</p>
+					{/* Отладочная информация */}
+					<div style={{ marginTop: '1rem', fontSize: '0.9rem', opacity: 0.7 }}>
+						<p>Отладка: Баннеры не загружены</p>
+						<p>Количество баннеров: {banners.banners.length}</p>
+						{banners.error && <p>Ошибка: {banners.error}</p>}
+					</div>
+				</div>
+			</div>
+		)
+	}
+
 	return (
 		<>
 		  <Swiper
