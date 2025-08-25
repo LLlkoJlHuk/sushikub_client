@@ -1,14 +1,16 @@
 import { observer } from 'mobx-react-lite'
-import React, { useContext, useEffect, useMemo, useState } from 'react'
+import React, { lazy, Suspense, useContext, useEffect, useMemo, useState } from 'react'
 import BannerCarousel from '../../components/BannerCarousel'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
 import MenuCard from '../../components/MenuCard'
 import Notice from '../../components/Notice'
-import ProductCarousel from '../../components/ProductCarousel'
 import useScrollTimeout from '../../hooks/useScrollTimeout'
 import { Context } from '../../main'
 import styles from './index.module.scss'
+
+// Lazy loading для некритичных компонентов
+const ProductCarousel = lazy(() => import('../../components/ProductCarousel'))
 
 const Main = observer(() => {
   const { products, settings } = useContext(Context);
@@ -53,7 +55,7 @@ const Main = observer(() => {
       {/* Главная страница */}
       <div className={`page ${styles['main-page']}`}>
 
-        {/* Секция с хедером и каруселью */}
+        {/* Секция с хедером и каруселью - КРИТИЧЕСКИЙ КОНТЕНТ */}
         <section 
           className={`section section-with-header custom-bg border-bottom ${isScrolled ? 'header-visible' : ''} ${styles['section__1']}`}
         >
@@ -78,23 +80,23 @@ const Main = observer(() => {
         )}
 
 
-        {/* Секция с продуктами */}
+        {/* Секция с продуктами - ОТЛОЖЕННАЯ ЗАГРУЗКА */}
         {filteredAndSortedProducts.length > 0 && (
           <section className={`section`}>
-
             {/* Контейнер - ограничение ширины */}
             <div className='container'>
-              
               {/* Рекомендуемые продукты */}
               <h2 className='section__title'>Рекомендуем</h2>
-              <ProductCarousel filteredAndSortedProducts={filteredAndSortedProducts} />
+              <Suspense fallback={<div className="loading-placeholder">Загрузка продуктов...</div>}>
+                <ProductCarousel filteredAndSortedProducts={filteredAndSortedProducts} />
+              </Suspense>
             </div>
           </section>
         )}
 
 
 
-        {/* Секция с меню */}
+        {/* Секция с меню - КРИТИЧЕСКИЙ КОНТЕНТ */}
         <section className={`section ${styles['section__3']}`}>
           <div className='container'>
             <h2 className='section__title'>Меню</h2>
@@ -116,7 +118,6 @@ const Main = observer(() => {
 
 
         <section className={`section custom-bg border-top`}>
-
           {/* Контейнер - ограничение ширины */}
           <div className='container'>
             {/* Footer */}

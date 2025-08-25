@@ -19,4 +19,17 @@ export default defineConfig({
   css: {
     devSourcemap: false, // Отключаем source maps для CSS в dev режиме
   },
+  // Оптимизации для dev режима
+  server: {
+    hmr: {
+      overlay: false, // Отключаем overlay для HMR для улучшения производительности
+    },
+  },
+  optimizeDeps: {
+    include: ['react', 'react-dom'], // Предварительно бандлим основные зависимости
+  },
+  // Улучшаем время загрузки в dev режиме
+  esbuild: {
+    target: 'es2020', // Используем современный target для лучшей производительности
+  },
 })
