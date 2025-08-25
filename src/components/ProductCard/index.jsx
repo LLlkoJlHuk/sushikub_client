@@ -5,9 +5,9 @@ import rollPlugImage from '../../assets/images/roll-plug.webp'
 import { getImageUrl } from '../../constants'
 import { formatPrice } from '../../hooks/formatPrice'
 import { useBasketItem } from '../../hooks/useBasketItem'
+import { useLazyImage } from '../../hooks/useLazyImage'
 import Button from '../Button'
 import Counter from '../Counter'
-import LazyImage from '../LazyImage'
 import ProductInfo from '../Modals/ProductInfo'
 import styles from './index.module.scss'
 
@@ -22,6 +22,12 @@ const ProductCard = observer(({
 		handleDecreaseQuantity,
 		getItemQuantity
 	} = useBasketItem(product)
+
+	// Lazy loading для изображений
+	const { imageSrc } = useLazyImage(
+		getImageUrl(product.img),
+		rollPlugImage
+	)
 
 	const handleCardClick = useCallback(() => {
 		setIsModalOpen(true)
@@ -43,23 +49,10 @@ const ProductCard = observer(({
 	return (
 		<div className={styles['product-card']} onClick={handleCardClick}>
 			{/* Картинка продукта */}
-			<div className={styles['product-card__img']} style={{ 
-				width: '100%', 
-				height: '200px', 
-				position: 'relative',
-				overflow: 'hidden'
-			}}>
-				<LazyImage 
-					src={getImageUrl(product.img)}
-					placeholder={rollPlugImage}
+			<div className={styles['product-card__img']}>
+				<img 
+					src={imageSrc} 
 					alt={product.name}
-					threshold={0.1}
-					style={{
-						width: '100%',
-						height: '100%',
-						objectFit: 'cover',
-						objectPosition: 'center'
-					}}
 				/>
 			</div>
 
@@ -110,12 +103,12 @@ const ProductCard = observer(({
 				</div>
 			</div>
 
-			{/* Модальное окно с информацией о продукте */}
 			{isModalOpen && createPortal(
 				<ProductInfo 
+					className='product-info'
+					isOpen={isModalOpen} 
+					onClose={handleCloseModal} 
 					product={product} 
-					onClose={handleCloseModal}
-					isOpen={isModalOpen}
 				/>,
 				document.body
 			)}

@@ -11,8 +11,6 @@ export default class ProductStore {
 		this._productsLoading = false
 		this._typesLoading = false
 		this._initialized = false
-		this._lastFetchTime = null
-		this._cacheExpiry = 5 * 60 * 1000 // 5 минут кэш
 		makeAutoObservable(this)
 	}
 
@@ -49,11 +47,6 @@ export default class ProductStore {
 		return this._initialized
 	}
 
-	// Проверка актуальности кэша
-	get isCacheValid() {
-		return this._lastFetchTime && (Date.now() - this._lastFetchTime) < this._cacheExpiry
-	}
-
 	// Сеттеры
 	setTypes(types) {
 		this._types = types
@@ -73,17 +66,13 @@ export default class ProductStore {
 
 	// Actions для работы с API
 	async fetchCategories() {
-		// Проверяем кэш
-		if (this.isCacheValid && this._categories.length > 0) {
-			return this._categories
-		}
-
 		// Если запрос уже идет, ждем его завершения
 		if (this._categoriesLoading) {
+			// Ждем завершения текущего запроса
 			while (this._categoriesLoading) {
 				await new Promise(resolve => setTimeout(resolve, 50))
 			}
-			return this._categories
+			return
 		}
 		
 		try {
@@ -91,7 +80,6 @@ export default class ProductStore {
 			this.setError(null)
 			const categories = await productApi.getCategories()
 			this.setCategories(categories)
-			this._lastFetchTime = Date.now()
 		} catch (error) {
 			// Специальная обработка ошибок авторизации
 			if (error.response?.status === 401) {
@@ -110,26 +98,13 @@ export default class ProductStore {
 	}
 
 	async fetchTypes() {
-		// Проверяем кэш
-		if (this.isCacheValid && this._types.length > 0) {
-			return this._types
-		}
-
-		// Если запрос уже идет, ждем его завершения
-		if (this._typesLoading) {
-			while (this._typesLoading) {
-				await new Promise(resolve => setTimeout(resolve, 50))
-			}
-			return this._types
-		}
-		
 		try {
-			this._typesLoading = true
 			this.setError(null)
 			const types = await productApi.getTypes()
 			this.setTypes(types)
-			this._lastFetchTime = Date.now()
 		} catch (error) {
+			console.error('Error fetching types:', error)
+			
 			// Специальная обработка ошибок авторизации
 			if (error.response?.status === 401) {
 				this.setError('Сессия истекла. Пожалуйста, войдите в систему заново.')
@@ -141,45 +116,26 @@ export default class ProductStore {
 			
 			// Устанавливаем пустой массив в случае ошибки
 			this.setTypes([])
-		} finally {
-			this._typesLoading = false
 		}
+
 	}
 
-	async fetchProducts() {
-		// Проверяем кэш
-		if (this.isCacheValid && this._products.length > 0) {
-			return this._products
-		}
-
-		// Если запрос уже идет, ждем его завершения
-		if (this._productsLoading) {
-			while (this._productsLoading) {
-				await new Promise(resolve => setTimeout(resolve, 50))
-			}
-			return this._products
-		}
-		
+	async fetchProducts(params = {}) {
 		try {
-			this._productsLoading = true
 			this.setError(null)
-			const products = await productApi.getProducts()
-			this.setProducts(products)
-			this._lastFetchTime = Date.now()
+			const response = await productApi.getProducts(params)
+			this.setProducts(response || [])
 		} catch (error) {
+			console.error('Error fetching products:', error)
+			
 			// Специальная обработка ошибок авторизации
 			if (error.response?.status === 401) {
 				this.setError('Сессия истекла. Пожалуйста, войдите в систему заново.')
 			} else if (error.response?.data?.message) {
 				this.setError(error.response.data.message)
 			} else {
-				this.setError(`Ошибка при загрузке продуктов: ${error.message}`)
+				this.setError(`Ошибка при загрузке товаров: ${error.message}`)
 			}
-			
-			// Устанавливаем пустой массив в случае ошибки
-			this.setProducts([])
-		} finally {
-			this._productsLoading = false
 		}
 	}
 
@@ -376,23 +332,18 @@ export default class ProductStore {
 		}
 		
 		try {
-			// Загружаем только критические данные для первого рендера
+			// Загружаем категории первыми - они критически важны для навигации
 			await this.fetchCategories()
 			
-			// Устанавливаем флаг инициализации после загрузки категорий
-			this._initialized = true
+			// Остальные данные загружаем параллельно
+			await Promise.all([
+				this.fetchTypes(),
+				this.fetchProducts()
+			])
 			
-			// Остальные данные загружаем в фоне
-			this.fetchTypes().catch(console.error)
-			this.fetchProducts().catch(console.error)
+			this._initialized = true
 		} catch {
 			// Не устанавливаем initialized = true при ошибке
 		}
-	}
-
-	// Принудительное обновление кэша
-	async refreshCache() {
-		this._lastFetchTime = null
-		await this.initializeData()
 	}
 }
