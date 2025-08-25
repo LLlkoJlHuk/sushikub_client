@@ -3,7 +3,6 @@ import { createRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
 import App from './App'
 import './assets/css/index.scss'
-import CriticalCSS from './components/CriticalCSS'
 import BannerStore from './store/BannerStore'
 import BasketStore from './store/BasketStore'
 import ProductStore from './store/ProductStore'
@@ -35,7 +34,6 @@ if ('serviceWorker' in navigator) {
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <CriticalCSS />
     <BrowserRouter>
       <Context.Provider value={{ users, products, banners, basket, settings }}>
         <App />

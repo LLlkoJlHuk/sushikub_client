@@ -10,8 +10,8 @@ const MenuCard = React.memo(function MenuCard({
 	img,
 	name,
 }) {
-	// Lazy loading для изображения категории с Intersection Observer
-	const { imageSrc, isLoading, imgRef } = useLazyImage(
+	// Lazy loading для изображения категории
+	const { imageSrc, isLoading } = useLazyImage(
 		getImageUrl(img),
 		rollPlugImage
 	)
@@ -22,11 +22,10 @@ const MenuCard = React.memo(function MenuCard({
 			href={`${CATEGORY_ROUTE}/${id}`} 
 			className={`${styles['menu-card']} ${styles[`menu-card--${id}`]} ${isLoading ? styles['menu-card--loading'] : ''}`}
 		>
-			<div className={styles['menu-card__img']} ref={imgRef}>
+			<div className={styles['menu-card__img']}>
 				<img 
 					src={imageSrc} 
 					alt={name}
-					loading="lazy"
 				/>
 			</div>
 

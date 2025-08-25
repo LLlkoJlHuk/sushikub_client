@@ -23,8 +23,8 @@ const ProductCard = observer(({
 		getItemQuantity
 	} = useBasketItem(product)
 
-	// Lazy loading для изображений с Intersection Observer
-	const { imageSrc, imgRef } = useLazyImage(
+	// Lazy loading для изображений
+	const { imageSrc } = useLazyImage(
 		getImageUrl(product.img),
 		rollPlugImage
 	)
@@ -49,11 +49,10 @@ const ProductCard = observer(({
 	return (
 		<div className={styles['product-card']} onClick={handleCardClick}>
 			{/* Картинка продукта */}
-			<div className={styles['product-card__img']} ref={imgRef}>
+			<div className={styles['product-card__img']}>
 				<img 
 					src={imageSrc} 
 					alt={product.name}
-					loading="lazy"
 				/>
 			</div>
 
