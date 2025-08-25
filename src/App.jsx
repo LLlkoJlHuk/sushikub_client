@@ -10,23 +10,15 @@ const App = observer(() => {
     if (!products.initialized) {
       const initData = async () => {
         try {
-          // Приоритизируем загрузку продуктов, так как они нужны для FCP
-          await products.initializeData()
-          
-          // Загружаем баннеры в фоне (не критично для FCP)
-          banners.fetchBanners().catch(console.error)
+          await Promise.all([
+            products.initializeData(),
+            banners.fetchBanners()
+          ])
         } catch (error) {
           console.error(error)
         }
       }
-      
-      // Используем requestIdleCallback для неблокирующей загрузки
-      if ('requestIdleCallback' in window) {
-        requestIdleCallback(() => initData(), { timeout: 1000 })
-      } else {
-        // Fallback для старых браузеров
-        setTimeout(initData, 0)
-      }
+      initData()
     }
   }, [])
 

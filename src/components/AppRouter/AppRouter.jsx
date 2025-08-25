@@ -1,19 +1,9 @@
 import { observer } from 'mobx-react-lite'
-import React, { Suspense, lazy, useContext, useEffect } from 'react'
+import React, { useContext, useEffect } from 'react'
 import { Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import { ADMIN_ROUTE, LOGIN_ROUTE, MAIN_ROUTE } from '../../constants'
 import { Context } from '../../main'
 import { authRoutes, publicRoutes } from '../../routes'
-import Loading from '../Loading'
-
-// Lazy loading для всех страниц
-const Main = lazy(() => import('../../pages/Main'))
-const CategoryPage = lazy(() => import('../../pages/CategoryPage'))
-const Cart = lazy(() => import('../../pages/Cart'))
-const Order = lazy(() => import('../../pages/Order'))
-const SearchResults = lazy(() => import('../../pages/SearchResults'))
-const Admin = lazy(() => import('../../pages/Admin'))
-const Auth = lazy(() => import('../../pages/Auth'))
 
 const AppRouter = observer(() => {
 	const context = useContext(Context)
@@ -44,25 +34,23 @@ const AppRouter = observer(() => {
 	}
 
 	return (
-		<Suspense fallback={<Loading />}>
-			<Routes>
-				{/* Публичные роуты доступны всем */}
-				{publicRoutes.map(({ path, Component }) => ( // eslint-disable-line no-unused-vars
-					<Route key={path} path={path} element={<Component />} />
-				))}
-				
-				{/* Авторизированные роуты доступны только авторизированным пользователям */}
-				{authRoutes.map(({ path, Component }) => ( // eslint-disable-line no-unused-vars
-					<Route 
-						key={path} 
-						path={path} 
-						element={<Component />}
-					/>
-				))}
-				
-				<Route path="*" element={<Navigate to={MAIN_ROUTE} replace />} />
-			</Routes>
-		</Suspense>
+		<Routes>
+			{/* Публичные роуты доступны всем */}
+			{publicRoutes.map(({ path, Component }) => ( // eslint-disable-line no-unused-vars
+				<Route key={path} path={path} element={<Component />} />
+			))}
+			
+			{/* Авторизированные роуты доступны только авторизированным пользователям */}
+			{authRoutes.map(({ path, Component }) => ( // eslint-disable-line no-unused-vars
+				<Route 
+					key={path} 
+					path={path} 
+					element={<Component />}
+				/>
+			))}
+			
+			<Route path="*" element={<Navigate to={MAIN_ROUTE} replace />} />
+		</Routes>
 	)
 })
 
