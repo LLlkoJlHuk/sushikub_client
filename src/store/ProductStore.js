@@ -64,10 +64,6 @@ export default class ProductStore {
 		this._error = error
 	}
 
-	setInitialized(value) {
-		this._initialized = value
-	}
-
 	// Actions для работы с API
 	async fetchCategories() {
 		// Если запрос уже идет, ждем его завершения
@@ -344,7 +340,7 @@ export default class ProductStore {
 				this.fetchProducts()
 			])
 			
-			this.setInitialized(true)
+			this._initialized = true
 		} catch {
 			// Не устанавливаем initialized = true при ошибке
 		}

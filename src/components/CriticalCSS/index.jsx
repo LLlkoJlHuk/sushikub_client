@@ -59,32 +59,14 @@ const CriticalCSS = () => {
           font-size: 1.1rem;
         }
         
-        /* Fallback для баннеров */
-        .banner-carousel-fallback {
-          width: 100%;
-          height: 400px;
-          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          text-align: center;
-          color: white;
-          border-radius: 12px;
-          margin: 2rem 0;
+        /* Анимации для плавного появления */
+        @keyframes fadeIn {
+          from { opacity: 0; transform: translateY(20px); }
+          to { opacity: 1; transform: translateY(0); }
         }
         
-        .banner-carousel-fallback__content h2 {
-          font-size: 2.5rem;
-          font-weight: 700;
-          margin: 0 0 1rem 0;
-          text-shadow: 0 2px 4px rgba(0,0,0,0.3);
-        }
-        
-        .banner-carousel-fallback__content p {
-          font-size: 1.2rem;
-          margin: 0;
-          opacity: 0.9;
-          text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        .fade-in {
+          animation: fadeIn 0.6s ease-out;
         }
       `
     }} />

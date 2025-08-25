@@ -1,14 +1,8 @@
 import { $authHost, $host } from "."
 
 export const getBanners = async (params = {}) => {
-	try {
-		const response = await $host.get('/banner', { params })
-		const { data } = response
-		return data
-	} catch (error) {
-		console.error('bannerApi: getBanners error:', error)
-		throw error
-	}
+	const { data } = await $host.get('/banner', { params })
+	return data
 }
 
 export const createBanner = async (banner) => {

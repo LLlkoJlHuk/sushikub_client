@@ -8,9 +8,22 @@
     <!-- Meta теги для SEO и производительности -->
     <meta name="description" content="Доставка суши и роллов в вашем городе. Быстро, вкусно, качественно." />
     <meta name="theme-color" content="#ffffff" />
-    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="default" />
     <meta name="apple-mobile-web-app-title" content="SushiKub" />
+    
+    <!-- Preload критических ресурсов -->
+    <link rel="preload" href="/src/main.jsx" as="script" type="module" />
+    <link rel="preload" href="/src/assets/css/index.scss" as="style" />
+    
+    <!-- Preload критических изображений -->
+    <link rel="preload" href="/src/assets/images/roll-plug.webp" as="image" type="image/webp" />
+    
+    <!-- Preload критических шрифтов -->
+    <link rel="preload" href="/src/assets/css/fonts/Roboto/regular.woff2" as="font" type="font/woff2" crossorigin />
+    
+    <!-- DNS prefetch для внешних ресурсов -->
+    <link rel="dns-prefetch" href="//fonts.googleapis.com" />
     
     <!-- Favicon и иконки -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" />
@@ -40,6 +53,41 @@
         padding: 2rem; 
         color: #666; 
         font-size: 1.1rem; 
+      }
+      .page {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .section {
+        width: 100%;
+      }
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 1rem;
+      }
+      .custom-bg {
+        background-color: #f8f9fa;
+      }
+      .border-bottom {
+        border-bottom: 1px solid #e9ecef;
+      }
+      .border-top {
+        border-top: 1px solid #e9ecef;
+      }
+      .section__title {
+        font-size: 2rem;
+        font-weight: 600;
+        text-align: center;
+        margin: 2rem 0;
+        color: #333;
+      }
+      .menu-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 1.5rem;
+        padding: 1rem 0;
       }
       /* Оптимизация для изображений */
       img {

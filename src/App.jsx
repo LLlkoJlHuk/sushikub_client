@@ -9,13 +9,13 @@ const App = observer(() => {
   // Оптимизированная инициализация данных
   const initData = useCallback(async () => {
     try {
-      // Загружаем продукты и баннеры параллельно
-      await Promise.all([
-        products.initializeData(),
-        banners.fetchBanners()
-      ])
+      // Приоритизируем загрузку продуктов, так как они нужны для FCP
+      await products.initializeData()
+      
+      // Загружаем баннеры в фоне (не критично для FCP)
+      banners.fetchBanners().catch(console.error)
     } catch (error) {
-      console.error('App: Error initializing data:', error)
+      console.error(error)
     }
   }, [products, banners])
 

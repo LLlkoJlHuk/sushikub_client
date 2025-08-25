@@ -5,7 +5,9 @@ const DYNAMIC_CACHE = 'sushikub-dynamic-v1'
 // Ресурсы для предварительного кэширования
 const STATIC_ASSETS = [
   '/',
-  '/index.html'
+  '/index.html',
+  '/src/main.jsx',
+  '/src/assets/css/index.scss'
 ]
 
 // Установка Service Worker
@@ -44,7 +46,12 @@ self.addEventListener('fetch', (event) => {
     event.respondWith(
       caches.match(request)
         .then((response) => {
-          return response || fetch(request)
+          return response || fetch(request).then((fetchResponse) => {
+            return caches.open(DYNAMIC_CACHE).then((cache) => {
+              cache.put(request, fetchResponse.clone())
+              return fetchResponse
+            })
+          })
         })
     )
     return
@@ -54,6 +61,15 @@ self.addEventListener('fetch', (event) => {
   if (request.url.includes('/api/')) {
     event.respondWith(
       fetch(request)
+        .then((response) => {
+          if (response.status === 200) {
+            const responseClone = response.clone()
+            caches.open(DYNAMIC_CACHE).then((cache) => {
+              cache.put(request, responseClone)
+            })
+          }
+          return response
+        })
         .catch(() => {
           return caches.match(request)
         })
@@ -65,7 +81,12 @@ self.addEventListener('fetch', (event) => {
   event.respondWith(
     caches.match(request)
       .then((cachedResponse) => {
-        const fetchPromise = fetch(request)
+        const fetchPromise = fetch(request).then((networkResponse) => {
+          caches.open(DYNAMIC_CACHE).then((cache) => {
+            cache.put(request, networkResponse.clone())
+          })
+          return networkResponse
+        })
         return cachedResponse || fetchPromise
       })
   )
