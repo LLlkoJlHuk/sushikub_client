@@ -3,7 +3,30 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
-    <title>Vite + React template</title>
+    <title>SushiKub - Доставка суши и роллов</title>
+    
+    <!-- Оптимизация производительности -->
+    <meta name="description" content="Доставка суши, роллов и японской кухни. Быстро, вкусно, качественно!" />
+    
+    <!-- Предзагрузка критических ресурсов -->
+    <link rel="preconnect" href="http://localhost:5000" />
+    <link rel="dns-prefetch" href="http://localhost:5000" />
+    
+    <!-- Предзагрузка шрифтов -->
+    <link rel="preload" href="/src/assets/css/fonts/Chinacyr/regular.woff" as="font" type="font/woff" crossorigin />
+    <link rel="preload" href="/src/assets/css/fonts/Roboto/regular.woff" as="font" type="font/woff" crossorigin />
+    
+    <!-- Предзагрузка критических изображений -->
+    <link rel="preload" href="/src/assets/images/desktop_banner--plug.webp" as="image" />
+    <link rel="preload" href="/src/assets/images/mobile_banner--plug.webp" as="image" />
+    
+    <!-- Критические CSS -->
+    <link rel="preload" href="/src/assets/css/index.scss" as="style" />
+    
+    <!-- Оптимизация для мобильных устройств -->
+    <meta name="theme-color" content="#ffffff" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
   </head>
   <body>
     <div id="root"></div>
