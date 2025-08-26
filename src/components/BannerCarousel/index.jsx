@@ -19,14 +19,12 @@ const BannerCarousel = observer(() => {
 	})
 
 	useEffect(() => {
-		// Настройки уже загружены в App.jsx при старте приложения
-		// Получаем значения напрямую из store
 		const bannerCarouselInterval = settings.getSettingValue('BANNER_CAROUSEL_INTERVAL', '')
 		
 		setSettingsData({ 
 			bannerCarouselInterval: bannerCarouselInterval
 		})
-	}, [settings, settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings, settings.settingsObject])
 
 	const { bannerCarouselInterval } = settingsData
 

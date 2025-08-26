@@ -39,14 +39,12 @@ const OrderCart = ({ basket, order }) => {
   }
 
 	useEffect(() => {
-		// Настройки уже загружены в App.jsx при старте приложения
-		// Получаем значения напрямую из store
 		const deliveryDiscount = settings.getSettingValue('DELIVERY_DISCOUNT', '')
 		
 		setSettingsData({ 
 			deliveryDiscount: deliveryDiscount
 		})
-	}, [settings, settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings, settings.settingsObject]) 
 
 	const { deliveryDiscount } = settingsData
 

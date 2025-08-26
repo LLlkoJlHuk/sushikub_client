@@ -47,6 +47,78 @@ body{
   @include bigPhone {
     padding-bottom: 230px;
   }
+
+  &-sale {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+
+    &__banner {
+      overflow: hidden;
+
+      width: 100%;
+      max-width: 1000px;
+
+      border-radius: 16px;
+
+      img {
+        width: 100%;
+      }
+
+      @include tablet {
+        width: 100%;
+        max-width: 350px;
+      }
+    }
+
+    &__content {
+      margin-top: 48px;
+
+      width: 100%;
+      max-width: 1000px;
+      
+      &-title {
+        font-size: $fz-xlarge;
+        font-weight: 700;
+
+        @include smallTablet {
+          font-size: $fz-xlarge - 4px;
+        }
+      }
+
+      &-description {
+        margin-top: 18px;
+        
+        color: $gray;
+        font-size: $fz-default;
+        font-weight: 400;
+        line-height: 140%;
+
+        @include smallTablet {
+          font-size: $fz-default - 2px;
+        }
+
+        span {
+          color: $white;
+          font-weight: 600;
+        }
+      }
+
+      &-bonus {
+        margin-top: 18px;
+        
+        color: $white;
+        font-size: $fz-default;
+        font-weight: 400;
+        line-height: 140%;
+
+        @include smallTablet {
+          font-size: $fz-default - 2px;
+        }
+      }
+    }
+  }
 }
 
 .section {
@@ -171,20 +243,22 @@ body{
       background: url('../../assets/images/bg_pattern.webp') center center repeat;
       background-size: contain;
 
+      &:not(.main-page) {
+        @include bigTablet {
+          content: none;
+        }
+      }
+
       @include desktop-small {
         height: 17px;
         background-size: cover;
-      }
-
-      @include bigTablet {
-        content: none;
       }
     }
   }
 }
 
 .modal {
-  &.add-product, &.edit-product, &.categories, &.settings, &.add-category, &.add-banner, &.edit-banner, &.banners, &.product-info  {
+  &.add-product, &.edit-product, &.categories, &.settings, &.add-category, &.add-banner, &.edit-banner, &.banners, &.product-info, &.we-are-closed  {
     @include smallTablet {
       margin: 5%;
       max-width: 100%;
@@ -221,6 +295,11 @@ body{
   &.banners {
     width: 100%;
     max-width: 900px;
+  }
+
+  &.we-are-closed {
+    width: 100%;
+    max-width: 424px;
   }
 
   &.product-info {

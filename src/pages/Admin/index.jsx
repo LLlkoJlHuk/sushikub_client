@@ -90,8 +90,6 @@ const Admin = observer(() => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Загружаем данные только один раз при монтировании
-        // Настройки уже загружены в App.jsx при старте приложения
         await products.fetchProducts()
         await products.fetchCategories()
         await products.fetchTypes()

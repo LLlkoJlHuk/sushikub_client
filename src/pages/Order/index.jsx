@@ -28,8 +28,6 @@ const Order = observer(() => {
 	})
 
 	useEffect(() => {
-		// Настройки уже загружены в App.jsx при старте приложения
-		// Получаем значения напрямую из store
 		const globalMessage = settings.getSettingValue('GLOBAL_MESSAGE', '')
 		const minOrderPriceForDelivery = settings.getSettingValue('MIN_ORDER_PRICE_FOR_DELIVERY', '')
 		const maxOrderPrice = settings.getSettingValue('MAX_ORDER_PRICE', '')
@@ -39,7 +37,7 @@ const Order = observer(() => {
 			minOrderPriceForDelivery: minOrderPriceForDelivery,
 			maxOrderPrice: maxOrderPrice
 		})
-	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings.settingsObject])
 
 	const { globalMessage, minOrderPriceForDelivery, maxOrderPrice } = settingsData
 

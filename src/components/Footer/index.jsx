@@ -24,8 +24,6 @@ const Footer = observer(() => {
 	})
 
 	useEffect(() => {
-		// Настройки уже загружены в App.jsx при старте приложения
-		// Получаем значения напрямую из store
 		const code = settings.getSettingValue('PHONE_NUMBER_CODE', '')
 		const number = settings.getSettingValue('PHONE_NUMBER', '')
 		const formatted = settings.getSettingValue('PHONE_NUMBER_FORMATTED', '')
@@ -39,7 +37,7 @@ const Footer = observer(() => {
 			workingTimeStart: workingTimeStart,
 			workingTimeEnd: workingTimeEnd
 		})
-	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings.settingsObject])
 
 	const { phoneNumberCode, phoneNumber, phoneNumberFormatted, workingTimeStart, workingTimeEnd } = settingsData
 	

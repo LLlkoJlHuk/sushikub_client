@@ -23,8 +23,6 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
 	})
 
 	useEffect(() => {
-		// Настройки уже загружены в App.jsx при старте приложения
-		// Получаем значения напрямую из store
 		const minOrderPriceForDelivery = settings.getSettingValue('MIN_ORDER_PRICE_FOR_DELIVERY', '')
 		const deliveryDiscount = settings.getSettingValue('DELIVERY_DISCOUNT', '')
 		const maxCommentLength = settings.getSettingValue('MAX_COMMENT_LENGTH', '')
@@ -34,7 +32,7 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
 			deliveryDiscount: deliveryDiscount,
 			maxCommentLength: maxCommentLength
 		})
-	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings.settingsObject]) 
 
 	const { minOrderPriceForDelivery, deliveryDiscount, maxCommentLength } = settingsData
   const deliveryFieldsRef = useRef(null)

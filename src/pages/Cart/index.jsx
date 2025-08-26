@@ -23,8 +23,6 @@ const Cart = observer(() => {
 	})
 
 	useEffect(() => {
-		// Настройки уже загружены в App.jsx при старте приложения
-		// Получаем значения напрямую из store
 		const globalMessage = settings.getSettingValue('GLOBAL_MESSAGE', '')
 		const maxQuantityForOneProduct = settings.getSettingValue('MAX_QUANTITY_FOR_ONE_PRODUCT', '')
 		const maxQuantityPersons = settings.getSettingValue('MAX_QUANTITY_PERSONS', '')
@@ -34,7 +32,7 @@ const Cart = observer(() => {
 			maxQuantityForOneProduct: maxQuantityForOneProduct,
 			maxQuantityPersons: maxQuantityPersons
 		})
-	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings.settingsObject]) 
 
 	const { globalMessage, maxQuantityPersons, maxQuantityForOneProduct } = settingsData
 

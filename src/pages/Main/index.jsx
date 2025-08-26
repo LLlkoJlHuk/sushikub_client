@@ -20,14 +20,12 @@ const Main = observer(() => {
 	})
 
 	useEffect(() => {
-		// Настройки уже загружены в App.jsx при старте приложения
-		// Получаем значения напрямую из store
 		const globalMessage = settings.getSettingValue('GLOBAL_MESSAGE', '')
 		
 		setSettingsData({ 
 			globalMessage: globalMessage
 		})
-	}, [settings, settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings, settings.settingsObject])
 
 	const { globalMessage } = settingsData
 
@@ -55,7 +53,7 @@ const Main = observer(() => {
 
         {/* Секция с хедером и каруселью */}
         <section 
-          className={`section section-with-header custom-bg border-bottom ${isScrolled ? 'header-visible' : ''} ${styles['section__1']}`}
+          className={`section section-with-header custom-bg border-bottom main-page ${isScrolled ? 'header-visible' : ''} ${styles['section__1']}`}
         >
           {/* Header */}
           <Header isScrolled={isScrolled} isTimedOut={isTimedOut} isScrolledBack={isScrolledBack} isTimedOutBack={isTimedOutBack} />

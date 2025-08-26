@@ -16,6 +16,7 @@ const DeliveryTimePicker = observer(({
   const [minutesInput, setMinutesInput] = useState('')
   const [timeError, setTimeError] = useState('')
   const [timeInfo, setTimeInfo] = useState('')
+  const [timeWarning, setTimeWarning] = useState('')
   const [isWorkingHoursError, setIsWorkingHoursError] = useState(false)
   const [currentMonth, setCurrentMonth] = useState(new Date())
   
@@ -32,8 +33,6 @@ const DeliveryTimePicker = observer(({
 	})
 
 	useEffect(() => {
-		// Настройки уже загружены в App.jsx при старте приложения
-		// Получаем значения напрямую из store
 		const workingTimeStart = settings.getSettingValue('WORKING_TIME_START', '')
 		const workingTimeEnd = settings.getSettingValue('WORKING_TIME_END', '')
 		const minDeliveryDelay = settings.getSettingValue('MIN_DELIVERY_DELAY_MINUTES', '')
@@ -45,7 +44,7 @@ const DeliveryTimePicker = observer(({
 			minDeliveryDelay: minDeliveryDelay,
 			maxDeliveryDays: maxDeliveryDays
 		})
-	}, [settings.settingsObject]) // Реагируем на изменения в настройках
+	}, [settings.settingsObject])
 
 	const { workingTimeStart, workingTimeEnd, minDeliveryDelay, maxDeliveryDays } = settingsData
   
@@ -208,6 +207,7 @@ const DeliveryTimePicker = observer(({
     if (numbers === '') {
       setHoursInput('')
       setTimeError('')
+      setTimeWarning('')
       setIsWorkingHoursError(false)
       return
     }
@@ -236,6 +236,7 @@ const DeliveryTimePicker = observer(({
     if (numbers === '') {
       setMinutesInput('')
       setTimeError('')
+      setTimeWarning('')
       setIsWorkingHoursError(false)
       return
     }
@@ -302,7 +303,15 @@ const DeliveryTimePicker = observer(({
     // Проверяем, что оба поля заполнены
     if (!hoursInput || !minutesInput) {
       setTimeError('') // Сбрасываем ошибку только если поля не заполнены
+      setTimeWarning('')
       setIsWorkingHoursError(false)
+      return
+    }
+
+    // Ждем полного ввода: оба поля должны содержать по 2 цифры
+    if (hoursInput.length < 2 || minutesInput.length < 2) {
+      setTimeWarning('')
+      // Не показываем ошибок, пока пользователь допечатывает
       return
     }
     
@@ -317,6 +326,7 @@ const DeliveryTimePicker = observer(({
     // Валидация формата времени
     if (!/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/.test(timeString)) {
       setTimeError('Введите корректное время')
+      setTimeWarning('')
       setIsWorkingHoursError(false)
       return
     }
@@ -326,6 +336,7 @@ const DeliveryTimePicker = observer(({
     const minutes = parseInt(minutesInput)
     if (hours < 0 || hours > 23 || minutes < 0 || minutes > 59) {
       setTimeError('Введите корректное время')
+      setTimeWarning('')
       setIsWorkingHoursError(false)
       return
     }
@@ -333,6 +344,7 @@ const DeliveryTimePicker = observer(({
     // Проверяем, закрыт ли наш сервис
     if (isStoreClosed(timeString)) {
       setTimeError('')
+      setTimeWarning('')
       setIsWorkingHoursError(true)
       return
     }
@@ -355,18 +367,28 @@ const DeliveryTimePicker = observer(({
        
        if (selectedTime < earliestTimeRounded) {
          const earliestTimeString = `${earliestTimeRounded.getHours().toString().padStart(2, '0')}:${earliestTimeRounded.getMinutes().toString().padStart(2, '0')}`
-         setTimeError(`Самое раннее время доставки: ${earliestTimeString}`)
+         setTimeError(`Самое раннее доступное время: ${earliestTimeString}`)
+         setTimeWarning('')
          setIsWorkingHoursError(false)
          return
+       }
+       // Предупреждение: если выбранное время ближе, чем на 90 минут от текущего
+       const ninetyMinutesMs = 90 * 60 * 1000
+       if (selectedTime.getTime() - now.getTime() < ninetyMinutesMs) {
+         setTimeWarning('В зависимости от загрузки время может измениться, актуальную информацию уточняйте у оператора')
+       } else {
+         setTimeWarning('')
        }
          } else {
        // Для других дней проверяем только рабочие часы
        // Разрешаем время до 23:00 включительно (23:00 можно, 23:01 уже нельзя)
        if (hours < workingHours.start || hours > workingHours.end || (hours === workingHours.end && minutes > 0)) {
          setTimeError('')
+         setTimeWarning('')
          setIsWorkingHoursError(true)
          return
        }
+       setTimeWarning('')
      }
     
     // Если все проверки пройдены, очищаем ошибку
@@ -378,15 +400,18 @@ const DeliveryTimePicker = observer(({
   const handleConfirm = () => {
     if (!selectedDate) {
       setTimeError('Выберите дату доставки')
+      setTimeWarning('')
       return
     }
     
     if (!hoursInput || !minutesInput) {
       setTimeError('Введите время доставки')
+      setTimeWarning('')
       return
     }
     
     if (timeError || isWorkingHoursError) {
+      setTimeWarning('')
       return
     }
     
@@ -433,22 +458,23 @@ const DeliveryTimePicker = observer(({
         if (isToday) {
           // Если выбрана сегодняшняя дата, показываем информацию о доступности
           if (!canOrderToday()) {
-            setTimeInfo('Сегодня заказ недоступен - слишком поздно для доставки')
-                     } else {
-             // Показываем самое раннее время доставки для сегодня
-             const earliestTime = new Date(now.getTime() + minDeliveryDelay * 60000)
-             // Округляем вниз до минут для отображения
-             const earliestTimeRounded = new Date(earliestTime)
-             earliestTimeRounded.setSeconds(0, 0)
-             const earliestTimeString = `${earliestTimeRounded.getHours().toString().padStart(2, '0')}:${earliestTimeRounded.getMinutes().toString().padStart(2, '0')}`
-             setTimeInfo(`Самое раннее время доставки: ${earliestTimeString}`)
-           }
+            setTimeInfo('Сегодня заказ недоступен - мы закрыты')
+                    } else {
+            // Показываем самое раннее время доставки для сегодня
+            const earliestTime = new Date(now.getTime() + minDeliveryDelay * 60000)
+            // Округляем вниз до минут для отображения
+            const earliestTimeRounded = new Date(earliestTime)
+            earliestTimeRounded.setSeconds(0, 0)
+            const earliestTimeString = `${earliestTimeRounded.getHours().toString().padStart(2, '0')}:${earliestTimeRounded.getMinutes().toString().padStart(2, '0')}`
+            setTimeInfo(`Самое раннее доступное время: ${earliestTimeString}`)
+          }
         }
       }
     } else {
       // Если дата не выбрана, очищаем ошибку времени и информационное сообщение
       setTimeError('')
       setTimeInfo('')
+      setTimeWarning('')
       setIsWorkingHoursError(false)
     }
   }, [selectedDate, hoursInput, minutesInput])
@@ -532,7 +558,7 @@ const DeliveryTimePicker = observer(({
                 onChange={(e) => handleHoursChange(e.target.value)}
                 onKeyDown={handleHoursKeyDown}
                 maxLength={2}
-                inputmode="numeric"
+                inputMode="numeric"
                 style={{ width: '35px', height: '30px', textAlign: 'center' }}
               />
           <span style={{ color: 'white', fontSize: '16px' }}>:</span>
@@ -545,7 +571,7 @@ const DeliveryTimePicker = observer(({
                 onChange={(e) => handleMinutesChange(e.target.value)}
                 onKeyDown={handleMinutesKeyDown}
                 maxLength={2}
-                inputmode="numeric"
+                inputMode="numeric"
                 style={{ width: '35px', height: '30px', textAlign: 'center' }}
               />
            </div>
@@ -559,6 +585,11 @@ const DeliveryTimePicker = observer(({
              {timeInfo}
            </div>
          )}
+         {timeWarning && !timeError && !isWorkingHoursError && (
+          <div className={styles.infoMessage}>
+            {timeWarning}
+          </div>
+        )}
         <div className={`${styles.timeInfo} ${isWorkingHoursError ? styles.error : ''}`}>
           Мы работаем с {workingTimeStart} до {workingTimeEnd}
         </div>

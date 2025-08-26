@@ -13,6 +13,14 @@ export const SALES_ROUTE = '/sales'
 export const DELIVERY_ROUTE = '/delivery'
 export const POLICY_ROUTE = '/policy'
 
+// Маршруты для страниц акций
+export const SALE_0_ROUTE = '/sales/sale-0'
+export const SALE_1_ROUTE = '/sales/sale-1'
+export const SALE_2_ROUTE = '/sales/sale-2'
+export const SALE_3_ROUTE = '/sales/sale-3'
+export const SALE_4_ROUTE = '/sales/sale-4'
+export const SALE_5_ROUTE = '/sales/sale-5'
+
 // Массив филиалов для выпадающего списка
 export const BRANCHES = [
   {

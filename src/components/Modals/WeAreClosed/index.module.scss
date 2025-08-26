@@ -1,0 +1,76 @@
+@use '../../../assets/css/variables' as *;
+@use '../../../assets/css/mixins.scss' as *;
+
+.we-are-closed {
+	>div {
+		&:last-child {
+			padding: 48px 16px 24px !important;
+		}
+	}
+
+    &__content {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+
+		img {
+			width: 100%;
+			max-width: 100px;
+
+			@include smallTablet {
+				max-width: 70px;
+			}
+		}
+
+		&__title {
+			margin-top: 24px;
+			width: 100%;
+
+			text-align: center;
+			font-size: $fz-large;
+
+			@include smallTablet {
+				font-size: $fz-default + 1px;
+			}
+		}
+
+		&__sub-title {
+			margin-top: 24px;
+			width: 100%;
+
+			text-align: center;
+			font-size: $fz-default;
+
+			@include smallTablet {
+				margin-top: 12px;
+				font-size: $fz-small;
+			}
+		}
+
+		&__description {
+			margin-top: 3px;
+			width: 100%;
+			text-align: center;
+			font-size: $fz-small;
+		}
+
+		&__button {
+			margin-top: 24px;
+			width: 100%;
+			height: 40px;
+
+			display: flex;
+			justify-content: center;
+			align-items: center;
+
+			text-align: center;
+			font-size: $fz-default;
+
+			@include smallTablet {
+				height: 35px;
+				font-size: $fz-small;
+			}
+		}
+    }
+}

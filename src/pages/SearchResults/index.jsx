@@ -24,14 +24,12 @@ const SearchResults = observer(() => {
 	})
 
 	useEffect(() => {
-		// Настройки уже загружены в App.jsx при старте приложения
-		// Получаем значения напрямую из store
 		const globalMessage = settings.getSettingValue('GLOBAL_MESSAGE', '')
 		
 		setSettingsData({ 
 			globalMessage: globalMessage
 		})
-	}, [settings.settingsObject, settings]) // Реагируем на изменения в настройках
+	}, [settings.settingsObject, settings])
 
 	const { globalMessage } = settingsData
 
