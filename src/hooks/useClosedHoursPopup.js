@@ -23,36 +23,30 @@ const buildClosedWindowKeyResolver = (startStr, endStr, offsetHours) => {
   const end = parseTime(endStr)
   return () => {
     const d = getNowInGmtOffset(offsetHours)
-    const year = d.getUTCFullYear()
-    const month = (d.getUTCMonth() + 1).toString().padStart(2, '0')
-    const day = d.getUTCDate().toString().padStart(2, '0')
-    const hours = d.getUTCHours()
-    const minutes = d.getUTCMinutes()
+    const year = d.getFullYear()
+    const month = (d.getMonth() + 1).toString().padStart(2, '0')
+    const day = d.getDate().toString().padStart(2, '0')
+    const hours = d.getHours()
+    const minutes = d.getMinutes()
 
     if (!start || !end) return null
 
-    const startMinus = new Date(Date.UTC(year, d.getUTCMonth(), d.getUTCDate(), start.h, start.m))
-    startMinus.setUTCMinutes(startMinus.getUTCMinutes() - 1)
+    // Создаем время в минутах для более простого сравнения
+    const currentTimeInMinutes = hours * 60 + minutes
+    const startTimeInMinutes = start.h * 60 + start.m
+    const endTimeInMinutes = end.h * 60 + end.m
 
-    const inMorning = (
-      hours < startMinus.getUTCHours() ||
-      (hours === startMinus.getUTCHours() && minutes <= startMinus.getUTCMinutes())
-    )
-    if (inMorning) {
+    // Если текущее время до начала работы (включая буфер в 1 минуту)
+    if (currentTimeInMinutes < startTimeInMinutes) {
       return `${year}-${month}-${day}-morning`
     }
 
-    const endPlus = new Date(Date.UTC(year, d.getUTCMonth(), d.getUTCDate(), end.h, end.m))
-    endPlus.setUTCMinutes(endPlus.getUTCMinutes() + 1)
-
-    const inEvening = (
-      hours > endPlus.getUTCHours() ||
-      (hours === endPlus.getUTCHours() && minutes >= endPlus.getUTCMinutes())
-    )
-    if (inEvening) {
+    // Если текущее время после окончания работы (включая буфер в 1 минуту)
+    if (currentTimeInMinutes > endTimeInMinutes) {
       return `${year}-${month}-${day}-evening`
     }
 
+    // Если время в рабочих часах, возвращаем null (окно не показываем)
     return null
   }
 }

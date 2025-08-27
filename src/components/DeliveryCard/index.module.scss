@@ -1,0 +1,56 @@
+@use '../../assets/css/variables' as *;
+@use '../../assets/css/mixins' as *;
+
+.delivery-card {
+	padding: 24px 20px;
+
+	width: 100%;
+	position: relative;
+	max-width: 400px;
+	height: auto;
+	min-height: 150px;
+
+	background: rgba($color: $gray, $alpha: .1);
+	box-shadow: 0 6px 24px rgba(0, 0, 0, 0.3);
+	border-radius: 12px;
+
+	transition: transform .2s ease-in-out;
+
+	&:hover {
+		transform: scale(0.99) translateY(1px);
+	}
+
+	&__icon {
+		position: absolute;
+		top: 18px;
+		right: 18px;
+
+		width: auto;
+		height: auto;
+	}
+
+	&__title {
+		padding-right: 30px;
+		font-size: $fz-large - 2px;
+		font-weight: 600;
+
+		@include tablet {
+			margin-top: 6px;
+			font-size: $fz-default + 2px;
+		}
+	}
+
+	&__description {
+		margin-top: 6px;
+
+		color: $gray;
+		font-size: $fz-small;
+		font-weight: 400;
+		line-height: 140%;
+
+		@include tablet {
+			margin-top: 12px;
+			font-size: $fz-small - 1px;
+		}
+	}
+}
