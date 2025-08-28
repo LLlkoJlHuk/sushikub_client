@@ -62,12 +62,14 @@
 	}
 
 	.middle-side {
+		margin: 0 24px;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		gap: 32px;
+		gap: 12px 24px;
+		flex-wrap: wrap;
 
-		.sales, .delivery, .policy {
+		.sales, .delivery, .policy, .user-agreement {
 			font-size: $fz-default;
 		}
 	}

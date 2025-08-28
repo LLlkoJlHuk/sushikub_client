@@ -1,6 +1,6 @@
 import logoGif from '../../assets/images/logo.mp4'
 import logo from '../../assets/images/logo.webp'
-import { CATEGORY_ROUTE, DELIVERY_ROUTE, MAIN_ROUTE, POLICY_ROUTE, SALES_ROUTE } from '../../constants'
+import { CATEGORY_ROUTE, DELIVERY_ROUTE, MAIN_ROUTE, POLICY_ROUTE, SALES_ROUTE, USER_AGREEMENT_ROUTE } from '../../constants'
 import { useLazyVideo } from '../../hooks/useLazyVideo'
 import Button from '../Button'
 import Search from '../Search'
@@ -91,7 +91,12 @@ function MobileMenu({ sortedCategories, loading, phoneHref, workingTimeText, pho
 
 					{/* Страница политики обработки данных */}
 					<Button type='link' href={POLICY_ROUTE} className={styles['policy']}>
-						Политика обработки данных
+						Политика конфиденциальности
+					</Button>
+
+					{/* Страница пользовательского соглашения */}
+					<Button type='link' href={USER_AGREEMENT_ROUTE} className={styles['user-agreement']}>
+						Пользовательское соглашение
 					</Button>
 				</div>
 			</div>

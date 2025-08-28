@@ -32,7 +32,7 @@ const WeAreClosed = observer(({
 				<p className={styles['we-are-closed__content__description']}>
 					Но вы можете оформить предзаказ
 				</p>
-				<Button className={styles['we-are-closed__content__button']}>
+				<Button className={styles['we-are-closed__content__button']} onClick={onClose}>
 					Продолжить
 				</Button>
 			</div>

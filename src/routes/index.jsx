@@ -14,7 +14,8 @@ import {
 	SALE_4_ROUTE,
 	SALE_5_ROUTE,
 	SALES_ROUTE,
-	SEARCH_RESULTS_ROUTE
+	SEARCH_RESULTS_ROUTE,
+	USER_AGREEMENT_ROUTE
 } from "../constants"
 import Admin from "../pages/Admin"
 import Auth from "../pages/Auth"
@@ -32,6 +33,7 @@ import Sale4 from "../pages/SalePages/Sale-4"
 import Sale5 from "../pages/SalePages/Sale-5"
 import Sales from "../pages/Sales"
 import SearchResults from "../pages/SearchResults"
+import UserAgreement from "../pages/UserAgreement"
 
 export const authRoutes = [
 	{
@@ -92,6 +94,10 @@ export const publicRoutes = [
 	{
 		path: POLICY_ROUTE,
 		Component: Policy,
+	}, 
+	{
+		path: USER_AGREEMENT_ROUTE,
+		Component: UserAgreement,
 	},
 	{
 		path: `${CATEGORY_ROUTE}/:categoryId`,

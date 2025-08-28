@@ -51,7 +51,7 @@ const Modal = ({
 	if (!isOpen) return null
 
 	return (
-		<div className={styles['overlay']} onClick={handleBackdropClick}>
+		<div className={`${styles['overlay']} overlay`} onClick={handleBackdropClick}>
 			<div className={`${styles['modal']} modal ${className} ${styles[type]}`}>
 				<Button 
 					type='custom'

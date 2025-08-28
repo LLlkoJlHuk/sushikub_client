@@ -6,6 +6,7 @@ import {
 	MAIN_ROUTE,
 	POLICY_ROUTE,
 	SALES_ROUTE,
+	USER_AGREEMENT_ROUTE,
 } from '../../constants'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import { Context } from '../../main'
@@ -69,20 +70,25 @@ const Footer = observer(() => {
 				{/* Середина футера */}
 				<div className={styles['middle-side']}>
 
-				{/* Страница акций */}
-				<Button type='link' href={SALES_ROUTE} className={styles['sales']}>
-					Акции и скидки
-				</Button>
+					{/* Страница акций */}
+					<Button type='link' href={SALES_ROUTE} className={styles['sales']}>
+						Акции и скидки
+					</Button>
 
-				{/* Страница доставки */}
-				<Button type='link' href={DELIVERY_ROUTE} className={styles['delivery']}>
-					Условия доставки
-				</Button>
+					{/* Страница доставки */}
+					<Button type='link' href={DELIVERY_ROUTE} className={styles['delivery']}>
+						Условия доставки
+					</Button>
 
-				{/* Страница политики обработки данных */}
-				<Button type='link' href={POLICY_ROUTE} className={styles['policy']}>
-					Политика обработки данных
-				</Button>
+					{/* Страница политики обработки данных */}
+					<Button type='link' href={POLICY_ROUTE} className={styles['policy']}>
+						Политика конфиденциальности
+					</Button>
+
+					{/* Страница пользовательского соглашения */}
+					<Button type='link' href={USER_AGREEMENT_ROUTE} className={styles['user-agreement']}>
+						Пользовательское соглашение
+					</Button>
 				</div>
 			</>
 		)}

@@ -1,0 +1,82 @@
+@use '../../../assets/css/variables' as *;
+@use '../../../assets/css/mixins.scss' as *;
+
+.cookie {
+	z-index: 102;
+    position: fixed;
+	left: 0;
+	bottom: 0;
+    overflow: hidden;
+
+    width: 100%;
+	height: auto;
+
+	background: $white;
+    color: $dark;
+
+    box-shadow: 10px 10px 20px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px 8px 0 0;
+
+    animation: slideIn 0.3s ease-out;
+
+    &__content {
+		overflow: hidden;
+		padding: 24px;
+
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 12px;
+
+		@include tablet {
+			padding: 16px;
+			gap: 16px;
+			justify-content: end;
+			flex-wrap: wrap;
+		}
+
+		&__description {
+			font-size: $fz-default - 1px;
+			line-height: 1.5;
+			text-align: left;
+		}
+	
+		&__button {
+			width: auto;
+			height: 40px;
+	
+			display: flex;
+			justify-content: center;
+			align-items: center;
+	
+			text-align: center;
+			font-size: $fz-default;
+	
+			@include smallTablet {
+				height: 35px;
+				font-size: $fz-small;
+			}
+		}
+    }
+  }
+
+  // Анимации
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }

@@ -12,6 +12,7 @@ export const ORDER_ROUTE = '/order'
 export const SALES_ROUTE = '/sales'
 export const DELIVERY_ROUTE = '/delivery'
 export const POLICY_ROUTE = '/policy'
+export const USER_AGREEMENT_ROUTE = '/user-agreement'
 
 // Маршруты для страниц акций
 export const SALE_0_ROUTE = '/sales/sale-0'

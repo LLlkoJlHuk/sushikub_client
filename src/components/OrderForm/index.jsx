@@ -1,7 +1,7 @@
 import React, { useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { CSSTransition } from 'react-transition-group'
-import { BRANCHES, CART_ROUTE } from '../../constants'
+import { BRANCHES, CART_ROUTE, POLICY_ROUTE, USER_AGREEMENT_ROUTE } from '../../constants'
 import { useDeliveryTimePicker } from '../../hooks/useDeliveryTimePicker'
 import { Context } from '../../main'
 import Button from '../Button'
@@ -65,7 +65,8 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
       floor: '',
       apartmentNumber: '',
       deliveryBranch: order.deliveryBranch || '',
-      comment: order.comment || ''
+      comment: order.comment || '',
+      dataConsent: false
     }
   })
 
@@ -117,6 +118,9 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
         value: maxCommentLength,
         message: `Комментарий не должен превышать ${maxCommentLength} символов`
       }
+    },
+    dataConsent: {
+      required: 'Необходимо согласие на обработку персональных данных'
     }
   }), [order.typeIsDelivery, maxCommentLength])
 
@@ -404,6 +408,26 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
           maxLength={maxCommentLength}
           onChange={(e) => updateParentState('comment', e.target.value)}
         />
+
+        {/* Согласие на обработку персональных данных */}
+        <div className={styles['consent-container']}>
+          <Input 
+            name='dataConsent' 
+            type='checkbox' 
+            control={control}
+            rules={validationRules.dataConsent}
+            className={styles['consent-checkbox']}
+          />
+          <label htmlFor="dataConsent" className={styles['consent-label']}>
+            Согласен на обработку персональных данных согласно&nbsp;
+            <a href={POLICY_ROUTE} rel="noopener noreferrer" className={styles['consent-link']}>
+              Политике конфиденциальности
+            </a> и&nbsp;
+            <a href={USER_AGREEMENT_ROUTE} rel="noopener noreferrer" className={styles['consent-link']}>
+              Пользовательскому соглашению
+            </a>
+          </label>
+        </div>
 
         {/* Кнопка отправки формы */}
         <div className={styles['order-form__buttons']}>

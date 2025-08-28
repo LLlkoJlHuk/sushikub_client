@@ -252,3 +252,49 @@
     transition: all 0.3s ease;
   }
 } 
+
+.consent-container {
+  margin-top: 12px;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px 12px;
+
+  >div {
+    width: auto;
+  }
+
+  span {
+    order: 2;
+    width: 100%;
+  }
+
+  label {
+    user-select: none;
+    margin-left: 4px;
+
+    width: calc(100% - 42px);
+
+    color: $gray;
+    font-size: $fz-small;
+    line-height: 130%;
+
+    @include smallTablet {
+      font-size: $fz-small - 1px;
+    }
+
+    a {
+      text-decoration: none;
+      cursor: pointer;
+      user-select: none;
+      color: $gray;
+    }
+  }
+
+  input {
+    margin: 0;
+    cursor: pointer;
+    width: 25px;
+  }
+}
