@@ -314,4 +314,21 @@
       }
     }
   }
+
+  .success-image, .empty-image {
+    margin: 48px 0;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    @include tablet {
+      margin: 24px 0 0;
+    }
+
+    img {
+      width: 100%;
+      max-width: 500px;
+    } 
+  }
 }

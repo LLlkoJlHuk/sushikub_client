@@ -3,19 +3,21 @@ import { useForm } from 'react-hook-form'
 import { CSSTransition } from 'react-transition-group'
 import { BRANCHES, CART_ROUTE, POLICY_ROUTE, USER_AGREEMENT_ROUTE } from '../../constants'
 import { useDeliveryTimePicker } from '../../hooks/useDeliveryTimePicker'
+import { sendOrderToFrontpad } from '../../http/frontpadApi'
 import { Context } from '../../main'
 import Button from '../Button'
 import DeliveryTimePicker from '../DeliveryTimePicker'
 import Dropdown from '../Dropdown'
 import Input, { Textarea } from '../Input'
+import Notification from '../Notification'
 import Switch from '../Switch'
 import styles from './index.module.scss'
 
 /** 
  * Компонент формы заказа с валидацией и масками
  */
-const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors = false }) => {
-  const { settings } = useContext(Context)
+const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors = false, onOrderSuccess }) => {
+  const { settings, basket } = useContext(Context)
 	const [settingsData, setSettingsData] = useState({
 		minOrderPriceForDelivery: null,
 		deliveryDiscount: null,
@@ -124,8 +126,10 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
     }
   }), [order.typeIsDelivery, maxCommentLength])
 
-  // Состояние для ошибки филиала
-  const [branchError, setBranchError] = useState('')
+  // Состояния для отправки заказа
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitSuccess, setSubmitSuccess] = useState(false)
+  const [notification, setNotification] = useState(null)
 
   const handleDeliveryNowChange = useCallback(() => {
     const newDeliveryNow = !order.deliveryNow
@@ -194,25 +198,93 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
     handleDeliveryTimeSelect(timeData)
   }, [onOrderChange, handleDeliveryTimeSelect])
 
+  // Функция для показа уведомлений
+  const showNotification = useCallback((message, type = 'info') => {
+    setNotification({ message, type })
+    setTimeout(() => setNotification(null), 5000)
+  }, [])
+
+
+
   // Обработчик отправки формы
-  const onSubmit = useCallback((data) => {
-    console.log('Form data:', data)
+  const onSubmit = useCallback(async (data) => {
     
     // Проверяем филиал для самовывоза
     if (!order.typeIsDelivery && !order.deliveryBranch) {
-      setBranchError('Необходимо выбрать филиал для самовывоза')
+      showNotification('Необходимо выбрать филиал для самовывоза', 'error')
       return
-    } else {
-      setBranchError('')
     }
     
-    // Здесь можно добавить логику отправки заказа
-  }, [order.typeIsDelivery, order.deliveryBranch])
+    // Сброс предыдущих состояний
+    setSubmitSuccess(false)
+    setIsSubmitting(true)
+    
+    try {
+      // Подготавливаем данные для отправки
+      const orderData = {
+        // Личные данные
+        name: data.name,
+        phone: data.phone,
+        email: '', // Можно добавить поле email в форму если нужно
+        
+        // Тип доставки
+        typeIsDelivery: order.typeIsDelivery,
+        
+        // Адрес доставки (только для доставки)
+        street: order.typeIsDelivery ? data.street : '',
+        houseNumber: order.typeIsDelivery ? data.houseNumber : '',
+        entrance: order.typeIsDelivery ? data.entrance : '',
+        floor: order.typeIsDelivery ? data.floor : '',
+        apartmentNumber: order.typeIsDelivery ? data.apartmentNumber : '',
+        
+        // Самовывоз (только для самовывоза)
+        deliveryBranch: !order.typeIsDelivery ? order.deliveryBranch : '',
+        
+        // Время доставки
+        deliveryNow: order.deliveryNow,
+        time: !order.deliveryNow ? order.time : '',
+        
+        // Комментарий
+        comment: data.comment,
+        
+        // Товары из корзины
+        items: basket.items,
+        persons: basket.persons
+        
+        // totalPrice не передаем - Frontpad сам рассчитает сумму на основе товаров
+      }
+      
+      // Отправляем заказ в Frontpad через наш сервер
+      const response = await sendOrderToFrontpad(orderData)
+      
+      if (response.success) {
+        setSubmitSuccess(true)
+        showNotification(
+          `Заказ успешно отправлен! Номер заказа: ${response.frontpadOrderNumber}`, 
+          'success'
+        )
+        
+        // Очищаем корзину после успешной отправки
+        basket.clearBasket()
+        
+        // Уведомляем родительский компонент об успешном заказе
+        if (onOrderSuccess) {
+          onOrderSuccess()
+        }
+        
+      } else {
+        showNotification(response.message || 'Ошибка при отправке заказа', 'error')
+      }
+      
+    } catch (error) {
+      const errorMessage = error.message || 'Произошла ошибка при отправке заказа'
+      showNotification(errorMessage, 'error')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }, [order, basket, showNotification])
 
-  // Очищаем ошибку филиала при изменении типа доставки
-  useEffect(() => {
-    setBranchError('')
-  }, [order.typeIsDelivery])
+
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={styles['order-form']}>
@@ -241,6 +313,7 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
           mask="+7 (000) 000-00-00"
           inputmode="numeric"
           onChange={(e) => updateParentState('phone', e.target.value)}
+
         />
 
         {/* Тип доставки - самовывоз или доставка курьером */}
@@ -345,12 +418,11 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
               value={order.deliveryBranch || ''}
               onChange={(value) => {
                 updateParentState('deliveryBranch', value)
-                setBranchError('')
               }}
               placeholder="Выберите филиал"
               type='order-form'
             />
-            {branchError && <p className={styles['error-message']}>{branchError}</p>}
+
           </div>
         </CSSTransition>
 
@@ -429,21 +501,40 @@ const OrderForm = ({ order, onOrderChange, onSwitchChange, hasOrderAmountErrors 
           </label>
         </div>
 
+        {/* Уведомления */}
+        {notification && (
+          <Notification
+            type={notification.type}
+            message={notification.message}
+            onClose={() => setNotification(null)}
+          />
+        )}
+
+
+
+        {/* Успешная отправка */}
+        {submitSuccess && (
+          <div className={styles['success-message']}>
+            Заказ успешно отправлен в ресторан! Ожидайте звонка оператора.
+          </div>
+        )}
+
         {/* Кнопка отправки формы */}
         <div className={styles['order-form__buttons']}>
-        <Button 
+          <Button 
             type='btnLink'
             className={styles['return-button']}
             href={CART_ROUTE}
+            disabled={isSubmitting}
           >
             Вернуться в корзину
           </Button>
           <Button 
             type='submit'
             className={styles['order-button']}
-            disabled={hasOrderAmountErrors}
+            disabled={hasOrderAmountErrors || isSubmitting}
           >
-            Оформить заказ
+            {isSubmitting ? 'Отправляем заказ...' : 'Оформить заказ'}
           </Button>
         </div>
       </div>

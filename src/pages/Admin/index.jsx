@@ -38,6 +38,8 @@ const Admin = observer(() => {
   const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false)
   const openSettingsModal = () => setIsSettingsModalOpen(true)
   const closeSettingsModal = () => setIsSettingsModalOpen(false)
+
+  const isDevMode = false;
 	
 	const openProductModal = (type = 'create', product = null) => {
 		setProductModalType(type)
@@ -162,34 +164,38 @@ const Admin = observer(() => {
                 </div>
 
                 {/* Редактировать баннер */}
-                <div className={styles['admin-page__content-add-product-category']}>
-                  <Button onClick={openBannersModal} className={styles['banners']}>
-                    Баннеры
-                  </Button>
+                {isDevMode && (
+                  <div className={styles['admin-page__content-add-product-category']}>
+                    <Button onClick={openBannersModal} className={styles['banners']}>
+                      Баннеры
+                    </Button>
 
-                  {/* Модальное окно редактирования баннеров */}
-                  <Banners
-                    className='banners'
-                    isModalOpen={isBannersModalOpen}
-                    closeModal={closeBannersModal}
-                    showNotification={showNotification}
-                  />
-                </div>
+                    {/* Модальное окно редактирования баннеров */}
+                    <Banners
+                      className='banners'
+                      isModalOpen={isBannersModalOpen}
+                      closeModal={closeBannersModal}
+                      showNotification={showNotification}
+                    />
+                  </div>
+                )}
 
                 {/* Категории */}
-                <div className={styles['admin-page__content-add-product-category']}>
-                  <Button onClick={openCategoryModal} className={styles['categories']}>
-                    Категории
-                  </Button>
+                {isDevMode && (
+                  <div className={styles['admin-page__content-add-product-category']}>
+                    <Button onClick={openCategoryModal} className={styles['categories']}>
+                      Категории
+                    </Button>
 
-                  {/* Модальное окно добавления категории */}
-                  <Categories
-                    className='categories'
-                    isModalOpen={isCategoryModalOpen}
-                    closeModal={closeCategoryModal}
-                    showNotification={showNotification}
-                  />
-                </div>
+                    {/* Модальное окно добавления категории */}
+                    <Categories
+                      className='categories'
+                      isModalOpen={isCategoryModalOpen}
+                      closeModal={closeCategoryModal}
+                      showNotification={showNotification}
+                    />
+                  </div>
+                )}
 
                 {/* Настройки */}
                 <div className={styles['admin-page__content-add-product-category']}>

@@ -52,8 +52,12 @@
     font-size: $fz-default;
     font-weight: 400;
 
+    @include tablet {
+      margin: 24px 0 0;
+    }
+
     @include bigPhone {
-      font-size: $fz-default - 2px;
+      font-size: $fz-default;
     }
   }
 
@@ -97,5 +101,45 @@
     justify-content: center;
   }
 
+  .success-state {
+    p {
+      text-align: center;
+      font-size: $fz-xlarge;
+      font-weight: 700;
 
+      @include smallTablet {
+        font-size: $fz-large;
+      }
+
+      span {
+        font-size: $fz-default;
+        font-weight: 400;
+
+        @include smallTablet {
+          font-size: $fz-small;
+        }
+      }
+    }
+  }
+
+  .success-image, .empty-image {
+    margin: 48px 0;
+    width: 100%;
+
+    display: flex;
+    justify-content: center;
+
+    @include tablet {
+      margin: 24px 0 0;
+    }
+
+    img {
+      width: 100%;
+      max-width: 500px;
+    } 
+  }
+}
+
+.empty-image {
+  margin-top: 12px !important;
 }

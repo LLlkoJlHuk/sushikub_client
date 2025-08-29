@@ -1,5 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React, { useContext, useEffect, useState } from 'react'
+import emptyOrderImage from '../../assets/images/empty_order.webp'
+import successOrderImage from '../../assets/images/success_order.webp'
 import Button from '../../components/Button'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
@@ -56,6 +58,9 @@ const Order = observer(() => {
     comment: '',
   })
 
+  // Состояние успешного создания заказа
+  const [orderSuccess, setOrderSuccess] = useState(false)
+
   // Проверка ошибок суммы заказа
   const isOrderTooSmall = order.typeIsDelivery && basket.totalPrice < minOrderPriceForDelivery
   const isOrderTooLarge = basket.totalPrice > maxOrderPrice
@@ -84,7 +89,29 @@ const Order = observer(() => {
 				/>
 			</section>
 
-			{basket.items.length > 0 ? (
+			{orderSuccess ? (
+        <section className={`section`}>
+        {/* Заказ успешно отправлен */}
+        <div className='container'>
+          <div className={styles['success-state']}>
+            <p>
+              Ваш заказ принят! <br />
+              <span>В ближайшее время мы с вами свяжемся для подтверждения заказа.</span>
+            </p>
+          </div>
+
+          <div className={styles['success-image']}>
+            <img src={successOrderImage} alt="Заказ успешно отправлен" />
+          </div>
+
+          <div className={`${styles['order-buttons']} ${styles['order-empty']}`}>
+            <Button type='btnLink' href={MAIN_ROUTE} className={styles['order-return']}>
+              Вернуться в меню
+            </Button>
+          </div>
+        </div>
+      </section>
+      ) : basket.items.length > 0 ? (
         <>
 
           {/* Уведомления */}
@@ -129,6 +156,7 @@ const Order = observer(() => {
                   onOrderChange={setOrder}
                   onSwitchChange={handleSwitchChange}
                   hasOrderAmountErrors={hasOrderAmountErrors}
+                  onOrderSuccess={() => setOrderSuccess(true)}
                 />
 
                 {/* Корзина заказа */}
@@ -146,8 +174,9 @@ const Order = observer(() => {
         <section className={`section`}>
           {/* Корзина пуста */}
           <div className='container'>
-            <div className={styles['empty-state']}>
-              <p>В корзине пока нет товаров, чтобы оформить заказ</p>
+
+            <div className={styles['empty-image']}>
+              <img src={emptyOrderImage} alt="Корзина пуста" />
             </div>
 
             <div className={`${styles['order-buttons']} ${styles['order-empty']}`}>

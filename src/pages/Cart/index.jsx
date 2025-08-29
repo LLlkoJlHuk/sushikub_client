@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React, { useContext, useEffect, useState } from 'react'
 import { createPortal } from 'react-dom'
+import emptyCartImage from '../../assets/images/empty_order.webp'
 import BasketItem from '../../components/BasketItem'
 import Button from '../../components/Button'
 import Counter from '../../components/Counter'
@@ -148,9 +149,8 @@ const Cart = observer(() => {
 					{/* Корзина пуста */}
 					<div className='container'>
 						
-						{/* Сообщение о том, что корзина пуста */}
-						<div className={styles['empty-state']}>
-							<p>В корзине пока нет товаров</p>
+						<div className={styles['empty-image']}>
+							<img src={emptyCartImage} alt="Корзина пуста" />
 						</div>
 
 						<div className={`${styles['basket-buttons']} ${styles['basket-empty']}`}>
