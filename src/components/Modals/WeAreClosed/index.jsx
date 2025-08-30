@@ -1,6 +1,7 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 import weAreClosedImage from '../../../assets/images/we-are-closed.webp'
+import { getImageUrl } from '../../../constants'
 import { useLazyImage } from '../../../hooks/useLazyImage'
 import Button from '../../Button'
 import Modal from '../../Modals'
@@ -14,7 +15,7 @@ const WeAreClosed = observer(({
 
 	// Lazy loading для изображений
 	const { imageSrc } = useLazyImage(
-		weAreClosedImage,
+		getImageUrl(weAreClosedImage),
 		weAreClosedImage
 	)
 
