@@ -5,6 +5,7 @@ import Header from '../../components/Header'
 import Loading from '../../components/Loading'
 import Notice from '../../components/Notice'
 import ProductCard from '../../components/ProductCard'
+import SEOHead from '../../components/SEOHead'
 import { useCategoryProducts } from '../../hooks/useCategoryProducts'
 import useScrollTimeout from '../../hooks/useScrollTimeout'
 import { Context } from '../../main'
@@ -114,8 +115,25 @@ const CategoryPage = () => {
 		)
 	}
 
+	// SEO данные для категории
+	const categoryTitle = category ? `${category.name} - КУБ` : 'Категория товаров - КУБ'
+	const categoryDescription = category ? 
+		`🍣 ${category.name} от КУБ - свежие и вкусные блюда японской кухни с доставкой по Красноярску. Заказывайте онлайн!` :
+		'Японская кухня от КУБ с доставкой по Красноярску'
+
 	return (
-		<div className={`page ${styles['category-page']}`}>
+		<>
+			{/* SEO метаданные для страницы категории */}
+			<SEOHead 
+				title={categoryTitle}
+				description={categoryDescription}
+				keywords={`${category?.name || 'японская кухня'}, суши, роллы, доставка, SushiKub, Красноярск`}
+				canonical={`http://89.111.168.173/category/${categoryId}`}
+				ogTitle={categoryTitle}
+				ogDescription={categoryDescription}
+			/>
+			
+			<div className={`page ${styles['category-page']}`}>
 
 			{/* Секция с хедером */}
 			<section className={`section section-with-header custom-bg border-bottom ${isScrolled ? 'header-visible' : ''}`}>
@@ -202,6 +220,7 @@ const CategoryPage = () => {
 				</div>
 			</section>
 		</div>
+		</>
 	)
 }
 

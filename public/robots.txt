@@ -1,0 +1,50 @@
+# Robots.txt для SushiKub - доставка суши и роллов
+# Разрешаем индексацию основного контента, запрещаем служебные страницы
+
+User-agent: *
+
+# Разрешаем индексацию основных страниц
+Allow: /
+Allow: /category/
+Allow: /delivery
+Allow: /policy
+Allow: /user-agreement
+Allow: /sales/
+
+# Запрещаем индексацию служебных и административных страниц
+Disallow: /admin
+Disallow: /login
+Disallow: /cart
+Disallow: /order
+Disallow: /search-results
+
+# Запрещаем индексацию API и статических файлов сервера
+Disallow: /api/
+Disallow: /static/
+
+# Разрешаем доступ к важным файлам
+Allow: /robots.txt
+Allow: /sitemap.xml
+
+# Указываем местоположение карты сайта
+Sitemap: http://89.111.168.173/sitemap.xml
+
+# Настройки для основных поисковых ботов
+User-agent: Googlebot
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /cart
+Disallow: /order
+Disallow: /search-results
+
+User-agent: Yandex
+Allow: /
+Disallow: /admin
+Disallow: /login
+Disallow: /cart
+Disallow: /order
+Disallow: /search-results
+
+# Задержка между запросами (в секундах)
+Crawl-delay: 1

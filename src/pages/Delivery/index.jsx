@@ -9,6 +9,8 @@ import Button from '../../components/Button'
 import DeliveryCard from '../../components/DeliveryCard'
 import Footer from '../../components/Footer'
 import Header from '../../components/Header'
+import Notice from '../../components/Notice'
+import SEOHead from '../../components/SEOHead'
 import useScrollTimeout from '../../hooks/useScrollTimeout'
 import { Context } from '../../main'
 import styles from './index.module.scss'
@@ -63,7 +65,18 @@ const Sales = observer(() => {
 	const { isScrolledBack, isTimedOutBack } = useScrollTimeout(400, 500, 'Back');
 
 	return (
-		<div className={`page ${styles['sales']}`}>
+		<>
+			{/* SEO метаданные для страницы доставки */}
+			<SEOHead 
+				title="КУБ - Доставка суши и роллов в Красноярске | Условия и оплата"
+				description="🚚 Доставка суши и роллов по Красноярску. Минимальная сумма заказа, время доставки, способы оплаты. Филиалы и пункты самовывоза."
+				keywords="доставка суши, доставка роллов, Красноярск, условия доставки, оплата, самовывоз, КУБ, Красноярск"
+				canonical="http://89.111.168.173/delivery"
+				ogTitle="КУБ - Доставка суши и роллов в Красноярске - быстро и удобно"
+				ogDescription="🚚 Доставка японской кухни по Красноярску быстро и удобно. Два филиала, удобная оплата, самовывоз."
+			/>
+			
+			<div className={`page ${styles['sales']}`}>
 
 			{/* Секция с хедером */}
 			<section className={`section section-with-header custom-bg border-bottom ${isScrolled ? 'header-visible' : ''}`}>
@@ -206,6 +219,7 @@ const Sales = observer(() => {
 				</div>
 			</section>
 		</div>
+		</>
 	)
 })
 
