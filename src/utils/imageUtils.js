@@ -24,10 +24,10 @@ export const IMAGE_SIZES = {
   
   // Размеры для баннеров
   BANNER: {
-    mobile: { width: 320, height: 400 },   // мобильные баннеры
-    tablet: { width: 480, height: 600 },   // планшеты
-    desktop: { width: 1035, height: 450 }, // десктоп
-    original: { width: 1024, height: 600 } // оригинал (fallback)
+    small: { width: 320, height: 400 },    // мобильные баннеры
+    medium: { width: 480, height: 600 },   // планшеты
+    large: { width: 900, height: 391 },    // десктоп (уменьшено для лучшего сжатия)
+    original: { width: 1035, height: 450 } // оригинал (fallback)
   },
   
   // Размеры для корзины
@@ -75,7 +75,7 @@ export const getImageUrl = (imagePath, size = null) => {
   }
   
   // Добавляем параметры размера для сжатия на сервере
-  return `${baseUrl}?w=${size.width}&h=${size.height}&q=75&f=webp`
+  return `${baseUrl}?w=${size.width}&h=${size.height}&q=85&f=webp`
 }
 
 /**
