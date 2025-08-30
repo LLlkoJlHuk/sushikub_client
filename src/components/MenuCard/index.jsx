@@ -30,6 +30,7 @@ const MenuCard = React.memo(function MenuCard({
 				<img 
 					src={imageSrc} 
 					alt={name}
+					title={`Категория ${name} - заказать суши и роллы в Красноярске`}
 				/>
 			</div>
 

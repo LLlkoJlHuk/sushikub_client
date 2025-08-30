@@ -68,6 +68,7 @@ const ProductCardComponent = observer(({
 					ref={imgRef}
 					src={imageSrc} 
 					alt={product.name}
+					title={product.name}
 					loading="lazy"
 					className={isLoading ? styles['product-card__img--loading'] : ''}
 				/>

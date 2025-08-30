@@ -40,7 +40,7 @@ const BasketItem = observer(({
       >
         {/* Картинка */}
         <div className={styles['basket-item__image']}>
-          <img src={imageSrc} alt={item.name} />
+          <img src={imageSrc} alt={item.name} title={item.name} />
         </div>
 
         {/* Название */}
