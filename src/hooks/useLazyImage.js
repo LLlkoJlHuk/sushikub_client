@@ -1,122 +1,54 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
-
-// Кэш для загруженных изображений
-const imageCache = new Map()
+import { useEffect, useState } from 'react'
 
 /**
- * Хук для lazy loading изображений с заглушкой и кэшированием
+ * Хук для lazy loading изображений с заглушкой
  * @param {string} src - URL изображения для загрузки
  * @param {string} placeholder - URL заглушки
- * @param {Object} options - дополнительные опции
  * @returns {Object} - объект с состояниями загрузки
  */
-export const useLazyImage = (src, placeholder, options = {}) => {
-  const { 
-    enableCache = true, 
-    enableIntersectionObserver = false,
-    rootMargin = '50px'
-  } = options
-  
+export const useLazyImage = (src, placeholder) => {
   const [imageSrc, setImageSrc] = useState(placeholder)
   const [isLoading, setIsLoading] = useState(true)
   const [hasError, setHasError] = useState(false)
-  const [shouldLoad, setShouldLoad] = useState(!enableIntersectionObserver)
-  
-  const imgRef = useRef(null)
-  const observerRef = useRef(null)
 
-  // Функция загрузки изображения с кэшированием
-  const loadImage = useCallback(async (imageUrl) => {
-    if (!imageUrl) {
+  useEffect(() => {
+    if (!src) {
       setImageSrc(placeholder)
       setIsLoading(false)
-      return
-    }
-
-    // Проверяем кэш
-    if (enableCache && imageCache.has(imageUrl)) {
-      const cachedResult = imageCache.get(imageUrl)
-      setImageSrc(cachedResult.success ? imageUrl : placeholder)
-      setIsLoading(false)
-      setHasError(!cachedResult.success)
       return
     }
 
     setIsLoading(true)
     setHasError(false)
 
-    try {
-      await new Promise((resolve, reject) => {
-        const img = new Image()
-        
-        img.onload = () => {
-          if (enableCache) {
-            imageCache.set(imageUrl, { success: true })
-          }
-          resolve()
-        }
-        
-        img.onerror = () => {
-          if (enableCache) {
-            imageCache.set(imageUrl, { success: false })
-          }
-          reject(new Error('Failed to load image'))
-        }
-        
-        img.src = imageUrl
-      })
-
-      setImageSrc(imageUrl)
-      setHasError(false)
-    } catch {
-      setImageSrc(placeholder)
-      setHasError(true)
-    } finally {
+    const img = new Image()
+    
+    const handleLoad = () => {
+      setImageSrc(src)
       setIsLoading(false)
-    }
-  }, [placeholder, enableCache])
-
-  // Intersection Observer для ленивой загрузки
-  useEffect(() => {
-    if (!enableIntersectionObserver || !imgRef.current) {
-      return
+      setHasError(false)
     }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        const [entry] = entries
-        if (entry.isIntersecting) {
-          setShouldLoad(true)
-          observer.unobserve(entry.target)
-        }
-      },
-      {
-        rootMargin,
-        threshold: 0.1
-      }
-    )
+    const handleError = () => {
+      setImageSrc(placeholder)
+      setIsLoading(false)
+      setHasError(true)
+    }
 
-    observer.observe(imgRef.current)
-    observerRef.current = observer
+    img.addEventListener('load', handleLoad)
+    img.addEventListener('error', handleError)
+    
+    img.src = src
 
     return () => {
-      if (observerRef.current) {
-        observerRef.current.disconnect()
-      }
+      img.removeEventListener('load', handleLoad)
+      img.removeEventListener('error', handleError)
     }
-  }, [enableIntersectionObserver, rootMargin])
-
-  // Загрузка изображения
-  useEffect(() => {
-    if (shouldLoad && src) {
-      loadImage(src)
-    }
-  }, [src, shouldLoad, loadImage])
+  }, [src, placeholder])
 
   return {
     imageSrc,
     isLoading,
-    hasError,
-    imgRef: enableIntersectionObserver ? imgRef : null
+    hasError
   }
 }
