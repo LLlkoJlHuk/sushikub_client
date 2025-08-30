@@ -1,5 +1,6 @@
 import { makeAutoObservable } from "mobx"
 import { productApi } from "../http/productApi"
+import { apiCache } from "../utils/apiCache"
 
 export default class ProductStore {
 	constructor() {
@@ -75,11 +76,22 @@ export default class ProductStore {
 			return
 		}
 		
+		// Проверяем кэш
+		const cacheKey = 'categories'
+		const cached = apiCache.get(cacheKey)
+		if (cached && !this._error) {
+			this.setCategories(cached)
+			return
+		}
+		
 		try {
 			this._categoriesLoading = true
 			this.setError(null)
 			const categories = await productApi.getCategories()
 			this.setCategories(categories)
+			
+			// Сохраняем в кэш на 10 минут
+			apiCache.set(cacheKey, categories, 10 * 60 * 1000)
 		} catch (error) {
 			// Специальная обработка ошибок авторизации
 			if (error.response?.status === 401) {
@@ -121,10 +133,21 @@ export default class ProductStore {
 	}
 
 	async fetchProducts(params = {}) {
+		// Проверяем кэш
+		const cacheKey = apiCache.generateKey('products', params)
+		const cached = apiCache.get(cacheKey)
+		if (cached && !this._error) {
+			this.setProducts(cached)
+			return
+		}
+
 		try {
 			this.setError(null)
 			const response = await productApi.getProducts(params)
 			this.setProducts(response || [])
+			
+			// Сохраняем в кэш на 5 минут
+			apiCache.set(cacheKey, response || [], 5 * 60 * 1000)
 		} catch (error) {
 			console.error('Error fetching products:', error)
 			
@@ -143,6 +166,9 @@ export default class ProductStore {
 		try {
 			this.setError(null)
 			const newProduct = await productApi.createProduct(product)
+			
+			// Инвалидируем кэш продуктов
+			apiCache.invalidatePattern('products')
 			
 			// Обновляем список товаров синхронно
 			await this.fetchProducts()

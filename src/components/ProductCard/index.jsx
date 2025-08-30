@@ -1,5 +1,5 @@
 import { observer } from 'mobx-react-lite'
-import React, { useCallback, useState } from 'react'
+import React, { memo, useCallback, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import rollPlugImage from '../../assets/images/roll-plug.webp'
 import { getImageUrl } from '../../constants'
@@ -11,7 +11,7 @@ import Counter from '../Counter'
 import ProductInfo from '../Modals/ProductInfo'
 import styles from './index.module.scss'
 
-const ProductCard = observer(({
+const ProductCardComponent = observer(({
 	product
 }) => {
 	const [isModalOpen, setIsModalOpen] = useState(false)
@@ -23,10 +23,14 @@ const ProductCard = observer(({
 		getItemQuantity
 	} = useBasketItem(product)
 
-	// Lazy loading для изображений
-	const { imageSrc } = useLazyImage(
-		getImageUrl(product.img),
-		rollPlugImage
+	// Мемоизируем URL изображения
+	const imageUrl = useMemo(() => getImageUrl(product.img), [product.img])
+
+	// Lazy loading для изображений с Intersection Observer
+	const { imageSrc, isLoading, imgRef } = useLazyImage(
+		imageUrl,
+		rollPlugImage,
+		{ enableIntersectionObserver: true, enableCache: true }
 	)
 
 	const handleCardClick = useCallback(() => {
@@ -46,13 +50,22 @@ const ProductCard = observer(({
 		e.stopPropagation()
 	}, [])
 
+	// Мемоизируем отформатированную цену
+	const formattedPrice = useMemo(() => formatPrice(product.price), [product.price])
+	
+	// Мемоизируем количество в корзине
+	const itemQuantity = useMemo(() => getItemQuantity(product.id), [getItemQuantity, product.id])
+
 	return (
 		<div className={styles['product-card']} onClick={handleCardClick}>
 			{/* Картинка продукта */}
 			<div className={styles['product-card__img']}>
 				<img 
+					ref={imgRef}
 					src={imageSrc} 
 					alt={product.name}
+					loading="lazy"
+					className={isLoading ? styles['product-card__img--loading'] : ''}
 				/>
 			</div>
 
@@ -78,16 +91,16 @@ const ProductCard = observer(({
 
 						{/* Цена продукта */}
 						<div className={styles['product-card__info__price']}>
-							{formatPrice(product.price)}&nbsp;₽
+							{formattedPrice}&nbsp;₽
 						</div>
 					</div>
 
 					{/* Кнопка заказа */}
-					{isInBasket && getItemQuantity() > 0 ? (
+					{isInBasket && itemQuantity > 0 ? (
 						<div onClick={handleCounterClick}>
 							<Counter 
 								className={styles['product-card__counter']}
-								quantity={getItemQuantity()}
+								quantity={itemQuantity}
 								onIncrease={handleIncreaseQuantity}
 								onDecrease={handleDecreaseQuantity}
 							/>
@@ -115,5 +128,7 @@ const ProductCard = observer(({
 		</div>
 	)
 })
+
+const ProductCard = memo(ProductCardComponent)
 
 export default ProductCard

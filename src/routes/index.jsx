@@ -1,3 +1,4 @@
+import { lazy } from "react"
 import {
 	ADMIN_ROUTE,
 	CART_ROUTE,
@@ -17,23 +18,25 @@ import {
 	SEARCH_RESULTS_ROUTE,
 	USER_AGREEMENT_ROUTE
 } from "../constants"
-import Admin from "../pages/Admin"
-import Auth from "../pages/Auth"
-import Cart from "../pages/Cart"
-import CategoryPage from "../pages/CategoryPage"
-import Delivery from "../pages/Delivery"
-import Main from "../pages/Main"
-import Order from "../pages/Order"
-import Policy from "../pages/Policy"
-import Sale0 from "../pages/SalePages/Sale-0"
-import Sale1 from "../pages/SalePages/Sale-1"
-import Sale2 from "../pages/SalePages/Sale-2"
-import Sale3 from "../pages/SalePages/Sale-3"
-import Sale4 from "../pages/SalePages/Sale-4"
-import Sale5 from "../pages/SalePages/Sale-5"
-import Sales from "../pages/Sales"
-import SearchResults from "../pages/SearchResults"
-import UserAgreement from "../pages/UserAgreement"
+
+// Lazy loading для страниц - загружаются только при необходимости
+const Admin = lazy(() => import("../pages/Admin"))
+const Auth = lazy(() => import("../pages/Auth"))
+const Cart = lazy(() => import("../pages/Cart"))
+const CategoryPage = lazy(() => import("../pages/CategoryPage"))
+const Delivery = lazy(() => import("../pages/Delivery"))
+const Main = lazy(() => import("../pages/Main"))
+const Order = lazy(() => import("../pages/Order"))
+const Policy = lazy(() => import("../pages/Policy"))
+const Sale0 = lazy(() => import("../pages/SalePages/Sale-0"))
+const Sale1 = lazy(() => import("../pages/SalePages/Sale-1"))
+const Sale2 = lazy(() => import("../pages/SalePages/Sale-2"))
+const Sale3 = lazy(() => import("../pages/SalePages/Sale-3"))
+const Sale4 = lazy(() => import("../pages/SalePages/Sale-4"))
+const Sale5 = lazy(() => import("../pages/SalePages/Sale-5"))
+const Sales = lazy(() => import("../pages/Sales"))
+const SearchResults = lazy(() => import("../pages/SearchResults"))
+const UserAgreement = lazy(() => import("../pages/UserAgreement"))
 
 export const authRoutes = [
 	{
