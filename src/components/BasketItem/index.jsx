@@ -2,6 +2,7 @@ import { observer } from 'mobx-react-lite'
 import React from 'react'
 import DeleteIcon from '../../assets/images/icon-close.webp'
 import rollPlugImage from '../../assets/images/roll-plug.webp'
+import { getImageUrl } from '../../constants'
 import { formatPrice } from '../../hooks/formatPrice'
 import { useBasketItem } from '../../hooks/useBasketItem'
 import { useLazyImage } from '../../hooks/useLazyImage'
@@ -21,14 +22,10 @@ const BasketItem = observer(({
     getItemQuantity
   } = useBasketItem(item)
 
-  // Lazy loading для изображений с адаптивными размерами
+  // Lazy loading для изображений
   const { imageSrc } = useLazyImage(
-    item.img,
-    rollPlugImage,
-    { 
-      enableCache: true,
-      imageType: 'BASKET_ITEM'
-    }
+    getImageUrl(item.img),
+    rollPlugImage
   )
 
   return (

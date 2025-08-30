@@ -10,7 +10,6 @@ import {
 	MAIN_ROUTE,
 } from '../../constants'
 import { formatPrice } from '../../hooks/formatPrice'
-import { useLazyImage } from '../../hooks/useLazyImage'
 import { useLazyVideo } from '../../hooks/useLazyVideo'
 import { useWindowSize } from '../../hooks/useWindowSize'
 import { Context } from '../../main'
@@ -85,16 +84,6 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 	const workingTimeText = useMemo(() => {
 		return `Работаем с ${workingTimeStart} до ${workingTimeEnd}`;
 	}, [workingTimeStart, workingTimeEnd]);
-
-	// Адаптивный логотип
-	const { imageSrc: logoSrc } = useLazyImage(
-		'logo.webp',
-		logo,
-		{ 
-			enableCache: true,
-			imageType: 'LOGO'
-		}
-	);
 
   return (
     <>
@@ -197,7 +186,7 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 						>
 							<div ref={nodeRefLogo}>
 								<Button type='link' href={MAIN_ROUTE} className={styles['logo']}>
-									<img src={logoSrc} alt="logo" className={styles['logo-img']} />
+									<img src={logo} alt="logo" className={styles['logo-img']} />
 								</Button>
 							</div>
 						</CSSTransition>
@@ -273,7 +262,7 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 	
 					{/* Логотип */}
 					<Button type='link' href={MAIN_ROUTE} className={styles['logo']}>
-						<img src={logoSrc} alt="logo" className={styles['logo-img']} />
+						<img src={logo} alt="logo" className={styles['logo-img']} />
 						
 						<h1 className={styles['logo-text']}>Куб</h1>
 					</Button>
