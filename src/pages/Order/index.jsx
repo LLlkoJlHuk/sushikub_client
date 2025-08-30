@@ -39,7 +39,7 @@ const Order = observer(() => {
 			minOrderPriceForDelivery: minOrderPriceForDelivery,
 			maxOrderPrice: maxOrderPrice
 		})
-	}, [settings.settingsObject])
+	}, [settings, settings.settingsObject])
 
 	const { globalMessage, minOrderPriceForDelivery, maxOrderPrice } = settingsData
 
@@ -62,8 +62,8 @@ const Order = observer(() => {
   const [orderSuccess, setOrderSuccess] = useState(false)
 
   // Проверка ошибок суммы заказа
-  const isOrderTooSmall = order.typeIsDelivery && basket.totalPrice < minOrderPriceForDelivery
-  const isOrderTooLarge = basket.totalPrice > maxOrderPrice
+  const isOrderTooSmall = order.typeIsDelivery && minOrderPriceForDelivery !== null && minOrderPriceForDelivery !== '' && basket.totalPrice < minOrderPriceForDelivery
+  const isOrderTooLarge = maxOrderPrice !== null && maxOrderPrice !== '' && basket.totalPrice > maxOrderPrice
   const hasOrderAmountErrors = isOrderTooSmall || isOrderTooLarge
 
   const handleSwitchChange = () => {
