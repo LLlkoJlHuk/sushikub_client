@@ -1,6 +1,6 @@
 import React from 'react'
 import rollPlugImage from '../../assets/images/roll-plug.webp'
-import { CATEGORY_ROUTE, getImageUrl } from '../../constants'
+import { CATEGORY_ROUTE } from '../../constants'
 import { useLazyImage } from '../../hooks/useLazyImage'
 import Button from '../Button'
 import styles from './index.module.scss'
@@ -10,10 +10,14 @@ const MenuCard = React.memo(function MenuCard({
 	img,
 	name,
 }) {
-	// Lazy loading для изображения категории
+	// Lazy loading для изображения категории с адаптивными размерами
 	const { imageSrc, isLoading } = useLazyImage(
-		getImageUrl(img),
-		rollPlugImage
+		img,
+		rollPlugImage,
+		{ 
+			enableCache: true,
+			imageType: 'MENU_CARD'
+		}
 	)
 
 	return (

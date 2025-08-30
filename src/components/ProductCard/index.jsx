@@ -24,13 +24,17 @@ const ProductCardComponent = observer(({
 	} = useBasketItem(product)
 
 	// Мемоизируем URL изображения
-	const imageUrl = useMemo(() => getImageUrl(product.img), [product.img])
+	const imageUrl = useMemo(() => getImageUrl(product.img), [product.img]) // eslint-disable-line no-unused-vars
 
-	// Lazy loading для изображений с Intersection Observer
+	// Lazy loading для изображений с Intersection Observer и адаптивными размерами
 	const { imageSrc, isLoading, imgRef } = useLazyImage(
-		imageUrl,
+		product.img,
 		rollPlugImage,
-		{ enableIntersectionObserver: true, enableCache: true }
+		{ 
+			enableIntersectionObserver: true, 
+			enableCache: true,
+			imageType: 'PRODUCT_CARD'
+		}
 	)
 
 	const handleCardClick = useCallback(() => {

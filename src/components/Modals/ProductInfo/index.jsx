@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite'
 import React from 'react'
 import rollPlugImage from '../../../assets/images/roll-plug.webp'
-import { getImageUrl } from '../../../constants'
 import { formatPrice } from '../../../hooks/formatPrice'
 import { useBasketItem } from '../../../hooks/useBasketItem'
 import { useLazyImage } from '../../../hooks/useLazyImage'
@@ -24,10 +23,14 @@ const ProductInfo = observer(({
 		getItemQuantity
 	} = useBasketItem(product)
 
-	// Lazy loading для изображений
+	// Lazy loading для изображений с адаптивными размерами
 	const { imageSrc } = useLazyImage(
-		getImageUrl(product.img),
-		rollPlugImage
+		product.img,
+		rollPlugImage,
+		{ 
+			enableCache: true,
+			imageType: 'PRODUCT_MODAL'
+		}
 	)
 
 	return (

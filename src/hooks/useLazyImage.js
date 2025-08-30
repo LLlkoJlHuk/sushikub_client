@@ -1,4 +1,6 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
+import { getImageUrl, getOptimalSize } from '../utils/imageUtils'
+import { useWindowSize } from './useWindowSize'
 
 // Кэш для загруженных изображений
 const imageCache = new Map()
@@ -14,7 +16,8 @@ export const useLazyImage = (src, placeholder, options = {}) => {
   const { 
     enableCache = true, 
     enableIntersectionObserver = false,
-    rootMargin = '50px'
+    rootMargin = '50px',
+    imageType = null // Тип изображения для адаптивной загрузки
   } = options
   
   const [imageSrc, setImageSrc] = useState(placeholder)
@@ -24,6 +27,15 @@ export const useLazyImage = (src, placeholder, options = {}) => {
   
   const imgRef = useRef(null)
   const observerRef = useRef(null)
+  const { width: screenWidth } = useWindowSize()
+
+  // Получаем оптимальный размер изображения для текущего экрана
+  const optimalImageUrl = useMemo(() => {
+    if (!src || !imageType || !screenWidth) return src
+    
+    const optimalSize = getOptimalSize(imageType, screenWidth)
+    return optimalSize ? getImageUrl(src, optimalSize) : src
+  }, [src, imageType, screenWidth])
 
   // Функция загрузки изображения с кэшированием
   const loadImage = useCallback(async (imageUrl) => {
@@ -108,10 +120,13 @@ export const useLazyImage = (src, placeholder, options = {}) => {
 
   // Загрузка изображения
   useEffect(() => {
-    if (shouldLoad && src) {
-      loadImage(src)
+    if (shouldLoad) {
+      const imageUrl = optimalImageUrl || src
+      if (imageUrl) {
+        loadImage(imageUrl)
+      }
     }
-  }, [src, shouldLoad, loadImage])
+  }, [shouldLoad, optimalImageUrl, src, loadImage])
 
   return {
     imageSrc,
