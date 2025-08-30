@@ -39,7 +39,7 @@ const ProductInfo = observer(({
 
 				{/* Изображение продукта */}
 				<div className={styles['product-info__content__img']}>
-					<img src={imageSrc} alt={product.name} title={product.name} />
+					<img src={imageSrc} alt={product.name} />
 				</div>
 
 				<div className={styles['product-info__content__wrapper']}>
