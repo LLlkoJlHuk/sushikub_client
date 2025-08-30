@@ -2,7 +2,6 @@ import { observer } from 'mobx-react-lite'
 import React, { memo, useCallback, useMemo, useState } from 'react'
 import { createPortal } from 'react-dom'
 import rollPlugImage from '../../assets/images/roll-plug.webp'
-import { getImageUrl } from '../../constants'
 import { formatPrice } from '../../hooks/formatPrice'
 import { useBasketItem } from '../../hooks/useBasketItem'
 import { useLazyImage } from '../../hooks/useLazyImage'
@@ -22,9 +21,6 @@ const ProductCardComponent = observer(({
 		handleDecreaseQuantity,
 		getItemQuantity
 	} = useBasketItem(product)
-
-	// Мемоизируем URL изображения
-	const imageUrl = useMemo(() => getImageUrl(product.img), [product.img]) // eslint-disable-line no-unused-vars
 
 	// Lazy loading для изображений с Intersection Observer и адаптивными размерами
 	const { imageSrc, isLoading, imgRef } = useLazyImage(
