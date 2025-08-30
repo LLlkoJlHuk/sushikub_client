@@ -15,16 +15,23 @@
     <meta name="theme-color" content="#1a1a1a" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-TileColor" content="#1a1a1a" />
+    <meta name="application-name" content="Суши КУБ" />
     
     <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="src/assets/images/favicon.ico" />
-    <link rel="apple-touch-icon" sizes="180x180" href="src/assets/images/logo.webp" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link rel="icon" type="image/webp" sizes="32x32" href="/src/assets/images/logo.webp" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/src/assets/images/logo.webp" />
     
     <!-- Preconnect for performance -->
     <link rel="preconnect" href="http://89.111.168.173" />
     
     <!-- Canonical URL -->
     <link rel="canonical" href="http://89.111.168.173/" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
     
     <!-- JSON-LD Structured Data -->
     <script type="application/ld+json" class="yoast-schema-graph">
@@ -40,7 +47,7 @@
           "about": {"@id": "http://89.111.168.173/#organization"},
           "primaryImageOfPage": {"@id": "http://89.111.168.173/#primaryimage"},
           "image": {"@id": "http://89.111.168.173/#primaryimage"},
-          "thumbnailUrl": "http://89.111.168.173/logo-white.png",
+          "thumbnailUrl": "http://89.111.168.173/src/assets/images/logo.webp",
           "datePublished": "2025-01-30T00:00:00+00:00",
           "dateModified": "2025-01-30T00:00:00+00:00",
           "description": "Вкусные роллы и суши в Красноярске! Заказать еду с доставкой с Суши КУБ. Доставка роллов, суши, салатов и горячих блюд японской кухни.",
@@ -57,10 +64,10 @@
           "@type": "ImageObject",
           "inLanguage": "ru-RU",
           "@id": "http://89.111.168.173/#primaryimage",
-          "url": "http://89.111.168.173/logo-white.png",
-          "contentUrl": "http://89.111.168.173/logo-white.png",
-          "width": 994,
-          "height": 994
+          "url": "http://89.111.168.173/src/assets/images/logo.webp",
+          "contentUrl": "http://89.111.168.173/src/assets/images/logo.webp",
+          "width": 512,
+          "height": 512
         },
         {
           "@type": "BreadcrumbList",
@@ -103,14 +110,40 @@
             "@type": "ImageObject",
             "inLanguage": "ru-RU",
             "@id": "http://89.111.168.173/#/schema/logo/image/",
-            "url": "http://89.111.168.173/logo-white.png",
-            "contentUrl": "http://89.111.168.173/logo-white.png",
-            "width": 994,
-            "height": 994,
+            "url": "http://89.111.168.173/src/assets/images/logo.webp",
+            "contentUrl": "http://89.111.168.173/src/assets/images/logo.webp",
+            "width": 512,
+            "height": 512,
             "caption": "Суши КУБ"
           },
           "image": {"@id": "http://89.111.168.173/#/schema/logo/image/"},
-          "sameAs": ["https://vk.com/sushikub"]
+          "sameAs": ["https://vk.com/sushikub"],
+          "@type": ["Organization", "Restaurant"],
+          "servesCuisine": "Japanese",
+          "hasDeliveryService": true,
+          "acceptsReservations": false,
+          "priceRange": "$$",
+          "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Красноярск",
+            "addressCountry": "RU"
+          },
+          "openingHoursSpecification": [
+            {
+              "@type": "OpeningHoursSpecification",
+              "dayOfWeek": [
+                "Monday",
+                "Tuesday", 
+                "Wednesday",
+                "Thursday",
+                "Friday",
+                "Saturday",
+                "Sunday"
+              ],
+              "opens": "10:00",
+              "closes": "22:30"
+            }
+          ]
         }
       ]
     }

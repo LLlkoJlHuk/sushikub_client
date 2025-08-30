@@ -1,0 +1,25 @@
+{
+  "name": "Суши КУБ - Доставка суши и роллов",
+  "short_name": "Суши КУБ",
+  "description": "Вкусные роллы и суши в Красноярске! Заказать еду с доставкой с Суши КУБ.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1a1a1a",
+  "theme_color": "#1a1a1a",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/src/assets/images/logo.webp",
+      "sizes": "512x512",
+      "type": "image/webp",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/favicon.ico",
+      "sizes": "32x32",
+      "type": "image/x-icon"
+    }
+  ],
+  "categories": ["food", "shopping"],
+  "lang": "ru"
+}
