@@ -75,7 +75,7 @@ export const getImageUrl = (imagePath, size = null) => {
   }
   
   // Добавляем параметры размера для сжатия на сервере
-  return `${baseUrl}?w=${size.width}&h=${size.height}&q=75&f=webp`
+  return `${baseUrl}?w=${size.width}&h=${size.height}&q=85&f=webp`
 }
 
 /**
