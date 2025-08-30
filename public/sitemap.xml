@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+<urlset xmlns="https://www.sitemaps.org/schemas/sitemap/0.9">
   
   <!-- Главная страница -->
   <url>
-    <loc>http://89.111.168.173/</loc>
+    <loc>https://overkot12.ru/</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
@@ -11,7 +11,7 @@
   
   <!-- Страница доставки -->
   <url>
-    <loc>http://89.111.168.173/delivery</loc>
+    <loc>https://overkot12.ru/delivery</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -19,7 +19,7 @@
   
   <!-- Страница акций -->
   <url>
-    <loc>http://89.111.168.173/sales</loc>
+    <loc>https://overkot12.ru/sales</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.9</priority>
@@ -27,42 +27,42 @@
   
   <!-- Отдельные акции -->
   <url>
-    <loc>http://89.111.168.173/sales/sale-0</loc>
+    <loc>https://overkot12.ru/sales/sale-0</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>http://89.111.168.173/sales/sale-1</loc>
+    <loc>https://overkot12.ru/sales/sale-1</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>http://89.111.168.173/sales/sale-2</loc>
+    <loc>https://overkot12.ru/sales/sale-2</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>http://89.111.168.173/sales/sale-3</loc>
+    <loc>https://overkot12.ru/sales/sale-3</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>http://89.111.168.173/sales/sale-4</loc>
+    <loc>https://overkot12.ru/sales/sale-4</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   
   <url>
-    <loc>http://89.111.168.173/sales/sale-5</loc>
+    <loc>https://overkot12.ru/sales/sale-5</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -70,7 +70,7 @@
   
   <!-- Политика конфиденциальности -->
   <url>
-    <loc>http://89.111.168.173/policy</loc>
+    <loc>https://overkot12.ru/policy</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -78,7 +78,7 @@
   
   <!-- Пользовательское соглашение -->
   <url>
-    <loc>http://89.111.168.173/user-agreement</loc>
+    <loc>https://overkot12.ru/user-agreement</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
@@ -87,7 +87,7 @@
   <!-- Примеры категорий (обновите в соответствии с вашими категориями) -->
   <!-- Роллы -->
   <url>
-    <loc>http://89.111.168.173/category/1</loc>
+    <loc>https://overkot12.ru/category/1</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -95,7 +95,7 @@
   
   <!-- Суши -->
   <url>
-    <loc>http://89.111.168.173/category/2</loc>
+    <loc>https://overkot12.ru/category/2</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -103,7 +103,7 @@
   
   <!-- Горячие роллы -->
   <url>
-    <loc>http://89.111.168.173/category/3</loc>
+    <loc>https://overkot12.ru/category/3</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -111,7 +111,7 @@
   
   <!-- Сеты -->
   <url>
-    <loc>http://89.111.168.173/category/4</loc>
+    <loc>https://overkot12.ru/category/4</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -119,7 +119,7 @@
   
   <!-- Напитки -->
   <url>
-    <loc>http://89.111.168.173/category/5</loc>
+    <loc>https://overkot12.ru/category/5</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.6</priority>
@@ -127,7 +127,7 @@
   
   <!-- Соусы -->
   <url>
-    <loc>http://89.111.168.173/category/6</loc>
+    <loc>https://overkot12.ru/category/6</loc>
     <lastmod>2025-01-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>

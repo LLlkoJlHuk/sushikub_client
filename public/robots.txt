@@ -27,7 +27,7 @@ Allow: /robots.txt
 Allow: /sitemap.xml
 
 # Указываем местоположение карты сайта
-Sitemap: http://89.111.168.173/sitemap.xml
+Sitemap: https://overkot12.ru/sitemap.xml
 
 # Настройки для основных поисковых ботов
 User-agent: Googlebot
