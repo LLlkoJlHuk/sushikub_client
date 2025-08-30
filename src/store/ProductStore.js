@@ -103,8 +103,6 @@ export default class ProductStore {
 			const types = await productApi.getTypes()
 			this.setTypes(types)
 		} catch (error) {
-			console.error('Error fetching types:', error)
-			
 			// Специальная обработка ошибок авторизации
 			if (error.response?.status === 401) {
 				this.setError('Сессия истекла. Пожалуйста, войдите в систему заново.')
@@ -126,8 +124,6 @@ export default class ProductStore {
 			const response = await productApi.getProducts(params)
 			this.setProducts(response || [])
 		} catch (error) {
-			console.error('Error fetching products:', error)
-			
 			// Специальная обработка ошибок авторизации
 			if (error.response?.status === 401) {
 				this.setError('Сессия истекла. Пожалуйста, войдите в систему заново.')
@@ -149,8 +145,6 @@ export default class ProductStore {
 			
 			return newProduct
 		} catch (error) {
-			console.error('Error creating product:', error)
-			
 			// Специальная обработка ошибок авторизации
 			if (error.response?.status === 401) {
 				this.setError('Сессия истекла. Пожалуйста, войдите в систему заново.')
@@ -228,8 +222,6 @@ export default class ProductStore {
 			
 			return newCategory
 		} catch (error) {
-			console.error('Error creating category:', error)
-			
 			// Специальная обработка ошибок авторизации
 			if (error.response?.status === 401) {
 				this.setError('Сессия истекла. Пожалуйста, войдите в систему заново.')
@@ -255,14 +247,8 @@ export default class ProductStore {
 			
 			return updatedCategory
 		} catch (error) {
-			console.error('Error updating category:', error)
-			
 			// Специальная обработка ошибок авторизации
-			if (error.response?.status === 401) {
-				this.setError('Сессия истекла. Пожалуйста, войдите в систему заново.')
-			} else if (error.response?.status === 403) {
-				this.setError('Недостаточно прав для обновления категории')
-			} else if (error.response?.data?.message) {
+			if (error.response?.data?.message) {
 				this.setError(error.response.data.message)
 			} else {
 				this.setError('Ошибка при обновлении категории')
@@ -280,14 +266,8 @@ export default class ProductStore {
 			// Обновляем список категорий синхронно
 			await this.fetchCategories()
 		} catch (error) {
-			console.error('Error deleting category:', error)
-			
 			// Специальная обработка ошибок авторизации
-			if (error.response?.status === 401) {
-				this.setError('Сессия истекла. Пожалуйста, войдите в систему заново.')
-			} else if (error.response?.status === 403) {
-				this.setError('Недостаточно прав для удаления категории')
-			} else if (error.response?.data?.message) {
+			if (error.response?.data?.message) {
 				this.setError(error.response.data.message)
 			} else {
 				this.setError('Ошибка при удалении категории')
@@ -307,14 +287,8 @@ export default class ProductStore {
 			
 			return newType
 		} catch (error) {
-			console.error('Error creating type:', error)
-			
 			// Специальная обработка ошибок авторизации
-			if (error.response?.status === 401) {
-				this.setError('Сессия истекла. Пожалуйста, войдите в систему заново.')
-			} else if (error.response?.status === 403) {
-				this.setError('Недостаточно прав для создания типа')
-			} else if (error.response?.data?.message) {
+			if (error.response?.data?.message) {
 				this.setError(error.response.data.message)
 			} else {
 				this.setError('Ошибка при создании типа')
