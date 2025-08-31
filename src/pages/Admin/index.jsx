@@ -39,7 +39,7 @@ const Admin = observer(() => {
   const openSettingsModal = () => setIsSettingsModalOpen(true)
   const closeSettingsModal = () => setIsSettingsModalOpen(false)
 
-  const isDevMode = true;
+  const isDevMode = false;
 	
 	const openProductModal = (type = 'create', product = null) => {
 		setProductModalType(type)

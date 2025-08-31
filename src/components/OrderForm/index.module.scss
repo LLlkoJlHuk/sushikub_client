@@ -259,11 +259,7 @@
   justify-content: start;
   align-items: center;
   flex-wrap: wrap;
-  gap: 6px 12px;
-
-  @include smallTablet {
-    flex-wrap: nowrap;
-  }
+  gap: 6px 14px;
 
   >div {
     width: auto;
@@ -278,7 +274,7 @@
     user-select: none;
     margin-left: 4px;
 
-    width: calc(100% - 42px);
+    width: calc(100% - 55px);
 
     color: $gray;
     font-size: $fz-small;
