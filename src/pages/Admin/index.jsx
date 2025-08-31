@@ -223,7 +223,7 @@ const Admin = observer(() => {
                   {/* Шапка таблицы */}
                   <tr>
                     <td className={styles['image']} width='80'></td>
-                    <td className={styles['name']} width='120'><span>Название</span></td>
+                    <td className={styles['name']} width='150'><span>Название</span></td>
                     <td className={styles['description']} width='300'><span>Описание</span></td>
                     <td className={styles['price']} width='100'><span>Цена</span></td>
                     <td className={styles['article']} width='100'><span>Артикул</span></td>

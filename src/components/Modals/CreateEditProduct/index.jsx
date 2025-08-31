@@ -100,6 +100,20 @@ function CreateEditProduct({
 		
 		if (name === 'img' && files) {
 			const file = files[0]
+			
+			// Валидация файла изображения
+			const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+			if (!allowedTypes.includes(file.type)) {
+				setError('Пожалуйста, выберите файл изображения (JPEG, PNG или WebP)')
+				return
+			}
+			
+			// Проверка размера файла (максимум 50MB)
+			if (file.size > 50 * 1024 * 1024) {
+				setError('Размер файла не должен превышать 50MB')
+				return
+			}
+			
 			setProduct(prev => ({
 				...prev,
 				[name]: file
@@ -169,13 +183,31 @@ function CreateEditProduct({
 				return
 			}
 
-			if (!product.price) {
-				setError('Цена обязательна для заполнения')
+			if (!product.price || product.price <= 0) {
+				setError('Цена должна быть больше 0')
 				return
 			}
 			
 			if (!product.type) {
 				setError('Необходимо выбрать тип')
+				return
+			}
+			
+			// Проверка артикула
+			if (!product.article || product.article < 0) {
+				setError('Артикул должен быть неотрицательным числом')
+				return
+			}
+			
+			// Проверка веса (если указан)
+			if (product.weight && product.weight < 0) {
+				setError('Вес должен быть неотрицательным числом')
+				return
+			}
+			
+			// Проверка порядка (если указан)
+			if (product.order && product.order < 0) {
+				setError('Порядок должен быть неотрицательным числом')
 				return
 			}
 			
@@ -185,17 +217,53 @@ function CreateEditProduct({
 				return
 			}
 			
+			// Дополнительная валидация для редактирования
+			if (type === 'edit' && product.img && product.img.type) {
+				const allowedTypes = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+				if (!allowedTypes.includes(product.img.type)) {
+					setError('Пожалуйста, выберите файл изображения (JPEG, PNG или WebP)')
+					return
+				}
+			}
+			
 			// Создаем FormData для отправки файла
 			const formData = new FormData()
-			formData.append('name', product.name)
-			formData.append('description', product.description)
-			formData.append('price', product.price)
-			formData.append('weight', product.weight)
-			formData.append('article', product.article)
-			formData.append('categoryId', product.category)
-			formData.append('typeId', product.type)
-			formData.append('inStock', product.inStock.toString())
-			formData.append('order', product.order)
+			// Передаем name только если оно не пустое
+			if (product.name && product.name.trim() !== '') {
+				formData.append('name', product.name)
+			}
+			// Передаем description только если оно не пустое
+			if (product.description && product.description.trim() !== '') {
+				formData.append('description', product.description)
+			}
+			// Передаем price только если оно не пустое
+			if (product.price && product.price !== '') {
+				formData.append('price', product.price)
+			}
+			// Передаем weight только если оно не пустое
+			if (product.weight && product.weight !== '') {
+				formData.append('weight', product.weight)
+			}
+			// Передаем article только если оно не пустое
+			if (product.article && product.article !== '') {
+				formData.append('article', product.article)
+			}
+			// Передаем categoryId только если оно не пустое
+			if (product.category && product.category !== '') {
+				formData.append('categoryId', product.category)
+			}
+			// Передаем typeId только если оно не пустое
+			if (product.type && product.type !== '') {
+				formData.append('typeId', product.type)
+			}
+			// Передаем inStock только если оно определено
+			if (product.inStock !== undefined) {
+				formData.append('inStock', product.inStock.toString())
+			}
+			// Передаем order только если оно не пустое
+			if (product.order && product.order !== '') {
+				formData.append('order', product.order)
+			}
 			
 			// Добавляем изображение только если оно выбрано
 			if (product.img) {
