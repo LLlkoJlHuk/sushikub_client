@@ -128,7 +128,7 @@ const CategoryPage = () => {
 				title={categoryTitle}
 				description={categoryDescription}
 				keywords={`${category?.name || 'японская кухня'}, суши, роллы, доставка, SushiKub, Красноярск`}
-				canonical={`http://89.111.168.173/category/${categoryId}`}
+				canonical={`https://overkot12.ru/category/${categoryId}`}
 				ogTitle={categoryTitle}
 				ogDescription={categoryDescription}
 			/>
