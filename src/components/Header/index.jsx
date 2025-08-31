@@ -208,7 +208,7 @@ const Header = observer(({ isScrolled, isTimedOut, isScrolledBack, isTimedOutBac
 										</Button>
 									))
 								) : (
-									<div>Категории не найдены</div>
+									<div>Загрузка категорий...</div>
 								)}
 							</div>
 		

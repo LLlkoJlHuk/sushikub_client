@@ -99,7 +99,7 @@ const Categories = observer(({ isModalOpen, closeModal, showNotification }) => {
 						</table>
 					) : products.categories ? (
 						<div className={styles['admin-page__content-categories-empty']}>
-							<p>Категории не найдены</p>
+							<p>Загрузка категорий...</p>
 						</div>
 					) : (
 						<div className={styles['admin-page__content-categories-empty']}>

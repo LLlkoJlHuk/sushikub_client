@@ -58,7 +58,7 @@ function MobileMenu({ sortedCategories, loading, phoneHref, workingTimeText, pho
 							</Button>
 						))
 					) : (
-						<div>Категории не найдены</div>
+						<div>Загрузка категорий...</div>
 					)}
 				</div>
 
