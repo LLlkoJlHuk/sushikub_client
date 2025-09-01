@@ -54,6 +54,12 @@ const ProductCard = observer(({
 					src={imageSrc} 
 					alt={product.name}
 				/>
+
+				{product.typeId === 3 && (
+					<div className={styles['product-card__img__new']}>
+						Новинка
+					</div>
+				)}
 			</div>
 
 			<div className={styles['product-card__content']}>

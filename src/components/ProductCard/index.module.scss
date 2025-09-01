@@ -47,6 +47,7 @@
 	}
 
 	&__img {
+		position: relative;
 		display: flex;
 		justify-content: center;
 
@@ -76,6 +77,44 @@
 
 		@include phone {
 			max-width: 110px;
+		}
+	}
+
+	&__img__new {
+		position: absolute;
+		right: 0;
+		bottom: -10px;
+
+		width: 100px;
+		height: 35px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		
+		color: $white;
+		font-size: $fz-small - 1px;
+		font-weight: 600;
+		font-style: italic;
+
+		background: url('/src/assets/images/bg-sale.webp') center center no-repeat;
+		background-size: contain;
+
+		@include tablet {
+			top: -25px;
+			left: auto;
+			right: 0;
+			bottom: auto;
+			width: 80px;
+			height: 30px;
+
+			font-size: $fz-xsmall;
+		}
+
+		@include bigPhone {
+			width: 70px;
+			height: 25px;
+
+			font-size: $fz-xsmall - 1px;
 		}
 	}
 

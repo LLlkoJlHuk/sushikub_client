@@ -5,6 +5,7 @@ export default class BannerStore {
 	constructor() {
 		this._banners = []
 		this._error = null
+		this._isLoading = false
 		makeAutoObservable(this)
 	}
 
@@ -17,6 +18,10 @@ export default class BannerStore {
 		return this._error
 	}
 
+	get isLoading() {
+		return this._isLoading
+	}
+
 	// Сеттеры
 	setBanners(banners) {
 		this._banners = banners
@@ -26,9 +31,14 @@ export default class BannerStore {
 		this._error = error
 	}
 
+	setLoading(isLoading) {
+		this._isLoading = isLoading
+	}
+
 	// Actions для работы с API
 	async fetchBanners() {
 		try {
+			this.setLoading(true)
 			this.setError(null)
 			const banners = await bannerApi.getBanners()
 			this.setBanners(banners)
@@ -37,6 +47,8 @@ export default class BannerStore {
 			this.setError(`Ошибка при загрузке баннеров: ${error.message}`)
 			// Устанавливаем пустой массив в случае ошибки
 			this.setBanners([])
+		} finally {
+			this.setLoading(false)
 		}
 	}
 

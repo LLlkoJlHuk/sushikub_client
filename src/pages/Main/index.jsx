@@ -36,7 +36,7 @@ const Main = observer(() => {
 	// Мемоизируем фильтрацию и сортировку продуктов
 	const filteredAndSortedProducts = useMemo(() => {
 		return productsList
-			.filter(product => product.typeId === 2 && product.inStock === true)
+			.filter(product => (product.typeId === 2 || product.typeId === 3) && product.inStock === true)
 			.sort((a, b) => (b.order || 0) - (a.order || 0))
 	}, [productsList]);
 

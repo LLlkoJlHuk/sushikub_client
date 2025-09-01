@@ -3,6 +3,7 @@ import React, { useContext, useEffect, useMemo, useState } from 'react'
 import { Autoplay, Pagination } from 'swiper/modules'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Context } from '../../main'
+import Loading from '../Loading'
 import BannerSlide from './BannerSlide'
 import './index.scss'
 
@@ -48,6 +49,16 @@ const BannerCarousel = observer(() => {
 			.slice()
 			.sort((a, b) => (a.order || 0) - (b.order || 0))
 	}, [banners.banners]);
+
+	// Показываем Loading если данные загружаются
+	if (banners.isLoading) {
+		return <Loading />
+	}
+
+	// Показываем пустое состояние если нет баннеров
+	if (sortedBanners.length === 0) {
+		return null
+	}
 
 	return (
 		<>
