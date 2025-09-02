@@ -27,7 +27,7 @@ Allow: /robots.txt
 Allow: /sitemap.xml
 
 # Указываем местоположение карты сайта
-Sitemap: https://overkot12.ru/sitemap.xml
+Sitemap: https://sushikub.ru/sitemap.xml
 
 # Настройки для основных поисковых ботов
 User-agent: Googlebot

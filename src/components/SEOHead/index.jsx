@@ -9,7 +9,7 @@ const SEOHead = ({
   keywords = "суши, роллы, доставка суши, заказать суши, японская кухня, КУБ, Красноярск",
   ogTitle,
   ogDescription,
-  ogImage = "https://overkot12.ru/logo.webp",
+  ogImage = "https://sushikub.ru/logo.webp",
   canonical,
   noindex = false
 }) => {
