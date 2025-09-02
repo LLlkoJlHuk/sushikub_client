@@ -53,10 +53,21 @@ const buildClosedWindowKeyResolver = (startStr, endStr, offsetHours) => {
 
 export const useClosedHoursPopup = ({ workingTimeStart, workingTimeEnd, gmtOffsetHours = 7 }) => {
   const [isOpen, setIsOpen] = useState(false)
+  const [isInitialized, setIsInitialized] = useState(false)
 
   const resolveWindowKey = buildClosedWindowKeyResolver(workingTimeStart, workingTimeEnd, gmtOffsetHours)
 
   useEffect(() => {
+    // Проверяем, что настройки загружены (не дефолтные значения)
+    const hasLoadedSettings = workingTimeStart !== '10:00' || workingTimeEnd !== '22:30'
+    
+    if (!hasLoadedSettings && !isInitialized) {
+      // Если настройки еще не загружены, не показываем попап
+      return
+    }
+    
+    setIsInitialized(true)
+    
     const key = resolveWindowKey()
     if (!key) {
       setIsOpen(false)
@@ -72,7 +83,7 @@ export const useClosedHoursPopup = ({ workingTimeStart, workingTimeEnd, gmtOffse
     } catch {
       setIsOpen(true)
     }
-  }, [resolveWindowKey])
+  }, [resolveWindowKey, workingTimeStart, workingTimeEnd, isInitialized])
 
   const onClose = useCallback(() => {
     const key = resolveWindowKey()
@@ -87,6 +98,8 @@ export const useClosedHoursPopup = ({ workingTimeStart, workingTimeEnd, gmtOffse
   }, [resolveWindowKey])
 
   useEffect(() => {
+    if (!isInitialized) return
+    
     const interval = setInterval(() => {
       const key = resolveWindowKey()
       if (!key) {
@@ -104,7 +117,7 @@ export const useClosedHoursPopup = ({ workingTimeStart, workingTimeEnd, gmtOffse
     }, 15000) 
 
     return () => clearInterval(interval)
-  }, [isOpen, resolveWindowKey])
+  }, [isOpen, resolveWindowKey, isInitialized])
 
   return { isOpen, onClose }
 }
