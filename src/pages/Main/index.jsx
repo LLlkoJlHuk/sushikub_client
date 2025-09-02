@@ -37,7 +37,7 @@ const Main = observer(() => {
 	const filteredAndSortedProducts = useMemo(() => {
 		return productsList
 			.filter(product => (product.typeId === 2 || product.typeId === 3) && product.inStock === true)
-			.sort((a, b) => (b.order || 0) - (a.order || 0))
+			.sort((a, b) => (a.order || 0) - (b.order || 0))
 	}, [productsList]);
 
 	// Мемоизируем отсортированные категории
