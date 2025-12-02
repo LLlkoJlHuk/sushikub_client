@@ -10,40 +10,57 @@ import Modal from '../index'
 import styles from './index.module.scss'
 
 const BannerRow = ({ banner, onEdit, onDelete }) => {
-	const { imageSrc: desktopImageSrc } = useLazyImage(
-		getImageUrl(banner.imgDesktop),
-		Plug
-	)
-	const { imageSrc: mobileImageSrc } = useLazyImage(
-		getImageUrl(banner.imgMobile),
-		Plug
-	)
+	// Формируем URL с параметром для обхода кэша при обновлении изображения
+	const desktopImageUrl = banner.imgDesktop
+		? `${getImageUrl(banner.imgDesktop)}?t=${banner.imgDesktop}`
+		: null
+	const mobileImageUrl = banner.imgMobile
+		? `${getImageUrl(banner.imgMobile)}?t=${banner.imgMobile}`
+		: null
+
+	const { imageSrc: desktopImageSrc } = useLazyImage(desktopImageUrl, Plug)
+	const { imageSrc: mobileImageSrc } = useLazyImage(mobileImageUrl, Plug)
 
 	return (
 		<tr>
-			<td><img className={styles['image']} src={desktopImageSrc} alt="Desktop banner" /></td>
-			<td><img className={styles['image']} src={mobileImageSrc} alt="Mobile banner" /></td>
-			<td className={styles['link-content']}><span>{banner.link}</span></td>
-			<td className={styles['order']}><span>{banner.order ? banner.order : '-'}</span></td>
+			<td>
+				<img
+					className={styles['image']}
+					src={desktopImageSrc}
+					alt='Desktop banner'
+				/>
+			</td>
+			<td>
+				<img
+					className={styles['image']}
+					src={mobileImageSrc}
+					alt='Mobile banner'
+				/>
+			</td>
+			<td className={styles['link-content']}>
+				<span>{banner.link}</span>
+			</td>
+			<td className={styles['order']}>
+				<span>{banner.order ? banner.order : '-'}</span>
+			</td>
 			<td className={styles['actions']}>
+				{/* Изменить товар */}
+				<Button
+					type='link'
+					className={styles['edit-button']}
+					onClick={() => onEdit(banner)}
+				>
+					Изменить
+				</Button>
 
-			{/* Изменить товар */}
-			<Button 
-				type='link' 
-				className={styles['edit-button']}
-				onClick={() => onEdit(banner)}
-			>
-				Изменить
-			</Button>
-
-			{/* Удалить товар */}
-			<Button 
-				type='link' 
-				className={styles['delete-button']}
-				onClick={() => onDelete(banner.id)}
-			>
-				Удалить
-			</Button>
+				{/* Удалить товар */}
+				<Button
+					type='link'
+					className={styles['delete-button']}
+					onClick={() => onDelete(banner.id)}
+				>
+					Удалить
+				</Button>
 			</td>
 		</tr>
 	)
@@ -56,7 +73,7 @@ const Banners = observer(({ isModalOpen, closeModal, showNotification }) => {
 	const [bannerModalType, setBannerModalType] = useState('create')
 	const [editingBanner, setEditingBanner] = useState(null)
 
-	const handleDeleteBanner = (bannerId) => {
+	const handleDeleteBanner = bannerId => {
 		if (window.confirm('Вы уверены, что хотите удалить этот баннер?')) {
 			banners.deleteBanner(bannerId)
 		}
@@ -80,62 +97,69 @@ const Banners = observer(({ isModalOpen, closeModal, showNotification }) => {
 			title='Баннеры'
 			type='white'
 		>
-
-				<div className={styles['admin-page__content-banners']}>
-
-					<div className={styles['admin-page__content-banners-scroll-wrapper']}>
-						{/* Список баннеров */}
-						{banners.banners.length > 0 ? (
-							<table className={styles['admin-page__content-banners-table']}>
-								<thead className={styles['admin-page__content-banners-header']}>
-
-									{/* Шапка таблицы */}
-									<tr>
-										<td className={styles['imgDesktop']} width='200'>Desktop</td>
-										<td className={styles['imgMobile']} width='100'>Mobile</td>
-										<td className={styles['link']} width='200'><span>Ссылка</span></td>
-										<td className={styles['order']} width='100'><span>Порядок</span></td>
-										<td className={styles['actions']} width='200'></td>
-									</tr>
-								</thead>
-								<tbody>
-
-									{/* Список баннеров */}
-									{banners.banners.slice().sort((a, b) => a.order - b.order).map((banner) => (
-										<BannerRow 
-											key={banner.id}
+			<div className={styles['admin-page__content-banners']}>
+				<div className={styles['admin-page__content-banners-scroll-wrapper']}>
+					{/* Список баннеров */}
+					{banners.banners.length > 0 ? (
+						<table className={styles['admin-page__content-banners-table']}>
+							<thead className={styles['admin-page__content-banners-header']}>
+								{/* Шапка таблицы */}
+								<tr>
+									<td className={styles['imgDesktop']} width='200'>
+										Desktop
+									</td>
+									<td className={styles['imgMobile']} width='100'>
+										Mobile
+									</td>
+									<td className={styles['link']} width='200'>
+										<span>Ссылка</span>
+									</td>
+									<td className={styles['order']} width='100'>
+										<span>Порядок</span>
+									</td>
+									<td className={styles['actions']} width='200'></td>
+								</tr>
+							</thead>
+							<tbody>
+								{/* Список баннеров */}
+								{banners.banners
+									.slice()
+									.sort((a, b) => a.order - b.order)
+									.map(banner => (
+										<BannerRow
+											key={`${banner.id}-${banner.imgDesktop}-${banner.imgMobile}`}
 											banner={banner}
-											onEdit={(banner) => openBannerModal('edit', banner)}
+											onEdit={banner => openBannerModal('edit', banner)}
 											onDelete={handleDeleteBanner}
 										/>
 									))}
-								</tbody>
-							</table>
-						) : (
-							<div className={styles['admin-page__content-banners-empty']}>
-								<p>Баннеры не найдены</p>
-							</div>
-						)}
-					</div>
-
-					<div className={styles['admin-page__content-banners-add']}>
-						<Button onClick={() => openBannerModal('create')}>
-							Добавить баннер
-						</Button>
-					</div>
+							</tbody>
+						</table>
+					) : (
+						<div className={styles['admin-page__content-banners-empty']}>
+							<p>Баннеры не найдены</p>
+						</div>
+					)}
 				</div>
 
-				{isBannerModalOpen && (
-					<CreateEditBanner
-						className='add-banner'
-						isModalOpen={isBannerModalOpen}
-						closeModal={closeBannerModal}
-						showNotification={showNotification}
-						type={bannerModalType}
-						bannerData={editingBanner}
-					/>
-				)}
-			</Modal>
+				<div className={styles['admin-page__content-banners-add']}>
+					<Button onClick={() => openBannerModal('create')}>
+						Добавить баннер
+					</Button>
+				</div>
+			</div>
+
+			{isBannerModalOpen && (
+				<CreateEditBanner
+					className='add-banner'
+					isModalOpen={isBannerModalOpen}
+					closeModal={closeBannerModal}
+					showNotification={showNotification}
+					type={bannerModalType}
+					bannerData={editingBanner}
+				/>
+			)}
+		</Modal>
 	)
 })
 
