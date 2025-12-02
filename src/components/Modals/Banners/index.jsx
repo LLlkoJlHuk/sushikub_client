@@ -10,6 +10,8 @@ import Modal from '../index'
 import styles from './index.module.scss'
 
 const BannerRow = ({ banner, onEdit, onDelete }) => {
+	// Используем тот же подход, что и в ProductCard - без параметра кэша
+	// Параметр кэша может вызывать проблемы на проде
 	const desktopImageUrl = banner.imgDesktop
 		? getImageUrl(banner.imgDesktop)
 		: null

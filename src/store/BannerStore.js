@@ -1,5 +1,5 @@
-import { makeAutoObservable } from "mobx"
-import { bannerApi } from "../http/bannerApi"
+import { makeAutoObservable } from 'mobx'
+import { bannerApi } from '../http/bannerApi'
 
 export default class BannerStore {
 	constructor() {
@@ -56,8 +56,9 @@ export default class BannerStore {
 		try {
 			this.setError(null)
 			const newBanner = await bannerApi.createBanner(banner)
-			// Небольшая задержка перед обновлением списка, чтобы файлы успели сохраниться
-			await new Promise(resolve => setTimeout(resolve, 300))
+			// Увеличенная задержка перед обновлением списка на проде, чтобы файлы успели сохраниться
+			// На проде файлы могут сохраняться медленнее из-за дисковых операций
+			await new Promise(resolve => setTimeout(resolve, 500))
 			// Обновляем список баннеров после создания
 			await this.fetchBanners()
 			return newBanner
@@ -71,8 +72,9 @@ export default class BannerStore {
 		try {
 			this.setError(null)
 			const updatedBanner = await bannerApi.updateBanner(id, banner)
-			// Небольшая задержка перед обновлением списка, чтобы файлы успели сохраниться
-			await new Promise(resolve => setTimeout(resolve, 300))
+			// Увеличенная задержка перед обновлением списка на проде, чтобы файлы успели сохраниться
+			// На проде файлы могут сохраняться медленнее из-за дисковых операций
+			await new Promise(resolve => setTimeout(resolve, 500))
 			// Обновляем список баннеров после изменения
 			await this.fetchBanners()
 			return updatedBanner
@@ -100,9 +102,7 @@ export default class BannerStore {
 		if (this._banners.length > 0) {
 			return
 		}
-		
-		await Promise.all([
-			this.fetchBanners(),
-		])
+
+		await Promise.all([this.fetchBanners()])
 	}
 }
