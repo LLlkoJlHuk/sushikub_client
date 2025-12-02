@@ -2,11 +2,52 @@ import { observer } from 'mobx-react-lite'
 import { useContext, useState } from 'react'
 import Plug from '../../../assets/images/plug.webp'
 import { getImageUrl } from '../../../constants'
+import { useLazyImage } from '../../../hooks/useLazyImage'
 import { Context } from '../../../main'
 import Button from '../../Button'
 import CreateEditBanner from '../CreateEditBanner'
 import Modal from '../index'
 import styles from './index.module.scss'
+
+const BannerRow = ({ banner, onEdit, onDelete }) => {
+	const { imageSrc: desktopImageSrc } = useLazyImage(
+		getImageUrl(banner.imgDesktop),
+		Plug
+	)
+	const { imageSrc: mobileImageSrc } = useLazyImage(
+		getImageUrl(banner.imgMobile),
+		Plug
+	)
+
+	return (
+		<tr>
+			<td><img className={styles['image']} src={desktopImageSrc} alt="Desktop banner" /></td>
+			<td><img className={styles['image']} src={mobileImageSrc} alt="Mobile banner" /></td>
+			<td className={styles['link-content']}><span>{banner.link}</span></td>
+			<td className={styles['order']}><span>{banner.order ? banner.order : '-'}</span></td>
+			<td className={styles['actions']}>
+
+			{/* Изменить товар */}
+			<Button 
+				type='link' 
+				className={styles['edit-button']}
+				onClick={() => onEdit(banner)}
+			>
+				Изменить
+			</Button>
+
+			{/* Удалить товар */}
+			<Button 
+				type='link' 
+				className={styles['delete-button']}
+				onClick={() => onDelete(banner.id)}
+			>
+				Удалить
+			</Button>
+			</td>
+		</tr>
+	)
+}
 
 const Banners = observer(({ isModalOpen, closeModal, showNotification }) => {
 	const { banners } = useContext(Context)
@@ -61,32 +102,12 @@ const Banners = observer(({ isModalOpen, closeModal, showNotification }) => {
 
 									{/* Список баннеров */}
 									{banners.banners.slice().sort((a, b) => a.order - b.order).map((banner) => (
-										<tr key={banner.id}>
-											<td><img className={styles['image']} src={getImageUrl(banner.imgDesktop) || Plug} /></td>
-											<td><img className={styles['image']} src={getImageUrl(banner.imgMobile) || Plug} /></td>
-											<td className={styles['link-content']}><span>{banner.link}</span></td>
-											<td className={styles['order']}><span>{banner.order ? banner.order : '-'}</span></td>
-											<td className={styles['actions']}>
-
-											{/* Изменить товар */}
-											<Button 
-												type='link' 
-												className={styles['edit-button']}
-												onClick={() => openBannerModal('edit', banner)}
-											>
-												Изменить
-											</Button>
-
-											{/* Удалить товар */}
-											<Button 
-												type='link' 
-												className={styles['delete-button']}
-												onClick={() => handleDeleteBanner(banner.id)}
-											>
-												Удалить
-											</Button>
-											</td>
-										</tr>
+										<BannerRow 
+											key={banner.id}
+											banner={banner}
+											onEdit={(banner) => openBannerModal('edit', banner)}
+											onDelete={handleDeleteBanner}
+										/>
 									))}
 								</tbody>
 							</table>
