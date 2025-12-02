@@ -15,9 +15,12 @@ export const useLazyImage = (src, placeholder) => {
     if (!src) {
       setImageSrc(placeholder)
       setIsLoading(false)
+      setHasError(false)
       return
     }
 
+    // Сбрасываем состояние при изменении src
+    setImageSrc(placeholder)
     setIsLoading(true)
     setHasError(false)
 
@@ -43,6 +46,8 @@ export const useLazyImage = (src, placeholder) => {
     return () => {
       img.removeEventListener('load', handleLoad)
       img.removeEventListener('error', handleError)
+      // Отменяем загрузку при размонтировании
+      img.src = ''
     }
   }, [src, placeholder])
 

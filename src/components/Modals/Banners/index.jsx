@@ -10,13 +10,10 @@ import Modal from '../index'
 import styles from './index.module.scss'
 
 const BannerRow = ({ banner, onEdit, onDelete }) => {
-	// Формируем URL с параметром для обхода кэша при обновлении изображения
 	const desktopImageUrl = banner.imgDesktop
-		? `${getImageUrl(banner.imgDesktop)}?t=${banner.imgDesktop}`
+		? getImageUrl(banner.imgDesktop)
 		: null
-	const mobileImageUrl = banner.imgMobile
-		? `${getImageUrl(banner.imgMobile)}?t=${banner.imgMobile}`
-		: null
+	const mobileImageUrl = banner.imgMobile ? getImageUrl(banner.imgMobile) : null
 
 	const { imageSrc: desktopImageSrc } = useLazyImage(desktopImageUrl, Plug)
 	const { imageSrc: mobileImageSrc } = useLazyImage(mobileImageUrl, Plug)

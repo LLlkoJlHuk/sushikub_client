@@ -56,6 +56,8 @@ export default class BannerStore {
 		try {
 			this.setError(null)
 			const newBanner = await bannerApi.createBanner(banner)
+			// Небольшая задержка перед обновлением списка, чтобы файлы успели сохраниться
+			await new Promise(resolve => setTimeout(resolve, 300))
 			// Обновляем список баннеров после создания
 			await this.fetchBanners()
 			return newBanner
@@ -69,6 +71,8 @@ export default class BannerStore {
 		try {
 			this.setError(null)
 			const updatedBanner = await bannerApi.updateBanner(id, banner)
+			// Небольшая задержка перед обновлением списка, чтобы файлы успели сохраниться
+			await new Promise(resolve => setTimeout(resolve, 300))
 			// Обновляем список баннеров после изменения
 			await this.fetchBanners()
 			return updatedBanner
