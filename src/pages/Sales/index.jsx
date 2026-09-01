@@ -146,7 +146,7 @@ const Sales = observer(() => {
 										Счастливые часы
 									</p>
 									<p className={styles['sales-list__item-description']}>
-										Скидка 10% всем с 11:00 до 15:00
+										Скидка 10% всем с 11:00 до 16:00
 									</p>
 								</a>
 							</>
