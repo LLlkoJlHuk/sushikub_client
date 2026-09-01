@@ -1,28 +1,28 @@
-import { observer } from 'mobx-react-lite'
-import { useContext, useEffect, useState } from 'react'
-import SalePageLayout from '../../../components/SalePageLayout'
-import { getImageUrl } from '../../../constants'
-import { useWindowSize } from '../../../hooks/useWindowSize'
-import { Context } from '../../../main'
+import { observer } from 'mobx-react-lite';
+import { useContext, useEffect, useState } from 'react';
+import SalePageLayout from '../../../components/SalePageLayout';
+import { getImageUrl } from '../../../constants';
+import { useWindowSize } from '../../../hooks/useWindowSize';
+import { Context } from '../../../main';
 
 const Sale4 = observer(() => {
-	const { banners, settings } = useContext(Context)
+	const { banners, settings } = useContext(Context);
 	const [settingsData, setSettingsData] = useState({
 		bonusPercentage: null,
-	})
+	});
 	const banner =
-		banners.banners && banners.banners.length > 5 ? banners.banners[5] : null
+		banners.banners && banners.banners.length > 5 ? banners.banners[5] : null;
 
 	useEffect(() => {
-		const bonusPercentage = settings.getSettingValue('BONUS_PERCENTAGE', '')
+		const bonusPercentage = settings.getSettingValue('BONUS_PERCENTAGE', '');
 
 		setSettingsData({
 			bonusPercentage: bonusPercentage,
-		})
-	}, [settings, settings.settingsObject])
+		});
+	}, [settings, settings.settingsObject]);
 
-	const { bonusPercentage } = settingsData
-	const { width } = useWindowSize()
+	const { bonusPercentage } = settingsData;
+	const { width } = useWindowSize();
 
 	return (
 		<SalePageLayout>
@@ -40,7 +40,7 @@ const Sale4 = observer(() => {
 					<h1 className='page-sale__content-title'>Счастливые часы</h1>
 					<p className='page-sale__content-description'>
 						<span>
-							Скидка&nbsp;10% при заказе с&nbsp;11:00 до&nbsp;15:00&nbsp;с
+							Скидка&nbsp;10% при заказе с&nbsp;11:00 до&nbsp;16:00&nbsp;с
 							доставкой на&nbsp;ближайшее время
 						</span>
 					</p>
@@ -62,7 +62,7 @@ const Sale4 = observer(() => {
 				</div>
 			</div>
 		</SalePageLayout>
-	)
-})
+	);
+});
 
-export default Sale4
+export default Sale4;
